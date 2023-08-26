@@ -1,0 +1,218 @@
+﻿.swal2-popup {
+    font-size: 1.2em !important;
+}
+
+#navbar {
+    z-index:1050;
+}
+#mainnav-container {
+    z-index:1051;
+}
+
+#mainnav-menu ul a, .menu-popover .sub-menu ul a {
+    padding:10px 10px 10px 30px;
+}
+#mainnav-menu ul ul a {
+    padding: 10px 10px 12px 40px;
+}
+
+/*Panel*/
+.panel-heading {
+    color: #7a878e;
+    border-color: rgb(0 0 0 / 15%);
+}
+
+.panel-body {
+    padding: 15px 10px 25px;
+}
+
+strong {
+    font-weight: 800;
+}
+
+
+/*Form Control*/
+.form-control-feedback {
+    line-height: 40px;
+    pointer-events: auto;
+}
+/*Javascript Validation*/
+.errorInput {
+    border: 1px solid red !important;
+}
+.errorTab {
+    color: red !important;
+}
+.form-control {
+    padding:6px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+input[type="checkbox"] {
+    /* Add if not using autoprefixer */
+    -webkit-appearance: none;
+    /* Remove most all native input styles */
+    appearance: none;
+    /* For iOS < 15 */
+    background-color: var(--form-background);
+    /* Not removed via appearance */
+    margin: 0;
+    font: inherit;
+    color: currentColor;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.16em solid #4d627b;
+    border-radius: 0.15em;
+    transform: translateY(-0.075em);
+    display: grid;
+    place-content: center;
+}
+
+    input[type="checkbox"]::before {
+        content: "";
+        width: 0.65em;
+        height: 0.65em;
+        clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        transform: scale(0);
+        transform-origin: bottom left;
+        transition: 120ms transform ease-in-out;
+        box-shadow: inset 1em 1em var(--form-control-color);
+        /* Windows High Contrast Mode */
+        background-color: CanvasText;
+    }
+
+    input[type="checkbox"]:checked::before {
+        transform: scale(1);
+    }
+
+    input[type="checkbox"]:focus {
+        outline: max(2px, 0.15em) solid currentColor;
+        outline-offset: max(2px, 0.15em);
+    }
+
+    input[type="checkbox"]:disabled {
+        --form-control-color: var(--form-control-disabled);
+        color: var(--form-control-disabled);
+        cursor: not-allowed;
+    }
+
+/*Efects*/
+.blinkMe {
+    animation: blinker 1s linear infinite;
+}
+
+.highlightOn {
+    background: #fbfbe9;
+    transition: background-color 0.5s ease;
+}
+
+.highlightOff {
+    background: initial;
+    transition: background-color 0.5s ease;
+}
+
+
+/*Alert*/
+.alert {
+    margin: 0 !important;
+}
+
+.popUp {
+    position: absolute;
+    top: 3%;
+    left: 3%;
+    overflow-y: auto;
+    box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.4);
+    display: none;
+    z-index: 999;
+    background-color: white;
+    width: 94%;
+    height: 94%;
+}
+
+.field-validation-error {
+    font-weight: normal;
+    color: #d10505;
+}
+
+/*Modal*/
+.modalStatusbar {
+    display:none;
+    position: absolute;
+    width: 100%;
+    display: none;
+    bottom: 55px;
+}
+    .modalStatusbar strong {
+        opacity: .89;
+        font-weight:700;
+    }
+
+    .modalStatusbar div {
+        opacity:.95;
+    }
+    .modalStatusbar .alert-link {
+        text-decoration: underline;
+        font-size:9pt;
+    }
+    .modalStatusbar .alert-link:hover {
+        text-decoration: underline;
+    }
+
+.modal-backdrop {
+    z-index: 1059;
+}
+.modal {
+    text-align: center;
+    padding: 0 !important;
+    z-index:1060;
+}
+
+    .modal:before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -4px;
+    }
+
+    .modal .modal-header {
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .modal .modal-header .close {
+        top:36%;
+    }
+
+    .modal .modal-header .close span {
+        font-size:25px;
+    }
+
+    .modal .modal-body {
+        background-color: #fff;
+        padding: 15px 15px 5px 15px;
+    }
+
+.modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#modal-loading {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    opacity: .5;
+    z-index: 1;
+    overflow: hidden;
+}
+
+    #modal-loading .modal-spinner {
+        display: block;
+        top: 40%;
+        left: 40%;
+        position: absolute;
+    }

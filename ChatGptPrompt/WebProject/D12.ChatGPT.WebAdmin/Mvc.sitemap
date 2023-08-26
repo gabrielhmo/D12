@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<mvcSiteMapNode title="Inicio" controller="Inicio" action="Index" icon="fas fa-home">
+		
+		<mvcSiteMapNode title="Clients" controller="Clients" action="Index" icon="fas fa-cog" roles="Administrador">
+			<mvcSiteMapNode title="Client" area="Clients" controller="Client" action="Index" icon="fas fa-cog" roles="Administrador"/>
+			<mvcSiteMapNode title="Companies" area="Clients" controller="ClientCompany" action="Index" icon="fas fa-cog" roles="Administrador"/>
+		</mvcSiteMapNode>
+
+		<mvcSiteMapNode title="SEO Content" controller="SEOContent" action="Index" icon="fas fa-cog" roles="Administrador">
+			<mvcSiteMapNode title="Campaigns" controller="SEOContent" action="Campaigns" icon="fas fa-cog" roles="Administrador"/>
+			<mvcSiteMapNode title="GPTContext" controller="SEOContent" action="GPTContext" icon="fas fa-cog" roles="Administrador"/>
+			<mvcSiteMapNode title="Prompt Options" controller="Prompt" action="Index" icon="fas fa-cog" roles="Administrador">
+				<mvcSiteMapNode title="ChatGPT Rols" controller="ChatGPTRol" action="Index" icon="fas fa-cog" roles="Administrador"/>
+				<mvcSiteMapNode title="Controls" controller="ControlType" action="Index" icon="fas fa-cog" roles="Administrador"/>
+				<mvcSiteMapNode title="Language" controller="Language" action="Index" icon="fas fa-cog" roles="Administrador"/>
+				<mvcSiteMapNode title="Tense" controller="Tense" action="Index" icon="fas fa-cog" roles="Administrador"/>
+			</mvcSiteMapNode>
+		</mvcSiteMapNode>
+
+		<mvcSiteMapNode title="Ajustes" controller="Ajustes" action="Index" icon="fas fa-cogs" roles="Administrador">
+			<mvcSiteMapNode title="Configuración" area="Ajustes" controller="Configuracion" action="Index" icon="fas fa-cog" roles="Administrador"/>
+			<mvcSiteMapNode title="Seguridad" area="Ajustes" controller="Seguridad" action="Index" icon="fas fa-shield-alt">
+				<mvcSiteMapNode title="Usuarios" area="Ajustes" controller="Seguridad" action="Usuarios" icon="fas fa-users"/>
+				<mvcSiteMapNode title="Roles" area="Ajustes" controller="Seguridad" action="Roles" icon="fas fa-user-cog" roles="Administrador"/>
+				<mvcSiteMapNode title="Control de Acceso" area="Ajustes" controller="Seguridad" action="SiteMap" icon="fas fa-user-lock" roles="Administrador"/>
+			</mvcSiteMapNode>
+		</mvcSiteMapNode>
+		<mvcSiteMapNode title="Soporte" controller="Soporte" action="Index" icon="fas fa-tools"/>
+	</mvcSiteMapNode>
+
+
+</mvcSiteMap>

@@ -1,0 +1,72 @@
+﻿@using System.Collections
+
+<div id="ModalDBSettings" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="modal-loading" style="display:none;">
+                <span class="modal-spinner" style="display: block;"><i class='fa fa-spinner fa-spin fa-5x fa-fw'></i></span>
+            </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Id", "FormDBSettings", FormMethod.Post, new { id = "FormDBSettings" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="DBServer">Servidor o IP</label>
+                                <input type="text" id="DBServer" name="DBServer" value="" class="form-control" data-val="true" data-val-length="El campo Servidor o IP debe ser una cadena con una longitud máxima de 30." data-val-length-max="30" data-val-maxlength="El campo Servidor o IP debe ser un tipo de cadena o matriz con una longitud máxima de '30'." data-val-maxlength-max="30" />
+                                <span class="field-validation-valid" data-valmsg-for="DBServer" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="DBName">Base de Datos</label>
+                                <input type="text" id="DBName" name="DBName" value="" class="form-control" data-val="true" data-val-length="El campo Base de Datos debe ser una cadena con una longitud máxima de 30." data-val-length-max="30" data-val-maxlength="El campo Base de Datos debe ser un tipo de cadena o matriz con una longitud máxima de '30'." data-val-maxlength-max="30" />
+                                <span class="field-validation-valid" data-valmsg-for="DBName" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="DBUsername">Nombre de Usuario</label>
+                                <input type="text" id="DBUsername" name="DBUsername" value="" class="form-control" data-val="true" data-val-length="El campo Nombre de Usuario debe ser una cadena con una longitud máxima de 30." data-val-length-max="30" data-val-maxlength="El campo Nombre de Usuario debe ser un tipo de cadena o matriz con una longitud máxima de '30'." data-val-maxlength-max="30" />
+                                <span class="field-validation-valid" data-valmsg-for="DBUsername" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="DBPassword">Contraseña</label>
+                                <input type="text" id="DBPassword" name="DBPassword" value="" class="form-control" data-val="true" data-val-length="El campo Contraseña debe ser una cadena con una longitud máxima de 15." data-val-length-max="15" data-val-maxlength="El campo Contraseña debe ser un tipo de cadena o matriz con una longitud máxima de '15'." data-val-maxlength-max="15" />
+                                <span class="field-validation-valid" data-valmsg-for="DBPassword" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div id="AlertFormDBSettings" class="alert" style="display:none;">
+                    <button class="close" data-dismiss="alert"><i class="pci-cross pci-circle"></i></button>
+                    <strong class="title"></strong> <span class="message"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-default btn-danger pull-left" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-primary btnSave pull-right">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

@@ -1,0 +1,105 @@
+﻿body, html {
+    height: 100%;
+}
+
+body {
+    /* Location of the image */
+    background-image: url(../../Content/images/company/backgrounds/bg-login.jpg);
+    /* Background image is centered vertically and horizontally at all times */
+    background-position: center center;
+    /* Background image doesn’t tile */
+    background-repeat: no-repeat;
+    /* Background image is fixed in the viewport */
+    background-attachment: fixed;
+    /* This is what makes the background image rescale basedon the container’s size */
+    background-size: cover;
+    /* Set a background color that will be displayed while the background image is loading */
+    background-color: #F4F4F4;
+}
+.blinkMe {
+    animation: blinker 1s linear infinite;
+}
+
+#loginContainer {
+    background-color: rgb(238 238 238 / 0.60);
+}
+
+form .form-control {
+    border: 0;
+    border-radius: 0;
+    border-bottom: 2px solid #E3E3E3;
+    color: #3B3B3B !important;
+}
+form .form-control:focus {
+    box-shadow: none;
+    border-bottom: 2px solid #B3B3B3;
+}
+
+.error {
+    font-size: .7rem;
+    font-style: normal;
+    color: red;
+    display: block;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.form-control:invalid:focus {
+    border: none !important;
+}
+
+
+.form-control.is-invalid, .was-validated .form-control:invalid {
+    border-color: red !important;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: #fbfbfb;
+    opacity: 1;
+    color: #d7d7d7 !important;
+}
+.form-control:disabled .btn.disabled, .btn:disabled, fieldset:disabled .btn {
+    pointer-events: none;
+    opacity: 1;
+}
+.form-floating > .form-control:focus, .form-floating > .form-control:not(:placeholder-shown) {
+    padding-bottom: 0.01rem;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+    border-color: none;
+    box-shadow: none;
+    outline: 0 none;
+}
+
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active {
+    outline: 0px !important;
+    -webkit-appearance: none;
+    box-shadow: none !important;
+}

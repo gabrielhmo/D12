@@ -1,0 +1,108 @@
+﻿
+@model D12.ChatGPT.WebAdmin.ViewModels.SeoCampaignViewModel
+
+<div id="ModalSeoCampaign" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="modal-loading" style="display:none;">
+                <span class="modal-spinner" style="display: block;"><i class='fa fa-spinner fa-spin fa-5x fa-fw'></i></span>
+            </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" style="height:450px;">
+                <form id="FormSeoCampaign">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.Id)
+
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CompanyId, new { @class = "control-label" })
+                                @Html.DropDownList("CompanyId", ViewBag.CompaniesList as SelectList, new { id = "CompanyId", @class = "selectpicker form-control", data_container = "body", title = "Select", data_live_search = "false", data_width = "100%", data_size = "10" })
+                                @Html.ValidationMessageFor(m => m.CompanyId)
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.BusinessOfferId, new { @class = "control-label" })
+                                @*<select d = "BusinessOfferId" class="selectpicker form-control" data_container="body" title="Select" data_live_search="false" data_width="100%" data_size="10"></select>*@
+                                @Html.DropDownList("BusinessOfferId", ViewBag.BusinessOfferList as SelectList, new { id = "BusinessOfferId", @class = "selectpicker form-control", data_container = "body", title = "Select", data_live_search = "false", data_width = "100%", data_size = "10" })
+                                @Html.ValidationMessageFor(m => m.BusinessOfferId)
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <div class="form-group" style="padding-top:30px;">
+                                    <span style="display:inline-block">@Html.CheckBoxFor(m => m.Active, true)</span>
+                                    @Html.LabelFor(m => m.Active, new { @class = "control-label" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Name, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Name)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Market, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.Market, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Market)
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.PrimaryKeyword, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.PrimaryKeyword, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.PrimaryKeyword)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Keywords, new { @class = "control-label" })
+                                @Html.TextAreaFor(m => m.Keywords, new { @class = "form-control", @rows = "10" })
+                                @Html.ValidationMessageFor(m => m.Keywords)
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Description, new { @class = "control-label" })
+                                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @rows = "10" })
+                                @Html.ValidationMessageFor(m => m.Description)
+                            </div>
+                        </div>
+                    </div>
+                    <div id="summaryValidation"></div>
+                </form>
+            </div>
+            <div class="modalStatusbar"></div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-default btn-danger pull-left" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-md-4" style="text-align:center;">
+                        <button type="button" class="btn btn-success btnNew">New</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-primary btnSave">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

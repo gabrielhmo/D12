@@ -1,0 +1,98 @@
+﻿@model D12.ChatGPT.DataModel.SiteMap
+
+<div id="ModalSiteMap" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="modal-loading" style="display:none;">
+                <span class="modal-spinner" style="display: block;"><i class='fa fa-spinner fa-spin fa-5x fa-fw'></i></span>
+            </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div id="FormContainerSiteMap">
+                    <form id="FormSiteMap">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.Id)
+                        @Html.HiddenFor(m => m.ParentId)
+                        @Html.HiddenFor(m => m.Index)
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Name, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Name)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.UrlPath, new { @class = "control-label" })
+                                    @Html.TextAreaFor(m => m.UrlPath, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.UrlPath)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.OnClick, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.OnClick, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.OnClick)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <span style="display:inline-block">@Html.CheckBoxFor(m => m.NewWindows, true)</span>
+                                    @Html.LabelFor(m => m.NewWindows, new { @class = "control-label" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <span style="display:inline-block">@Html.CheckBoxFor(m => m.IsPublic, true)</span>
+                                    @Html.LabelFor(m => m.IsPublic, new { @class = "control-label" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <span style="display:inline-block">@Html.CheckBoxFor(m => m.Active, true)</span>
+                                    @Html.LabelFor(m => m.Active, new { @class = "control-label" })
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="AlertFormSiteMap" class="alert" style="display:none;">
+                        <button class="close" data-dismiss="alert"><i class="pci-cross pci-circle"></i></button>
+                        <strong class="title"></strong> <span class="message"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-default btn-danger pull-left" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-md-4" style="text-align:center;">
+                        <button type="button" class="btn btn-success btnNew">New</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-primary btnSave">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

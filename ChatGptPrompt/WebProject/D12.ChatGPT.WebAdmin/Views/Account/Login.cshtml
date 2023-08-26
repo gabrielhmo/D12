@@ -1,0 +1,81 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicio de Sesión - LabOC</title>
+    <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/animate/animate.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/Ladda/ladda-themeless.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/toastr/toastr.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/login/login.css" />
+    @{
+        var rootPath = Url.Content("~/");
+    }
+</head>
+<body>
+    <container>
+        <div id="loginContainer" class="vh-100 d-flex p-4 justify-content-center align-items-center">
+            <div class="mx-auto" style="max-width:390px;">
+                <form id="loginForm" class="shadow rounded bg-white p-4 py-5 text-center" style="border:solid 2px #f3f3f3;">
+                    <input type="hidden" id="returnUrl" name="returnUrl" value="@Model.ReturnUrl" />
+                    @Html.AntiForgeryToken()
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 pb-2">
+                                <h1 style="font-size:2.5rem;">Welcome</h1>
+                            </div>
+                            <div class="col-12">
+                                <p style="font-size:5rem;"><i class="fas fa-portrait"></i></p>
+                            </div>
+                            <div class="col-12" style="height:50px;">
+                                <div id="LoginMessage" class="alert alert-warning py-1 small visually-hidden" role="alert">&nbsp;</div>
+                            </div>
+                            <div class="col-12 pb-4">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="Username" name="Username" placeholder="Username" value="">
+                                    <label for="Username">Username</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="password" class="form-control" id="Password" name="Password" placeholder="Password" value="">
+                                    <label for="Password">Password</label>
+                                </div>
+                            </div>
+                            <div class="col-12 py-4 text-left">
+                                <button type="button" class="btn btn-link text-secondary pull-left visually-hidden">Forgot Password?</button>
+                            </div>
+                            <div class="col-12 pt-3">
+                                <div class="d-grid gap-2 col-12 mx-auto">
+                                    <button id="btnLogin" class="btn btn-dark py-2" data-style="zoom-in">
+                                        <span class="ladda-label">Sign in</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </container>
+    <script type="text/javascript">
+        var rootPath = '@rootPath';
+    </script>
+    <script type="text/javascript" src="~/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript" src="~/lib/Ladda/spin.min.js"></script>
+    <script type="text/javascript" src="~/lib/Ladda/ladda.min.js"></script>
+    <script type="text/javascript" src="~/lib/toastr/toastr.min.js"></script>
+    <script type="text/javascript" src="~/lib/js-cookie/js.cookie.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/libFunctions.js"></script>
+    <script type="text/javascript" src="~/lib/login/login.js"></script>
+</body>
+</html>

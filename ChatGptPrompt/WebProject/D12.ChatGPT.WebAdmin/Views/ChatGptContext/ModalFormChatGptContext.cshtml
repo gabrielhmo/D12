@@ -1,0 +1,137 @@
+﻿
+@model D12.ChatGPT.WebAdmin.ViewModels.ChatGptConextViewModel
+
+<div id="ModalChatGptContext" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="modal-loading" style="display:none;">
+                <span class="modal-spinner" style="display: block;"><i class='fa fa-spinner fa-spin fa-5x fa-fw'></i></span>
+            </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" style="height:550px;">
+                <form id="FormChatGptContext">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.Id)
+                    <input type="hidden" id="ToneVoiceRequest" name="ToneVoiceRequest" />
+                    @*<input type="hidden" id="LayoutToneVoice" name="LayoutToneVoice" />*@
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Name, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                <div data-valmsg-for="Name" data-valmsg-replace="true"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="ChatRolId" class="control-label">Context Rol</label>
+                                @Html.DropDownList("ChatGptRolId", ViewBag.ChatGptRolList as SelectList, "Select", new { id = "ChatGptRolId", @class = "selectpicker form-control", data_container = "body", title = "Select", data_live_search = "true", data_width = "100%", data_val = "true", data_val_required = "Select Context Rol" })
+                                <div data-valmsg-for="ChatGPTRolId" data-valmsg-replace="true"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="TypeId" class="control-label">Control Type</label>
+                                @Html.DropDownList("ControlTypeId", ViewBag.ControlTypeList as SelectList, "Select", new { id = "ControlTypeId", @class = "selectpicker form-control", data_container = "body", title = "Select", data_live_search = "true", data_width = "100%", data_val = "true", data_val_required = "Select Control Type" })
+                                <div data-valmsg-for="ControlTypeId" data-valmsg-replace="true"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="TypeId" class="control-label">Language</label>
+                                @Html.DropDownList("LanguageCode", ViewBag.LanguageList as SelectList, "Select", new { id = "LanguageCode", @class = "selectpicker form-control", data_container = "body", title = "Select", data_live_search = "true", data_width = "100%", data_val = "true", data_val_required = "Select Language Code" })
+                                <div data-valmsg-for="LanguageCode" data-valmsg-replace="true"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="ToneVoiceSelect" class="col-md-12 control-label">Tone Voice</label>
+                                @Html.DropDownList("ToneVoiceSelect", ViewBag.SeoToneVoiceList as SelectList, "Select", new { id = "ToneVoiceSelect", @class = "form-control", multiple = "multiple", showTick = "showTick", style = "width:100%;" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="TenseId" class="col-md-12 control-label">Tenses</label>
+                                @Html.DropDownList("TenseId", ViewBag.TensesList as SelectList, "Select", new { id = "TenseId", @class = "selectpicker form-control", data_container = "body", title = "Select", data_live_search = "false", data_width = "100%", data_val = "true", data_val_required = "Select Tenses" })
+                                <div data-valmsg-for="TenseId" data-valmsg-replace="true"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.MinLength, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.MinLength, new { @class = "form-control" })
+                                <div data-valmsg-for="MinLength" data-valmsg-replace="true"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.MaxLength, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.MaxLength, new { @class = "form-control" })
+                                <div data-valmsg-for="MaxLength" data-valmsg-replace="true"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group text-center">
+                                @Html.LabelFor(m => m.MinWord, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.MinWord, new { @class = "form-control" })
+                                <div data-valmsg-for="MinLength" data-valmsg-replace="true"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group text-center">
+                                @Html.LabelFor(m => m.MaxWord, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.MaxWord, new { @class = "form-control" })
+                                <div data-valmsg-for="MinLength" data-valmsg-replace="true"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group text-center" style="padding-top:30px;">
+                                <span style="display:inline-block">@Html.CheckBoxFor(m => m.Active, true)</span>
+                                @Html.LabelFor(m => m.Active, new { @class = "control-label" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Context, new { @class = "control-label" })
+                                @Html.TextAreaFor(m => m.Context, new { @class = "form-control", @rows = "11" })
+                                <div data-valmsg-for="Context" data-valmsg-replace="true"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <button id="contextBuilder" type="button" class="btn btn-primary">Generate Context</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modalStatusbar"></div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-default btn-danger pull-left" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-md-4" style="text-align:center;">&nbsp;</div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-primary btnSave">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

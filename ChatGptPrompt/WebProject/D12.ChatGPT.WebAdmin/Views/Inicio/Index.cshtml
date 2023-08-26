@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Inicio";
+}
+
+<div id="container">
+    <div class="boxed">
+
+        <hr class="new-section-sm bord-no">
+        <div class="text-center pad-btm">
+            <h3>Hi  <span class="text-capitalize text-bold">@User.Identity.GetUserName()</span>, Welcome!</h3>
+            <p class="text-semibold">Click on the shortcut of the module you want to consult</p>
+        </div>
+
+        <div class="row pad-top">
+            <div class="col-md-2 col-md-offset-2">
+                <div class="panel">
+                    <div class="panel-body text-center">
+                        <div class="pad-ver mar-top text-main"><i class="fas fa-chart-bar icon-4x"></i></div>
+                        <p class="text-lg text-semibold mar-no text-main">Option 01</p>
+                        <p class="text-muted">Title</p>
+                        <p class="text-sm">Description</p>
+                        <a href="@Url.Action("Home", "Index")" class="btn btn-primary mar-ver">More Link</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel">
+                    <div class="panel-body text-center">
+                        <div class="pad-ver mar-top text-main"><i class="fas fa-chart-bar icon-4x"></i></div>
+                        <p class="text-lg text-semibold mar-no text-main">Option 02</p>
+                        <p class="text-muted">Title</p>
+                        <p class="text-sm">Description</p>
+                        <a href="@Url.Action("Home", "Index")" class="btn btn-primary mar-ver">More Link</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel">
+                    <div class="panel-body text-center">
+                        <div class="pad-ver mar-top text-main"><i class="fas fa-chart-bar icon-4x"></i></div>
+                        <p class="text-lg text-semibold mar-no text-main">Option 03</p>
+                        <p class="text-muted">Title</p>
+                        <p class="text-sm">Description</p>
+                        <a href="@Url.Action("Home", "Index")" class="btn btn-primary mar-ver">More Link</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel">
+                    <div class="panel-body text-center">
+                        <div class="pad-ver mar-top text-main"><i class="fas fa-chart-bar icon-4x"></i></div>
+                        <p class="text-lg text-semibold mar-no text-main">Option 04</p>
+                        <p class="text-muted">Title</p>
+                        <p class="text-sm">Description</p>
+                        <a href="@Url.Action("Home", "Index")" class="btn btn-primary mar-ver">More Link</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

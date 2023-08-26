@@ -1,0 +1,66 @@
+﻿/*Efects*/
+.blinkMe {
+    animation: blinker 1s linear infinite;
+}
+
+.cls-content {
+    padding-top: 5vh;
+}
+
+    .cls-content .cls-content-sm, .cls-content .cls-content-lg {
+        width: 80%;
+        max-width: 350px;
+    }
+
+.panel-body {
+    padding: 15px 10px 25px;
+}
+
+.btn-primary, .btn-primary:focus {
+    background-color: #294f75;
+    border-color: #25476a !important;
+    color: #fff;
+}
+
+.cls-container {
+    background-color: #1e3e5f;
+    text-align: center;
+}
+
+    .cls-container, .cls-container a:not(.btn), .cls-container a:hover:not(.btn), .cls-container a:focus:not(.btn) {
+        color: #f9f9f9;
+    }
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-weight: 600;
+    color: #f9f9f9;
+}
+
+.form-control {
+    color: #333;
+}
+
+.btn-primary, .btn-primary:focus {
+    margin: 20px 0;
+    background-color: #1d3650;
+    border-color: #1d3650 !important;
+    color: #fff;
+}
+/* INPUT PLACEHOLDER */
+/*======================================*/
+::placeholder {
+    color: #b0b0b0 !important;
+    opacity: 1;
+}
+
+::-webkit-input-placeholder {
+    color: #b0b0b0 !important;
+}
+
+:-ms-input-placeholder {
+    color: #b0b0b0 !important;
+}
+
+::-ms-input-placeholder {
+    color: #b0b0b0 !important;
+}

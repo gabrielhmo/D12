@@ -1,0 +1,144 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Ajustes";
+}
+@section Styles{
+    <style type="text/css">
+
+        /* Large desktops and laptops */
+        @@media (min-width: 1200px) {
+        }
+
+        /* Landscape tablets and medium desktops */
+        @@media (min-width: 992px) and (max-width: 1199px) {
+        }
+
+        /* Portrait tablets and small desktops */
+        @@media (min-width: 768px) and (max-width: 991px) {
+        }
+
+        /* Landscape phones and portrait tablets */
+        @@media (max-width: 767px) {
+        }
+
+        /* Portrait phones and smaller */
+        @@media (max-width: 480px) {
+        }
+    </style>
+}
+
+<div class="panel panel-primary">
+    <div id="MainContainer" class="panel-body pad-no">
+        <div id="container pad-all">
+            <div class="boxed">
+                <hr class="new-section-sm bord-no">
+                <div class="text-center pad-btm">
+                    <h3>Configuracuión y Ajustes</h3>
+                    <p class="text-semibold">Edite la información del cada módulo según se requira</p>
+                </div>
+
+                <div class="row pad-all">
+                    <div class="col-md-3">
+                        <div class="panel bord-all">
+                            <div class="panel-body text-center bg-primary">
+                                <i class="fas fa-database fa-3x"></i>
+                            </div>
+                            <div class="pad-all">
+                                <h3 class="mar-no">Base de Datos</h3>
+                                <p class="text-muted mar-no">Conexión</p>
+                                <ul class="list-group mar-top">
+                                    <li class="list-group-item">
+                                        <div class="settingLabel" style="width:50%;display:inline-block;"><i class="fas fa-server"></i> Servidor/IP:</div>
+                                        <div id="tagDBServer" class="settingValue" style="width:45%;display:inline-block;">*DBServer*</div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="settingLabel" style="width:50%;display:inline-block;"><i class="fas fa-database"></i> Base de Datos:</div>
+                                        <div id="tagDBName" class="settingValue" style="width:45%;display:inline-block;">*DBName*</div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="settingLabel" style="width:50%;display:inline-block;"><i class="fas fa-user"></i> Usuario:</div>
+                                        <div id="tagDBUsername" class="settingValue" style="width:45%;display:inline-block;">*DBUser*</div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="settingLabel" style="width:50%;display:inline-block;"><i class="fas fa-lock"></i> Contraseña:</div>
+                                        <div id="tagDBPassword" class="settingValue" style="width:45%;display:inline-block;">*DBPassword*</div>
+                                    </li>
+                                </ul>
+                                <p class="text-center mar-no">
+                                    <button id="btnOpenModalDBSettings" class="btn btn-primary">Editar</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="panel bord-all">
+                            <div class="panel-body text-center bg-warning">
+                                <i class="fas fa-envelope fa-3x"></i>
+                            </div>
+                            <div class="pad-all">
+                                <h3 class="mar-no">SMTP</h3>
+                                <p class="text-muted mar-no">Servidor de Correo</p>
+                                <ul class="list-group mar-top">
+                                    <li class="list-group-item">
+                                        <div class="settingLabel" style="width:50%;display:inline-block;"><i class="fas fa-server"></i> Servidor SMTP:</div>
+                                        <div class="settingValue" style="width:45%;display:inline-block;">smtp.domain.com</div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="settingLabel" style="width:50%;display:inline-block;"><i class="fas fa-envelope"></i> Dirección de Correo:</div>
+                                        <div class="settingValue" style="width:45%;display:inline-block;">test@email.com</div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="settingLabel" style="width:50%;display:inline-block;"><i class="fas fa-user"></i> Usuario:</div>
+                                        <div class="settingValue" style="width:45%;display:inline-block;">test@email.com</div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="settingLabel" style="width:50%;display:inline-block;"><i class="fas fa-lock"></i> Contraseña:</div>
+                                        <div class="settingValue" style="width:45%;display:inline-block;">ServGr*2023</div>
+                                    </li>
+                                </ul>
+                                <p class="text-center mar-no">
+                                    <button class="btn btn-warning">Editar</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="panel bord-all">
+                            <div class="panel-body text-center bg-success">
+                                <i class="fas fa-file-code fa-3x"></i>
+                            </div>
+                            <div class="pad-all">
+                                <h3 class="mar-no">Formatos</h3>
+                                <p class="text-muted mar-no">Plantillas de documentos</p>
+                                <ul class="list-group mar-top">
+                                    <li class="list-group-item">
+                                        <div class="settingLabel" style="width:50%;display:inline-block;"><i class="fas fa-file-excel"></i> Documento:</div>
+                                        <div class="settingValue" style="width:45%;display:inline-block;">estudios_resultado.pdf</div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="settingLabel" style="width:50%;display:inline-block;"><i class="fas fa-envelope"></i> Correo:</div>
+                                        <div class="settingValue" style="width:45%;display:inline-block;">estudios_resultado.html</div>
+                                    </li>
+                                    <li class="list-group-item">&nbsp;</li>
+                                    <li class="list-group-item">&nbsp;</li>
+                                </ul>
+                                <p class="text-center mar-no">
+                                    <button class="btn btn-success">Editar</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("~/Views/Configuracion/ModalFormDBSettings.cshtml")
+@*@Html.Partial("~/Views/Configuracion/ModalFormClockSettings.cshtml")
+@Html.Partial("~/Views/Configuracion/ModalFormSMTPSettings.cshtml")
+@Html.Partial("~/Views/Configuracion/ModalFormTemplatesSettings.cshtml")*@
+
+@section Scripts {
+    <script src="~/Scripts/WebApp/settings.js"></script>
+}

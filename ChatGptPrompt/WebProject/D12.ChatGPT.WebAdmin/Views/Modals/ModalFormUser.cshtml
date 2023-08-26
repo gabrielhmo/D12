@@ -1,0 +1,122 @@
+﻿@using System.Collections
+@model D12.ChatGPT.DataModel.AspNetUsers
+
+<div id="ModalUser" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="modal-loading" style="display:none;">
+                <span class="modal-spinner" style="display: block;"><i class='fa fa-spinner fa-spin fa-5x fa-fw'></i></span>
+            </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Id", "Users", FormMethod.Post, new { id = "FormUser" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.Id)
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.FirstName, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.FirstName)
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.LastName)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.JobTitle, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.JobTitle, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.JobTitle)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.PhoneNumber)
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Email)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <span style="display:inline-block">@Html.CheckBoxFor(m => m.Active, true)</span>
+                                @Html.LabelFor(m => m.Active, new { @class = "control-label" })
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <span style="display:inline-block">@Html.CheckBoxFor(m => m.ReadOnly, true)</span>
+                                @Html.LabelFor(m => m.ReadOnly, new { @class = "control-label" })
+                            </div>
+                        </div>
+                        <div class="col-sm-4">&nbsp;</div>
+                    </div>
+                    <div class="row bg-light" style="border: 1px solid #d8d8d8;margin:8px 0;padding:10px 0;">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.UserName, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.UserName)
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Password</label>
+                                <input type="password" id="Password" name="Password" placeholder="Password" maxlength="15" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Password Confirm</label>
+                                <input type="password" id="PasswordConfirm" name="PasswordConfirm" placeholder="Confirm Password" maxlength="15" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div id="AlertFormUser" class="alert" style="display:none;">
+                    <button class="close" data-dismiss="alert"><i class="pci-cross pci-circle"></i></button>
+                    <strong class="title"></strong> <span class="message"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-default btn-danger pull-left" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-md-4" style="text-align:center;">
+                        <button type="button" class="btn btn-success btnNew">New</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-primary btnSave">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

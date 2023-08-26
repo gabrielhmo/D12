@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D12.ChatGPT.WebAdmin", "D12.ChatGPT.WebAdmin\D12.ChatGPT.WebAdmin.csproj", "{BEFC3941-2451-4A19-BD09-0E4E1401B326}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D12.ChatGPT.DataAccess", "D12.ChatGPT.DataAccess\D12.ChatGPT.DataAccess.csproj", "{D38346A2-F157-4709-B9F7-771061C42616}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D12.ChatGPT.DataModel", "D12.ChatGPT.DataModel\D12.ChatGPT.DataModel.csproj", "{D58EF8AB-756E-425D-8510-2CCC81A15434}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D12.ChatGPT.DataRepository", "D12.ChatGPT.DataRepository\D12.ChatGPT.DataRepository.csproj", "{FB32E404-30D3-4C34-AB9C-4CC0D29D6864}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D12.ChatGPT.DTO", "D12.ChatGPT.DTO\D12.ChatGPT.DTO.csproj", "{E3F03E4C-53C2-4D68-844F-AF29357FDC00}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BEFC3941-2451-4A19-BD09-0E4E1401B326}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEFC3941-2451-4A19-BD09-0E4E1401B326}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEFC3941-2451-4A19-BD09-0E4E1401B326}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEFC3941-2451-4A19-BD09-0E4E1401B326}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D38346A2-F157-4709-B9F7-771061C42616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D38346A2-F157-4709-B9F7-771061C42616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D38346A2-F157-4709-B9F7-771061C42616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D38346A2-F157-4709-B9F7-771061C42616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D58EF8AB-756E-425D-8510-2CCC81A15434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58EF8AB-756E-425D-8510-2CCC81A15434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D58EF8AB-756E-425D-8510-2CCC81A15434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D58EF8AB-756E-425D-8510-2CCC81A15434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB32E404-30D3-4C34-AB9C-4CC0D29D6864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB32E404-30D3-4C34-AB9C-4CC0D29D6864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB32E404-30D3-4C34-AB9C-4CC0D29D6864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB32E404-30D3-4C34-AB9C-4CC0D29D6864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3F03E4C-53C2-4D68-844F-AF29357FDC00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3F03E4C-53C2-4D68-844F-AF29357FDC00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3F03E4C-53C2-4D68-844F-AF29357FDC00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3F03E4C-53C2-4D68-844F-AF29357FDC00}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C623B493-9194-4BA3-B8FD-B1E9944A7D7A}
+	EndGlobalSection
+EndGlobal

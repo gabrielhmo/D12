@@ -1,0 +1,357 @@
+﻿* { outline: none !important; }
+
+.navbar-form {
+    margin-top: 0 !important;
+}
+
+/*DHTMLX Form*/
+.dhtmlx_validation_error{
+    border-color:red;
+}
+/*legend {
+    margin-bottom: initial;
+    -moz-border-bottom-colors: initial;
+    -moz-border-left-colors: initial;
+    -moz-border-right-colors: initial;
+    -moz-border-top-colors: initial;
+    border-color: initial;
+    border-image: initial;
+    border-style: initial;
+    border-width: initial;
+    color: initial;
+    display: initial;
+    font-size: initial;
+    line-height: initial;
+    margin-bottom: initial;
+    padding: initial;
+    width: initial;
+    font-weight: bold !important;
+    font-size: 100% !important;
+}
+
+label {
+    display: initial;
+    font-weight: initial;
+    margin-bottom: initial;
+    max-width: initial;
+    font-weight: bold !important;
+    color: #777 !important;
+    font-size: 90% !important;
+}*/
+
+.dhxform_base_nested {
+    padding-left:10px !important;
+}
+
+.dhxcombo_material {
+    border:1px solid #dfdfdf;
+    padding: 5px 0;
+}
+
+.dhxform_obj_material .dhxform_textarea {
+    border-width: 1px !important;
+}
+
+/*DHTMLX Layout*/
+dhxlayout_base_material {
+    border: none !important;
+}
+
+.dhxlayout_base_material div.dhx_cell_layout div.dhx_cell_hdr {
+    background-color: #25476a;
+}
+
+.dhxlayout_base_material div.dhx_cell_layout {
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.dhxlayout_base_material div.dhxcelltop_statusbar div.dhxcont_statusbar {
+    box-shadow:none !important;
+}
+
+/*DHTMLX Vault*/
+.dhx_vault_dhx_terrace div.dhx_vault_controls div.dhx_vault_button {
+    height: auto !important;
+    line-height:normal !important;
+}
+
+.dhx_toolbar_material .dhxtoolbar_float_left .dhx_toolbar_text {
+    min-width:250px !important;
+}
+
+/*DHTMLX Tabs*/
+/*.dhxtabbar_base_material div.dhxtabbar_tabs {
+}*/
+
+/*DHTMLX Toolbar*/
+.dhx_toolbar_material {
+    padding: 0 15px !important;
+}
+.dhx_toolbar_material.dhx_toolbar_shadow {
+    box-shadow:none !important;
+}
+.dhx_toolbar_material {
+    padding: 6px 5px !important;
+    font-size: 9pt !important;
+}
+
+    .dhx_toolbar_material.dhxtoolbar_icons_18 {
+        height: 45px !important;
+        line-height: 45px !important;
+    }
+
+.dhx_toolbar_poly_material {
+    z-index: 2000 !important;
+}
+
+.dhtmlxMenu_material_SubLevelArea_Polygon {
+    z-index: 2000 !important;
+}
+
+
+.dhx_toolbar_poly_18_dhx_material {
+    z-index: 2000 !important;
+}
+
+
+/*DHTMLX Grid*/
+/* Checkboxes */
+i.Checked {
+    font-size: 11pt;
+    color: #39c;
+}
+
+i.unChecked {
+    font-size: 11pt;
+    color: #ccc;
+}
+
+/*Custom header filter*/
+.colFilter {
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+}
+
+/*.dhx_toolbar_material.dhxtoolbar_icons_18 div.dhx_toolbar_btn, .dhx_toolbar_material.dhxtoolbar_icons_18 div.dhx_toolbar_arw, .dhx_toolbar_material.dhxtoolbar_icons_18 div.dhx_toolbar_text {
+    line-height: 20px;
+}*/
+/*.checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox label {
+    padding-left: 0;
+}
+    .checkbox label:before {
+        content: "";
+        margin-left: 5px;
+        margin-right: 10px;
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 12px;
+        text-align: center;
+        background-color: #fff;
+        border: 2px solid #4d627b;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        font-size: 10px;
+    }
+
+.checkbox input[type="checkbox"]:checked + label::before {
+    content: "\f00c";
+}
+*/
+table.hdr td:not(:last-child):before {
+    position: absolute;
+    right: 7px;
+}
+table.hdr td.initSort:not(:last-child):before {
+    content: "\f0dc";
+    font-family: "Font Awesome 5 Free";
+    opacity: 0.5;
+}
+
+td.initSort:hover {
+    cursor:pointer;
+}
+
+table.hdr td.dhxgrid_sort_asc_col div {
+    padding-left: 4px !important;
+}
+
+table.hdr td.dhxgrid_sort_asc_col {
+    background-image: none !important;
+    position: relative !important;
+}
+
+    table.hdr td.dhxgrid_sort_asc_col:before {
+        position: absolute;
+        right: 7px;
+        content: "\f160";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 600;
+    }
+
+table.hdr td.dhxgrid_sort_desc_col div {
+    padding-left: 4px !important;
+}
+
+table.hdr td.dhxgrid_sort_desc_col {
+    background-image: none !important;
+    position: relative;
+}
+
+    table.hdr td.dhxgrid_sort_desc_col:before {
+        right: 7px;
+        content: "\f161";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+    }
+
+
+
+.grid_hover {
+    background-color:#e8fffd;
+}
+
+.even{
+    background-color:#fff;
+}
+.uneven{
+    background-color:#fafafa;
+    border-color:#eee;
+}
+
+div.gridbox_material.gridbox table.obj.row20px tr.rowselected td {
+    background-color: #f0ffbd;
+    border-right-color: none;
+}
+
+div.gridbox_material.gridbox table.obj.row20px tr td {
+    border-bottom-color: #e6e6e6;
+    border-right: none;
+    height: 35px;
+    font-size: 1.05em;
+}
+
+div.gridbox_material.gridbox table.obj tr.rowselected td {
+    background-color: #f5fbd4;
+    border-right-color: none;
+}
+
+div.gridbox_material.gridbox table.obj tr td {
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    font-size: .85em;
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+}
+
+.lk-grid-icon {
+    position:relative;
+    color: #777777;
+}
+
+    .lk-grid-icon i:hover {
+        color: #000;
+        cursor: pointer;
+        top:0;
+    }
+
+div.gridbox_material.gridbox table.hdr tr:nth-child(2) {
+    height:35px;
+}
+
+div.gridbox_material.gridbox table.hdr td {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    padding: 5px 0 0 0;
+    vertical-align: middle;
+    line-height: 20px;
+    padding: 4px;
+    font-size: .99em;
+    color: #4d627b;
+    font-weight: 600;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-bottom-width: 2px;
+}
+
+    div.gridbox_material.gridbox table.hdr td div.hdrcell input[type=checkbox]{
+        /*float: left;*/
+        margin:5px;
+        width: 16px;
+    }
+
+.dhx_combo_select, .gridbox_material.gridbox .dhx_combo_edit, .gridbox_material.gridbox .dhx_textarea {
+    font-size:1em;
+}
+
+input.dhx_combo_edit {
+    background-color:#fff !important;
+}
+
+div.gridbox .filter input, div.gridbox .filter input {
+    margin-bottom: 5px;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    height: 25px;
+    max-height: 25px;
+    border: 1px #b7b7b7 solid;
+    font-weight: normal;
+    color: #777;
+    font-size: 1em;
+}
+
+div.gridbox .filter input, div.gridbox .filter select {
+    margin-bottom: 5px;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    height: 25px;
+    max-height: 25px;
+    font-weight: normal;
+    color: #777;
+    font-size: 1em;
+}
+
+div.gridbox .filter div.dhxcombo_material{
+    border:1px #b7b7b7 solid;
+    margin-bottom:5px;
+}
+
+div.gridbox .filter div.dhxcombo_material input{
+    height:26px;
+    border:none;
+}
+div.dhxcombo_material div.dhxcombo_select_button {
+    top:1px;
+}
+
+div.dhxcombo_material .dhxcombo_input {
+    font-weight:normal;
+    color:#777;
+    font-size:1em;
+}
+div.gridbox_material.gridbox table.obj tr td {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    color: #777;
+    font-size: .9em;
+    padding: 10px 5px;
+}
+
+/*DHTMLX Editor*/
+input.dhx_combo_edit {
+    height:30px !important;
+    background-color:#b6ff00;
+    font-size: 14px;
+    color:#777;
+    font-size:1em;
+}
+
+/*DHTML DataView*/
+.dhx_dataview .dhx_dataview_default_item, .dhx_dataview .dhx_dataview_default_item_selected {
+    border:none;
+}

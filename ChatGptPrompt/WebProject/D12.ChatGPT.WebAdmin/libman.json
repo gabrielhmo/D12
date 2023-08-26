@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "summernote@0.8.20",
+      "destination": "lib/summernote/",
+      "files": [
+        "summernote.min.js",
+        "summernote.min.css",
+        "summernote-lite.css.map"
+      ]
+    },
+    {
+      "library": "codemirror@6.65.7",
+      "destination": "lib/codemirror/",
+      "files": [
+        "codemirror.min.js",
+        "codemirror.min.css",
+        "theme/monokai.min.css",
+        "mode/xml/xml.min.js",
+        "mode/htmlembedded/htmlembedded.min.js",
+        "keymap/emacs.min.js",
+        "keymap/sublime.min.js",
+        "addon/display/autorefresh.min.js"
+      ]
+    }
+  ]
+}
