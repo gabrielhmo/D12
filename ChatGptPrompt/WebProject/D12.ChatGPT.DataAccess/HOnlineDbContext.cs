@@ -16,11 +16,10 @@ namespace D12.ChatGPT.DataAccess
         public System.Data.Entity.DbSet<AspNetUsers> AspNetUsers { get; set; }
         public System.Data.Entity.DbSet<BusinessActivityType> BusinessActivityType { get; set; }
         public System.Data.Entity.DbSet<BusinessTypeOffer> BusinessTypeOffer { get; set; }
-        public System.Data.Entity.DbSet<ChatGptContext> ChatGptContext { get; set; }
-        public System.Data.Entity.DbSet<ChatGptContextToneVoice> ChatGptContextToneVoice { get; set; }
         public System.Data.Entity.DbSet<ChatGptPrompt> ChatGptPrompt { get; set; }
         public System.Data.Entity.DbSet<ChatGptPromptLog> ChatGptPromptLog { get; set; }
         public System.Data.Entity.DbSet<ChatGptPromptResult> ChatGptPromptResult { get; set; }
+        public System.Data.Entity.DbSet<ChatGptPromptToneVoice> ChatGptPromptToneVoice { get; set; }
         public System.Data.Entity.DbSet<ChatGptRol> ChatGptRol { get; set; }
         public System.Data.Entity.DbSet<Client> Client { get; set; }
         public System.Data.Entity.DbSet<ClientBusinessOffer> ClientBusinessOffer { get; set; }
@@ -91,11 +90,10 @@ namespace D12.ChatGPT.DataAccess
             modelBuilder.Configurations.Add(new AspNetUsersConfiguration());
             modelBuilder.Configurations.Add(new BusinessActivityTypeConfiguration());
             modelBuilder.Configurations.Add(new BusinessTypeOfferConfiguration());
-            modelBuilder.Configurations.Add(new ChatGptContextConfiguration());
-            modelBuilder.Configurations.Add(new ChatGptContextToneVoiceConfiguration());
             modelBuilder.Configurations.Add(new ChatGptPromptConfiguration());
             modelBuilder.Configurations.Add(new ChatGptPromptLogConfiguration());
             modelBuilder.Configurations.Add(new ChatGptPromptResultConfiguration());
+            modelBuilder.Configurations.Add(new ChatGptPromptToneVoiceConfiguration());
             modelBuilder.Configurations.Add(new ChatGptRolConfiguration());
             modelBuilder.Configurations.Add(new ClientConfiguration());
             modelBuilder.Configurations.Add(new ClientBusinessOfferConfiguration());
@@ -121,11 +119,10 @@ namespace D12.ChatGPT.DataAccess
             modelBuilder.Configurations.Add(new AspNetUsersConfiguration(schema));
             modelBuilder.Configurations.Add(new BusinessActivityTypeConfiguration(schema));
             modelBuilder.Configurations.Add(new BusinessTypeOfferConfiguration(schema));
-            modelBuilder.Configurations.Add(new ChatGptContextConfiguration(schema));
-            modelBuilder.Configurations.Add(new ChatGptContextToneVoiceConfiguration(schema));
             modelBuilder.Configurations.Add(new ChatGptPromptConfiguration(schema));
             modelBuilder.Configurations.Add(new ChatGptPromptLogConfiguration(schema));
             modelBuilder.Configurations.Add(new ChatGptPromptResultConfiguration(schema));
+            modelBuilder.Configurations.Add(new ChatGptPromptToneVoiceConfiguration(schema));
             modelBuilder.Configurations.Add(new ChatGptRolConfiguration(schema));
             modelBuilder.Configurations.Add(new ClientConfiguration(schema));
             modelBuilder.Configurations.Add(new ClientBusinessOfferConfiguration(schema));

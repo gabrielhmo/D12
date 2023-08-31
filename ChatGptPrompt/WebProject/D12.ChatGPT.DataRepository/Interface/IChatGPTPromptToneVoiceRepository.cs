@@ -2,7 +2,7 @@
 
 namespace D12.ChatGPT.DataRepository.Interface
 {
-    public interface IChatGPTContextRepository : IRepository<ChatGptContext>
+    public interface IChatGPTPromptToneVoiceRepository : IRepository<ChatGptPromptToneVoice>
     {
     }
 }

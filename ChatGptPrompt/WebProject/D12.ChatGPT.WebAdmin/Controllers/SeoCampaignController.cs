@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -215,6 +216,8 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                     else
                     {
                         unitWork.Complete();
+
+                        InitCampaingPrompts(SeoCampaignInfo.Id);
 
                         SeoCampaignInfo = unitWork.SeoCampaign.Get(filter: x => x.Id == SeoCampaignInfo.Id, "ClientCompany,ClientBusinessOffer");
                         var SeoCampaignDTO = imapper.Map<SeoCampaignDTO>(SeoCampaignInfo);
@@ -421,6 +424,93 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             SelectList selectList = new SelectList(businessOffer, "Id", "Text");
 
             return selectList;
+        }
+
+        private void InitCampaingPrompts(long campaignId) 
+        {
+            SeoCampaignFullDTO campaign = new SeoCampaignFullDTO();
+
+            var seoCampaignInfo = unitWork.SeoCampaign.Get(filter: x => x.Id == campaignId, "ClientCompany, ClientBusinessOffer, ChatGPTPrompt");
+
+            if(seoCampaignInfo != null) 
+            { 
+                campaign = imapper.Map<SeoCampaignFullDTO>(seoCampaignInfo);
+
+                string companyInfo = $"Company name: {campaign.Company.Name}. Industry: {campaign.Company.Industry}. activity: {campaign.Company.Activity}. " +
+                    $"{campaign.BusinessOffer.OfferTypeName} Name: {campaign.BusinessOffer.Name } Description: {campaign.BusinessOffer.Description}. Characteristics: {campaign.BusinessOffer.Characteristics}. ChatGPT don’t start writing yet, understand?.";
+
+                companyInfo = CleanStringForPrompt(companyInfo);
+
+                if (campaign.Prompts.Count() > 0)
+                {
+                    ChatGptPrompt prompt = seoCampaignInfo.ChatGptPrompt.Skip(2).First();
+
+                    var promptInfo = unitWork.ChatGptPrompt.Get(filter: x => x.Id == prompt.Id);
+                    promptInfo.Prompt = companyInfo;
+                }
+                else
+                {
+                    List<ChatGptPrompt> newPrompt = new List<ChatGptPrompt>();
+
+                    newPrompt.Add(new ChatGptPrompt
+                    {
+                        SeoCampaignId = campaignId,
+                        ChatGptRolId = 1,
+                        ControlTypeId = 2,
+                        LanguageCode = "ENG",
+                        TenseId = 1,
+                        Name = "ChatGPT Rol",
+                        Prompt = "ChatGPT I want you to act as seo content writing"
+                    });
+
+                    newPrompt.Add(new ChatGptPrompt
+                    {
+                        SeoCampaignId = campaignId,
+                        ChatGptRolId = 1,
+                        ControlTypeId = 2,
+                        LanguageCode = "ENG",
+                        TenseId = 1,
+                        Name = "ChatGPT Context",
+                        Prompt = "ChatGPT I will provide you with information about the company and characteristics of its products and services. Remember this initial information to create all the SEO content that I will be requesting."
+                    });
+
+                    newPrompt.Add(new ChatGptPrompt
+                    {
+                        SeoCampaignId = campaignId,
+                        ChatGptRolId = 1,
+                        ControlTypeId = 2,
+                        LanguageCode = "ENG",
+                        TenseId = 1,
+                        Name = "ChatGPT Context",
+                        Prompt = companyInfo
+                    });
+
+                    unitWork.ChatGptPrompt.AddRange(newPrompt);
+                }
+                unitWork.Complete();
+            }
+
+        }
+        private string CleanStringForPrompt(string input)
+        {
+            // Remove special characters and extra whitespace
+            string cleaned = Regex.Replace(input, @"[^a-zA-Z0-9\s]", "");
+            cleaned = Regex.Replace(cleaned, @"\s+", " ").Trim();
+
+            // Limit the length of the cleaned string (adjust as needed)
+            int maxLength = 4000;
+            if (cleaned.Length > maxLength)
+            {
+                cleaned = cleaned.Substring(0, maxLength);
+            }
+
+            // Ensure the cleaned text ends with a space
+            if (!cleaned.EndsWith(" "))
+            {
+                cleaned += " ";
+            }
+
+            return cleaned;
         }
 
         protected override void Dispose(bool disposing)

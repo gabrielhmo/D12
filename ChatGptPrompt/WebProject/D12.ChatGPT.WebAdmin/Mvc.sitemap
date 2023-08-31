@@ -10,7 +10,7 @@
 
 		<mvcSiteMapNode title="SEO Content" controller="SEOContent" action="Index" icon="fas fa-cog" roles="Administrador">
 			<mvcSiteMapNode title="Campaigns" controller="SEOContent" action="Campaigns" icon="fas fa-cog" roles="Administrador"/>
-			<mvcSiteMapNode title="GPTContext" controller="SEOContent" action="GPTContext" icon="fas fa-cog" roles="Administrador"/>
+			<mvcSiteMapNode title="ChatGpt Prompt" controller="SEOContent" action="ChatGptPrompt" icon="fas fa-cog" roles="Administrador"/>
 			<mvcSiteMapNode title="Prompt Options" controller="Prompt" action="Index" icon="fas fa-cog" roles="Administrador">
 				<mvcSiteMapNode title="ChatGPT Rols" controller="ChatGPTRol" action="Index" icon="fas fa-cog" roles="Administrador"/>
 				<mvcSiteMapNode title="Controls" controller="ControlType" action="Index" icon="fas fa-cog" roles="Administrador"/>

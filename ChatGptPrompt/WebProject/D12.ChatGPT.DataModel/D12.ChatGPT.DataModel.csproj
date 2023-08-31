@@ -73,12 +73,6 @@
     <Compile Include="BusinessTypeOffer.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ChatGptContext.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ChatGptContextToneVoice.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="ChatGptPrompt.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
@@ -86,6 +80,9 @@
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ChatGptPromptResult.cs">
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChatGptPromptToneVoice.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ChatGptRol.cs">

@@ -15,13 +15,17 @@ namespace D12.ChatGPT.WebAdmin.ViewModels
         [Required(ErrorMessage = "Name is required")]
         [MaxLength(120)]
         [StringLength(120)]
-        [Display(Name = "Name")]
+        [Display(Name = "Name  (120 chars max)")]
         public string Name { get; set; }
 
-        [Display(Name = "Industry")]
+        [MaxLength(500)]
+        [StringLength(500)]
+        [Display(Name = "Industry  (500 chars max)")]
         public string Industry { get; set; }
 
-        [Display(Name = "Activity")]
+        [MaxLength(500)]
+        [StringLength(500)]
+        [Display(Name = "Activity  (500 chars max)")]
         public string Activity { get; set; }
 
         [Display(Name = "Active")]

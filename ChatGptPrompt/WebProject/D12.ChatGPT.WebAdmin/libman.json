@@ -24,6 +24,10 @@
         "keymap/sublime.min.js",
         "addon/display/autorefresh.min.js"
       ]
+    },
+    {
+      "library": "countable@3.0.1",
+      "destination": "lib/countable/"
     }
   ]
 }

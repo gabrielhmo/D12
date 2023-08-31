@@ -28,12 +28,12 @@ namespace D12.ChatGPT.DataModel
         [Display(Name = "Active")]
         public bool Active { get; set; }
 
-        public virtual System.Collections.Generic.ICollection<ChatGptContextToneVoice> ChatGptContextToneVoice { get; set; }
+        public virtual System.Collections.Generic.ICollection<ChatGptPromptToneVoice> ChatGptPromptToneVoice { get; set; }
 
         public SeoToneVoice()
         {
             Active = true;
-            ChatGptContextToneVoice = new System.Collections.Generic.List<ChatGptContextToneVoice>();
+            ChatGptPromptToneVoice = new System.Collections.Generic.List<ChatGptPromptToneVoice>();
         }
     }
 

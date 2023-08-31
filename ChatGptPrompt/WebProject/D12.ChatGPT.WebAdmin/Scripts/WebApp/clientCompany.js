@@ -845,7 +845,7 @@ function loadClientBusinessOffer(rId) {
         $('#CompanyId', $FormClientBusinessOffer).val(companyId);
         $('#OfferTypeId', $FormClientBusinessOffer).selectpicker('val',offerTypeId);
         $('#Name', $FormClientBusinessOffer).val(name);
-        $('#Industry', $FormClientBusinessOffer).val(description);
+        $('#Description', $FormClientBusinessOffer).val(description);
         $('#Characteristics', $FormClientBusinessOffer).val(characteristics);
 
         if (active.includes('fas fa-check Checked'))

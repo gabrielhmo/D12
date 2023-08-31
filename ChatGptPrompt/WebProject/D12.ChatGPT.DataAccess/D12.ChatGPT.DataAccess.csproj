@@ -73,12 +73,6 @@
     <Compile Include="BusinessTypeOfferConfiguration.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
-    <Compile Include="ChatGptContextConfiguration.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ChatGptContextToneVoiceConfiguration.cs">
-      <DependentUpon>DataAccess.tt</DependentUpon>
-    </Compile>
     <Compile Include="ChatGptPromptConfiguration.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
@@ -86,6 +80,9 @@
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="ChatGptPromptResultConfiguration.cs">
+      <DependentUpon>DataAccess.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChatGptPromptToneVoiceConfiguration.cs">
       <DependentUpon>DataAccess.tt</DependentUpon>
     </Compile>
     <Compile Include="ChatGptRolConfiguration.cs">

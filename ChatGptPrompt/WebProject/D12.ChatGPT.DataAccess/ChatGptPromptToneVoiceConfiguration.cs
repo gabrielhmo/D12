@@ -5,14 +5,14 @@ namespace D12.ChatGPT.DataAccess
     using D12.ChatGPT.DataModel;
 
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.36.1.0")]
-    public class ChatGptContextToneVoiceConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<ChatGptContextToneVoice>
+    public class ChatGptPromptToneVoiceConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<ChatGptPromptToneVoice>
     {
-        public ChatGptContextToneVoiceConfiguration()
+        public ChatGptPromptToneVoiceConfiguration()
             : this("dbo")
         {
         }
 
-        public ChatGptContextToneVoiceConfiguration(string schema)
+        public ChatGptPromptToneVoiceConfiguration(string schema)
         {
 
         }

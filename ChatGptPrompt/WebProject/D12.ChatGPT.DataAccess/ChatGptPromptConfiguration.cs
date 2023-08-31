@@ -14,7 +14,14 @@ namespace D12.ChatGPT.DataAccess
 
         public ChatGptPromptConfiguration(string schema)
         {
+            Property(x => x.LanguageCode).IsFixedLength().IsUnicode(false);
+            Property(x => x.TenseId).IsOptional();
+            Property(x => x.Name).IsUnicode(false);
             Property(x => x.Prompt).IsUnicode(false);
+            Property(x => x.MinLength).IsOptional();
+            Property(x => x.MaxLength).IsOptional();
+            Property(x => x.MinWord).IsOptional();
+            Property(x => x.MaxWord).IsOptional();
             Property(x => x.SentDate).IsOptional();
 
         }

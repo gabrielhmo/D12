@@ -59,8 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessTypeOfferRepository.cs" />
-    <Compile Include="ChatGPTContextToneVoiceRepository.cs" />
-    <Compile Include="ChatGPTContextRepository.cs" />
+    <Compile Include="ChatGPTPromptToneVoiceRepository.cs" />
     <Compile Include="ChatGPTPromptLogRepository.cs" />
     <Compile Include="ChatGPTPromptRepository.cs" />
     <Compile Include="ChatGPTPromptResultRepository.cs" />
@@ -69,7 +68,7 @@
     <Compile Include="ClientCompanyRepository.cs" />
     <Compile Include="ClientRepository.cs" />
     <Compile Include="ControlTypeRepository.cs" />
-    <Compile Include="Interface\IChatGPTContextToneVoiceRepository.cs" />
+    <Compile Include="Interface\IChatGPTPromptToneVoiceRepository.cs" />
     <Compile Include="Interface\ISeoToneVoiceRepository.cs" />
     <Compile Include="LanguageRepository.cs" />
     <Compile Include="Interface\IBusinessTypeOfferRepository.cs" />
@@ -82,7 +81,6 @@
     <Compile Include="Interface\IChatGPTPromptRepository.cs" />
     <Compile Include="Interface\IClientCompanyRepository.cs" />
     <Compile Include="Interface\IClientBusinessOfferRepository.cs" />
-    <Compile Include="Interface\IChatGPTContextRepository.cs" />
     <Compile Include="Interface\ISeoCampaignRepository.cs" />
     <Compile Include="Interface\IClientRepository.cs" />
     <Compile Include="SeoCampaignRepository.cs" />

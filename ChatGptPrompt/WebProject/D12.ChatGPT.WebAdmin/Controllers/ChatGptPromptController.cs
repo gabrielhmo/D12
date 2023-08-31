@@ -6,12 +6,15 @@ using D12.ChatGPT.DTO;
 using D12.ChatGPT.WebAdmin.Models;
 using HermosilloOnlineLib;
 using Microsoft.AspNet.Identity;
+using OpenAI_API;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -19,19 +22,21 @@ namespace D12.ChatGPT.WebAdmin.Controllers
 {
     [Authorize]
     [RouteArea("SEOContent")]
-    [RoutePrefix("GPTContext")]
+    [RoutePrefix("ChatGptPrompt")]
     [Route("{action=Index}")]
     [Authorize(Roles = "Administrador")]
-    public class ChatGptContextController : Controller
+    public class ChatGptPromptController : Controller
     {
-        private const string SiteMapName = "ChatGptContext";
+        public enum GptRol { System = 1, Assistant = 2, User = 3 }
+
+        private const string SiteMapName = "ChatGptPrompt";
 
         private UnitOfWork unitWork = new UnitOfWork(new HOnlineDbContext());
         private SiteMapRolPolicyDTO siteMapRolPolicyDTO = new SiteMapRolPolicyDTO();
         bool isReadOnly = true;
         private IMapper imapper;
 
-        public ChatGptContextController()
+        public ChatGptPromptController()
         {
             var currentUser = System.Web.HttpContext.Current.User;
             siteMapRolPolicyDTO = unitWork.SiteMapPolicies.GetPolicyBySiteMapByUser(currentUser.Identity.GetUserId(), SiteMapName);
@@ -46,7 +51,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             isReadOnly = false;
         }
 
-        // GET: ChatGptContext
+        // GET: ChatGptPrompt
         public ActionResult Index()
         {
             ViewBag.SeoToneVoiceList = GetToneVoiceSelectList();
@@ -59,97 +64,41 @@ namespace D12.ChatGPT.WebAdmin.Controllers
         }
 
         [HttpGet]
-        public JsonNetResult All(QueryParameters dataRequest, int? col, string dir, int? campaignId)
+        public JsonNetResult GetPromptsByCampaing(int campaignId)
         {
-
-            //Init Sort & Filter
-            var sorts = new EntityFrameworkPaginate.Sorts<ChatGptContext>();
-            var filter = new EntityFrameworkPaginate.Filters<ChatGptContext>();
-
             //Init response objects
             JsonData jsonData = new JsonData();
             List<ExceptionInfo> exInfo = new List<ExceptionInfo>();
-            DhxGridData dhxGridData = new DhxGridData();
 
-            var cBusinessOffer = new ClientBusinessOfferDTO();
+            SeoCampaignFullDTO seoCampaign = new SeoCampaignFullDTO();
 
-            //Set default sort
-            bool isDesc = (dir == "asc");
-            var priority = 1;
-            sorts.Add(true, x => x.Id, isDesc, priority);
-
-            if (campaignId != null)
+            if (campaignId > 0)
             {
-                filter.Add(true, x => x.SeoCampaignId == campaignId);
-
-                var clienteBusinessOffer = unitWork.SeoCampaign.Get(filter: x => x.Id == campaignId, "ClientBusinessOffer"); //, "ClientBusinessOffer,BusinessTypeOffer,ClientCompany"
-
-                if (clienteBusinessOffer != null)
-                    cBusinessOffer = imapper.Map<ClientBusinessOfferDTO>(clienteBusinessOffer.ClientBusinessOffer);
-            }
-
-
-            //Get Departamentos list
-            var ChatGptContextList = unitWork.ChatGptContext.GetPaginated(dataRequest.PageNumber, dataRequest.PageSize, sorts, filter, "SeoCampaign,ChatGptRol,ControlType,Language,Tenses");
-
-            //Prepare DhxlGrid data
-            foreach (ChatGptContext ChatGptContextItem in ChatGptContextList.Results)
-            {
-                DhxRows newRow = new DhxRows
+                try
                 {
-                    Id = ChatGptContextItem.Id.ToString()
-                };
+                    var seoCampaignInfo = unitWork.SeoCampaign.Get(filter: x => x.Id == campaignId, "ClientCompany, ClientBusinessOffer, ChatGPTPrompt");
 
-                var toneVoiceIdList = unitWork.ChatGptContextToneVoice.GetAll(filter: x => x.ContextId == ChatGptContextItem.Id, null);
-                var toneIdList = toneVoiceIdList.Select(x => x.ToneVoiceId).ToList();
+                    if (seoCampaignInfo != null)
+                    {
+                        seoCampaign = imapper.Map<SeoCampaignFullDTO>(seoCampaignInfo);
+                    }
 
-                string active = (ChatGptContextItem.Active) ? "<i class=\"fas fa-check Checked\">" : "<i class=\"fas fa-check unChecked\">";
-                string campaignName = ChatGptContextItem.SeoCampaign.Name.ToString();
-
-                newRow.Data.Add("");
-                newRow.Data.Add(string.Join(",", toneIdList));
-                newRow.Data.Add(ChatGptContextItem.Id.ToString());
-                newRow.Data.Add(ChatGptContextItem.SeoCampaignId.ToString());
-                newRow.Data.Add(ChatGptContextItem.ChatGptRolId.ToString());
-                newRow.Data.Add(ChatGptContextItem.ControlTypeId.ToString());
-                newRow.Data.Add(ChatGptContextItem.LanguageCode);
-                newRow.Data.Add(ChatGptContextItem.TenseId.ToString());
-                newRow.Data.Add(campaignName);
-                newRow.Data.Add(ChatGptContextItem.ChatGptRol.Name.ToString());
-                newRow.Data.Add(ChatGptContextItem.ControlType.Label.ToString());
-                newRow.Data.Add(ChatGptContextItem.Language.Label);
-                newRow.Data.Add(ChatGptContextItem.Tenses.Tense.ToString());
-                newRow.Data.Add(ChatGptContextItem.Name);
-                newRow.Data.Add(ChatGptContextItem.Context);
-                newRow.Data.Add(ChatGptContextItem.MinLength.ToString());
-                newRow.Data.Add(ChatGptContextItem.MaxLength.ToString());
-                newRow.Data.Add(ChatGptContextItem.MinWord.ToString());
-                newRow.Data.Add(ChatGptContextItem.MaxWord.ToString());
-                newRow.Data.Add(active);
-
-                newRow.Data.Add("");
-                dhxGridData.rows.Add(newRow);
+                    jsonData.Result = true;
+                    jsonData.MessageType = ResultType.Success;
+                    jsonData.Data = seoCampaign;
+                }
+                catch (Exception ex)
+                {
+                    jsonData.Result = false;
+                    jsonData.MessageType = ResultType.Error;
+                    jsonData.Data = ex;
+                    jsonData.Message = ex.Message;
+                    jsonData.Title = "Error";
+                }
             }
-
-            //Set pagination
-            if (ChatGptContextList.RecordCount == 0)
-            {
-                dataRequest.PageNumber = 0;
-                dataRequest.PageNumber = 0;
-                dataRequest.PageSize = 0;
-            }
-            else
-            {
-                dataRequest.TotalRecords = ChatGptContextList.RecordCount;
-                dataRequest.PageSize = ChatGptContextList.PageSize;
-                dataRequest.TotalPages = ChatGptContextList.PageCount;
-            }
-
-            //Set response object
-            dhxGridData.userdata = new { PaginParams = dataRequest, BusinessOffer = cBusinessOffer };
 
             //Reponse
-            return new JsonNetResult { Data = dhxGridData };
+            return new JsonNetResult { Data = jsonData };
         }
 
         [HttpGet]
@@ -159,12 +108,12 @@ namespace D12.ChatGPT.WebAdmin.Controllers
 
             try
             {
-                ChatGptContext ChatGptContextInfo = unitWork.ChatGptContext.Get(id);
+                ChatGptPrompt ChatGptPromptInfo = unitWork.ChatGptPrompt.Get(id);
 
-                var ChatGptContextDTO = imapper.Map<ChatGptContextDTO>(ChatGptContextInfo);
+                var ChatGptPromptDTO = imapper.Map<ChatGptPromptDTO>(ChatGptPromptInfo);
 
                 //Get users list of DhxDataGrid in Json Format
-                jsonData.Data = ChatGptContextDTO;
+                jsonData.Data = ChatGptPromptDTO;
             }
             catch (System.Exception ex)
             {
@@ -175,10 +124,10 @@ namespace D12.ChatGPT.WebAdmin.Controllers
         }
 
         [HttpPost]
-        public JsonNetResult Id(ChatGptContext ChatGptContextRequest, string ToneVoiceRequest)
+        public JsonNetResult Id(ChatGptPrompt ChatGptPromptRequest, string ToneVoiceRequest)
         {
             JsonData jsonData = new JsonData();
-            ChatGptContext ChatGptContextInfo = new ChatGptContext();
+            ChatGptPrompt ChatGptPromptInfo = new ChatGptPrompt();
             bool hasValidationError = false;
 
             try
@@ -196,7 +145,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                 }
                 else
                 {
-                    var toneVoiceList = new List<ChatGptContextToneVoice>();
+                    var toneVoiceList = new List<ChatGptPromptToneVoice>();
 
                     if (!string.IsNullOrEmpty(ToneVoiceRequest))
                     {
@@ -205,48 +154,47 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                         foreach (var itemTone in shortList)
                         {
                             toneVoiceList.Add(
-                                new ChatGptContextToneVoice { ContextId = ChatGptContextRequest.Id, ToneVoiceId = itemTone });
+                                new ChatGptPromptToneVoice { PromptId = ChatGptPromptRequest.Id, ToneVoiceId = itemTone });
                         }
                     }
 
-                    ChatGptContextRequest.SeoCampaignId = 1; //Eliminar
-                    if (ChatGptContextRequest.Id == 0)
+                    if (ChatGptPromptRequest.Id == 0)
                     {
                         if (toneVoiceList.Count > 0)
-                            ChatGptContextInfo.ChatGptContextToneVoice = toneVoiceList;
+                            ChatGptPromptInfo.ChatGptPromptToneVoice = toneVoiceList;
 
-                        ChatGptContextInfo = imapper.Map<ChatGptContext>(ChatGptContextRequest);
-                        unitWork.ChatGptContext.Add(ChatGptContextInfo);
+                        ChatGptPromptInfo = imapper.Map<ChatGptPrompt>(ChatGptPromptRequest);
+                        unitWork.ChatGptPrompt.Add(ChatGptPromptInfo);
                         jsonData.Action = "ADD";
                     }
                     else
                     {
-                        ChatGptContextInfo = unitWork.ChatGptContext.Get(filter: x => x.Id == ChatGptContextRequest.Id);
+                        ChatGptPromptInfo = unitWork.ChatGptPrompt.Get(filter: x => x.Id == ChatGptPromptRequest.Id);
 
-                        ChatGptContextInfo.SeoCampaignId = ChatGptContextRequest.SeoCampaignId; ;
-                        ChatGptContextInfo.ChatGptRolId = ChatGptContextRequest.ChatGptRolId; ;
-                        ChatGptContextInfo.ControlTypeId = ChatGptContextRequest.ControlTypeId;
-                        ChatGptContextInfo.LanguageCode = ChatGptContextRequest.LanguageCode;
-                        ChatGptContextInfo.TenseId = ChatGptContextRequest.TenseId;
-                        ChatGptContextInfo.Name = ChatGptContextRequest.Name;
-                        ChatGptContextInfo.Context = ChatGptContextRequest.Context;
-                        ChatGptContextInfo.MinLength = ChatGptContextRequest.MinLength;
-                        ChatGptContextInfo.MaxLength = ChatGptContextRequest.MaxLength;
-                        ChatGptContextInfo.MinWord = ChatGptContextRequest.MinWord;
-                        ChatGptContextInfo.MaxWord = ChatGptContextRequest.MaxWord;
-                        ChatGptContextInfo.Active = ChatGptContextRequest.Active;
+                        ChatGptPromptInfo.SeoCampaignId = ChatGptPromptRequest.SeoCampaignId; ;
+                        ChatGptPromptInfo.ChatGptRolId = ChatGptPromptRequest.ChatGptRolId; ;
+                        ChatGptPromptInfo.ControlTypeId = ChatGptPromptRequest.ControlTypeId;
+                        ChatGptPromptInfo.LanguageCode = ChatGptPromptRequest.LanguageCode;
+                        ChatGptPromptInfo.TenseId = ChatGptPromptRequest.TenseId;
+                        ChatGptPromptInfo.Name = ChatGptPromptRequest.Name;
+                        ChatGptPromptInfo.Prompt = ChatGptPromptRequest.Prompt;
+                        ChatGptPromptInfo.MinLength = ChatGptPromptRequest.MinLength;
+                        ChatGptPromptInfo.MaxLength = ChatGptPromptRequest.MaxLength;
+                        ChatGptPromptInfo.MinWord = ChatGptPromptRequest.MinWord;
+                        ChatGptPromptInfo.MaxWord = ChatGptPromptRequest.MaxWord;
+                        ChatGptPromptInfo.Active = ChatGptPromptRequest.Active;
 
-                        if (ChatGptContextInfo.ChatGptContextToneVoice.Count > 0)
-                            unitWork.ChatGptContextToneVoice.RemoveRange(ChatGptContextInfo.ChatGptContextToneVoice);
+                        if (ChatGptPromptInfo.ChatGptPromptToneVoice.Count > 0)
+                            unitWork.ChatGptPromptToneVoice.RemoveRange(ChatGptPromptInfo.ChatGptPromptToneVoice);
 
                         if (toneVoiceList.Count > 0)
-                            ChatGptContextInfo.ChatGptContextToneVoice = toneVoiceList;
+                            ChatGptPromptInfo.ChatGptPromptToneVoice = toneVoiceList;
 
                         jsonData.Action = "UPDATE";
 
                     }
 
-                    ICollection<ValidationResult> validResult = unitWork.ChatGptContext.ValidationClass(ChatGptContextInfo);
+                    ICollection<ValidationResult> validResult = unitWork.ChatGptPrompt.ValidationClass(ChatGptPromptInfo);
 
                     //If validation data found errors return error
                     if (validResult.Count > 0)
@@ -270,10 +218,9 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                     {
                         unitWork.Complete();
 
-                        ChatGptContextInfo = unitWork.ChatGptContext.Get(filter: x => x.Id == ChatGptContextInfo.Id, "SeoCampaign,ChatGptRol,ControlType,Language,Tenses");
-                        var ChatGptContextDTO = imapper.Map<ChatGptContextDTO>(ChatGptContextInfo);
-                        ChatGptContextDTO.ToneVoiceIds = ToneVoiceRequest;
-                        jsonData.Data = ChatGptContextDTO;
+                        ChatGptPromptInfo = unitWork.ChatGptPrompt.Get(filter: x => x.Id == ChatGptPromptInfo.Id, "SeoCampaign,ChatGptRol,ControlType,Language,Tenses,ChatGptPromptToneVoice");
+                        var ChatGptPromptDTO = imapper.Map<ChatGptPromptDTO>(ChatGptPromptInfo);
+                        jsonData.Data = ChatGptPromptDTO;
                     }
                 }
             }
@@ -354,7 +301,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
         }
 
         [HttpPost]
-        public JsonNetResult Delete(int[] ids)
+        public JsonNetResult Delete(int id)
         {
             JsonData jsonData = new JsonData();
 
@@ -376,20 +323,19 @@ namespace D12.ChatGPT.WebAdmin.Controllers
 
                 try
                 {
-                    List<string> deletedIds = new List<string>();
-                    for (int i = 0; i < ids.Length; i++)
-                    {
-                        var ChatGptContextInfo = unitWork.ChatGptContext.Get(ids[i]);
+                    var ChatGptPromptInfo = unitWork.ChatGptPrompt.Get(id);
 
-                        if (ChatGptContextInfo != null)
-                        {
-                            unitWork.ChatGptContext.Remove(ChatGptContextInfo);
-                            deletedIds.Add(ChatGptContextInfo.Id.ToString());
-                        }
+                    if (ChatGptPromptInfo != null)
+                    {
+                        unitWork.ChatGptPrompt.Remove(ChatGptPromptInfo);
                     }
 
                     unitWork.Complete();
-                    jsonData.Data = new { deleted = deletedIds };
+                    jsonData.Result = true;
+                    jsonData.MessageType= ResultType.Success;
+                    jsonData.Title = "Done..!";
+                    jsonData.Message = "The information was deleted successfully."; ;
+
                 }
                 catch (DbUpdateException ex)
                 {
@@ -436,6 +382,84 @@ namespace D12.ChatGPT.WebAdmin.Controllers
 
             return new JsonNetResult { Data = jsonData };
         }
+       
+        [HttpGet]
+        public async Task<JsonNetResult> UseChatGpt(long campaignId)
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            JsonData jsonData = new JsonData();
+            //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
+            var openai = new OpenAIAPI("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");
+
+            try
+            {
+                var prompts = unitWork.ChatGptPrompt.GetAll(filter: x=>x.SeoCampaignId == campaignId && x.Active == true).ToList();
+                var promptResult = new List<ChatGptPromptResult>();
+                var chat = openai.Chat.CreateConversation();
+                var iteration = 0;
+
+                foreach (var prompt in prompts)
+                {
+                    if (prompt.ChatGptPromptResult.Count < 3 && iteration == 0)
+                    {
+                        if ((GptRol)prompt.ChatGptRolId == GptRol.System)
+                            chat.AppendSystemMessage(prompt.Prompt);
+
+                        if ((GptRol)prompt.ChatGptRolId == GptRol.Assistant)
+                            chat.AppendExampleChatbotOutput(prompt.Prompt);
+
+                        if ((GptRol)prompt.ChatGptRolId == GptRol.User)
+                            chat.AppendUserInput(prompt.Prompt);
+
+                        var result = await chat.GetResponseFromChatbotAsync();
+
+                        if (!string.IsNullOrWhiteSpace(result))
+                        {
+                            result = HttpUtility.HtmlDecode(result);
+                            result = result.Replace("\"", "");
+                        }
+
+                        var newPromptResult = new ChatGptPromptResult
+                        {
+                            PromptId = prompt.Id,
+                            Response = result,
+                            DateRequest = DateTime.Now,
+                            EntryDate = DateTime.Now,
+                            Active = true
+                        };
+
+                        unitWork.ChatGPTPromptResult.Add(newPromptResult);
+
+                        prompt.Sent = true;
+
+                        await Task.Delay(TimeSpan.FromSeconds(3));
+                    }
+                }
+
+                unitWork.Complete();
+
+                var ChatGptPromptDTO = imapper.Map<ChatGptPromptDTO>(prompts);
+
+                jsonData.Data = ChatGptPromptDTO;
+                jsonData.Result = true;
+                jsonData.MessageType = ResultType.Success;
+
+            }
+            catch (Exception ex)
+            {
+                var exception = ExceptionDescription.excepDesc(ex);
+
+                exception.MessageTitle = "Error";
+                exception.Message = ex.Message;
+
+                jsonData.Result = false;
+                jsonData.MessageType = ResultType.Error;
+                jsonData.Errors.Add(exception);
+            }
+
+            return new JsonNetResult { Data = jsonData };
+        }
+
 
         [HttpGet]
         public JsonNetResult GetCampaignFilters()

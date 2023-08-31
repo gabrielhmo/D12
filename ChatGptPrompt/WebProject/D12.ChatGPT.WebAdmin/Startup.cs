@@ -8,7 +8,6 @@ namespace D12.ChatGPT.WebAdmin
     {
         public void Configuration(IAppBuilder app)
         {
-            app.MapSignalR();
             ConfigureAuth(app);
         }
     }

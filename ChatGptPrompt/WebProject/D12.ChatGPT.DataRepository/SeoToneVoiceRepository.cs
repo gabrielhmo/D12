@@ -51,14 +51,14 @@ namespace D12.ChatGPT.DataRepository
                 .ToList();
         }
 
-        public IEnumerable<ChatGptContextToneVoiceDTO> GetSeoToneVoiceDTOBySegmentId(long contextId)
+        public IEnumerable<ChatGptPromptToneVoiceDTO> GetSeoToneVoiceDTOBySegmentId(long promptId)
         {
-            return dbContext.ChatGptContextToneVoice
-                .Where(x => x.ContextId == contextId)
-                .Select(x => new ChatGptContextToneVoiceDTO
+            return dbContext.ChatGptPromptToneVoice
+                .Where(x => x.PromptId == promptId)
+                .Select(x => new ChatGptPromptToneVoiceDTO
                 {
                     Id = x.Id,
-                    ContextId = x.ContextId,
+                    PromptId = x.PromptId,
                     ToneVoiceId = x.ToneVoiceId,
                 }).ToList();
         }

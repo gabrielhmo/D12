@@ -32,14 +32,14 @@ namespace D12.ChatGPT.DataModel
         public string Name { get; set; }
 
         [Column(@"Description", Order = 5, TypeName = "varchar")]
-        [MaxLength(500)]
-        [StringLength(500)]
+        [MaxLength(1000)]
+        [StringLength(1000)]
         [Display(Name = "Description")]
         public string Description { get; set; }
 
         [Column(@"Characteristics", Order = 6, TypeName = "varchar")]
-        [MaxLength(1500)]
-        [StringLength(1500)]
+        [MaxLength(3000)]
+        [StringLength(3000)]
         [Display(Name = "Characteristics")]
         public string Characteristics { get; set; }
 

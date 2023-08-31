@@ -15,12 +15,10 @@ namespace D12.ChatGPT.DTO
             return new MapperConfiguration(cfg =>
             {
                 //ChatGPT Object to DTO
-                cfg.CreateMap<Client, ClientDTO>()
-                     .ForMember(dest => dest.ClientCompany, opt => opt.MapFrom(src => src.ClientCompany));
+                cfg.CreateMap<Client, ClientDTO>();
 
                 cfg.CreateMap<ClientCompany, ClientCompanyDTO>()
-                     .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client.Name))
-                     .ForMember(dest => dest.ClientBusinessOffer, opt => opt.MapFrom(src => src.ClientBusinessOffer));
+                     .ForMember(dest => dest.ClientName, opt => opt.MapFrom(src => src.Client.Name));
 
                 cfg.CreateMap<ClientBusinessOffer, ClientBusinessOfferDTO>()
                      .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.ClientCompany.Name))
@@ -28,21 +26,27 @@ namespace D12.ChatGPT.DTO
 
                 cfg.CreateMap<SeoCampaign, SeoCampaignDTO>()
                      .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.ClientCompany.Name))
-                     .ForMember(dest => dest.BusinessOffer, opt => opt.MapFrom(src => src.ClientBusinessOffer.Name))
-                     .ForMember(dest => dest.ChatGptContext, opt => opt.MapFrom(src => src.ChatGptContext));
+                     .ForMember(dest => dest.BusinessOffer, opt => opt.MapFrom(src => src.ClientBusinessOffer.Name));
 
-                cfg.CreateMap<ChatGptContext, ChatGptContextDTO>()
+                cfg.CreateMap<SeoCampaign, SeoCampaignFullDTO>()
+                     .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.ClientCompany))
+                     .ForMember(dest => dest.BusinessOffer, opt => opt.MapFrom(src => src.ClientBusinessOffer))
+                     .ForMember(dest => dest.Prompts, opt => opt.MapFrom(src => src.ChatGptPrompt));
+
+                cfg.CreateMap<ChatGptPrompt, ChatGptPromptDTO>()
+                     .ForMember(dest => dest.Result, opt => opt.MapFrom(src => src.ChatGptPromptResult))
+                     .ForMember(dest => dest.CampaginName, opt => opt.MapFrom(src => src.SeoCampaign.Name))
                      .ForMember(dest => dest.ChatGptRol, opt => opt.MapFrom(src => src.ChatGptRol.Name))
                      .ForMember(dest => dest.ControlType, opt => opt.MapFrom(src => src.ControlType.Label))
                      .ForMember(dest => dest.Language, opt => opt.MapFrom(src => src.Language.Code))
-                     .ForMember(dest => dest.Tense, opt => opt.MapFrom(src => src.Tenses.Tense));
+                     .ForMember(dest => dest.Tense, opt => opt.MapFrom(src => src.Tenses.Tense))
+                     .ForMember(dest => dest.ToneVoices, opt => opt.MapFrom(src => src.ChatGptPromptToneVoice));
 
-
-                cfg.CreateMap<ChatGptPrompt, ChatGptPrompt>()
-                    .ForMember(dest => dest.ChatGptPromptResult, opt => opt.MapFrom(src => src.ChatGptPromptResult))
-                    .ForMember(dest => dest.ChatGptPromptLog, opt => opt.MapFrom(src => src.ChatGptPromptLog));
 
                 cfg.CreateMap<BusinessTypeOffer, BusinessTypeOfferDTO>();
+                cfg.CreateMap<ChatGptPromptToneVoice, ChatGptPromptToneVoiceDTO>()
+                     .ForMember(dest => dest.Tone, opt => opt.MapFrom(src => src.SeoToneVoice.Tone));
+
                 cfg.CreateMap<ChatGptRol, ChatGptRolDTO>();
                 cfg.CreateMap<ControlType, ControlTypeDTO>();
                 cfg.CreateMap<Language, LanguageDTO>();
@@ -53,24 +57,19 @@ namespace D12.ChatGPT.DTO
 
 
                 //ChatGPT DTO to Object
-                cfg.CreateMap<ClientDTO, Client>()
-                     .ForMember(dest => dest.ClientCompany, opt => opt.MapFrom(src => src.ClientCompany));
+                cfg.CreateMap<ClientDTO, Client>();
 
-                cfg.CreateMap<ClientCompanyDTO, ClientCompany>()
-                     .ForMember(dest => dest.ClientBusinessOffer, opt => opt.MapFrom(src => src.ClientBusinessOffer));
+                cfg.CreateMap<ClientCompanyDTO, ClientCompany>();
 
                 cfg.CreateMap<ClientBusinessOfferDTO, ClientBusinessOffer>();
 
-                cfg.CreateMap<SeoCampaignDTO, SeoCampaign>()
-                     .ForMember(dest => dest.ChatGptContext, opt => opt.MapFrom(src => src.ChatGptContext));
+                cfg.CreateMap<SeoCampaignDTO, SeoCampaign>();
 
-                cfg.CreateMap<ChatGptContextDTO, ChatGptContext>();
-
-                cfg.CreateMap<ChatGptPromptDTO, ChatGptPrompt>()
-                    .ForMember(dest => dest.ChatGptPromptResult, opt => opt.MapFrom(src => src.ChatGptPromptResult))
-                    .ForMember(dest => dest.ChatGptPromptLog, opt => opt.MapFrom(src => src.ChatGptPromptLog));
+                cfg.CreateMap<ChatGptPromptDTO, ChatGptPrompt>();
 
                 cfg.CreateMap<BusinessTypeOfferDTO, BusinessTypeOffer>();
+                cfg.CreateMap<ChatGptPromptToneVoiceDTO, ChatGptPromptToneVoice>();
+
                 cfg.CreateMap<ChatGptRolDTO, ChatGptRol>();
                 cfg.CreateMap<ControlTypeDTO, ControlType>();
                 cfg.CreateMap<LanguageDTO, Language>();

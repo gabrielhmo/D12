@@ -15,36 +15,102 @@ namespace D12.ChatGPT.DataModel
         [Display(Name = "Id")]
         public long Id { get; set; }
 
-        [Column(@"ContextId", Order = 2, TypeName = "bigint")]
+        [Column(@"SeoCampaignId", Order = 2, TypeName = "bigint")]
         [Required]
-        [Display(Name = "Context ID")]
-        public long ContextId { get; set; }
+        [Display(Name = "Seo campaign ID")]
+        public long SeoCampaignId { get; set; }
 
-        [Column(@"Prompt", Order = 3, TypeName = "varchar(max)")]
+        [Column(@"ChatGPTRolId", Order = 3, TypeName = "int")]
+        [Required]
+        [Display(Name = "Chat gptr ol ID")]
+        public int ChatGptRolId { get; set; }
+
+        [Column(@"ControlTypeId", Order = 4, TypeName = "int")]
+        [Required]
+        [Display(Name = "Control type ID")]
+        public int ControlTypeId { get; set; }
+
+        [Column(@"LanguageCode", Order = 5, TypeName = "char")]
+        [Required]
+        [MaxLength(3)]
+        [StringLength(3)]
+        [Display(Name = "Language code")]
+        public string LanguageCode { get; set; }
+
+        [Column(@"TenseId", Order = 6, TypeName = "int")]
+        [Display(Name = "Tense ID")]
+        public int? TenseId { get; set; }
+
+        [Column(@"Name", Order = 7, TypeName = "varchar")]
+        [Required]
+        [MaxLength(80)]
+        [StringLength(80)]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Column(@"Prompt", Order = 8, TypeName = "varchar(max)")]
         [Required]
         [Display(Name = "Prompt")]
         public string Prompt { get; set; }
 
-        [Column(@"Sent", Order = 4, TypeName = "bit")]
+        [Column(@"MinLength", Order = 9, TypeName = "int")]
+        [Display(Name = "Min length")]
+        public int? MinLength { get; set; }
+
+        [Column(@"MaxLength", Order = 10, TypeName = "int")]
+        [Display(Name = "Max length")]
+        public int? MaxLength { get; set; }
+
+        [Column(@"MinWord", Order = 11, TypeName = "int")]
+        [Display(Name = "Min word")]
+        public int? MinWord { get; set; }
+
+        [Column(@"MaxWord", Order = 12, TypeName = "int")]
+        [Display(Name = "Max word")]
+        public int? MaxWord { get; set; }
+
+        [Column(@"Sent", Order = 13, TypeName = "bit")]
         [Required]
         [Display(Name = "Sent")]
         public bool Sent { get; set; }
 
-        [Column(@"SentDate", Order = 5, TypeName = "smalldatetime")]
+        [Column(@"SentDate", Order = 14, TypeName = "smalldatetime")]
         [Display(Name = "Sent date")]
         public System.DateTime? SentDate { get; set; }
 
-        public virtual System.Collections.Generic.ICollection<ChatGptPromptLog> ChatGptPromptLog { get; set; }
+        [Column(@"Active", Order = 15, TypeName = "bit")]
+        [Required]
+        [Display(Name = "Active")]
+        public bool Active { get; set; }
+
+        [Column(@"EntryDate", Order = 16, TypeName = "smalldatetime")]
+        [Required]
+        [Display(Name = "Entry date")]
+        public System.DateTime EntryDate { get; set; }
+
         public virtual System.Collections.Generic.ICollection<ChatGptPromptResult> ChatGptPromptResult { get; set; }
+        public virtual System.Collections.Generic.ICollection<ChatGptPromptToneVoice> ChatGptPromptToneVoice { get; set; }
 
 
-        [ForeignKey("ContextId")] public virtual ChatGptContext ChatGptContext { get; set; }
+        [ForeignKey("ChatGptRolId")] public virtual ChatGptRol ChatGptRol { get; set; }
+
+        [ForeignKey("ControlTypeId")] public virtual ControlType ControlType { get; set; }
+
+        [ForeignKey("LanguageCode")] public virtual Language Language { get; set; }
+
+        [ForeignKey("SeoCampaignId")] public virtual SeoCampaign SeoCampaign { get; set; }
+
+        [ForeignKey("TenseId")] public virtual Tenses Tenses { get; set; }
 
         public ChatGptPrompt()
         {
+            ChatGptRolId = 2;
+            LanguageCode = "ENG";
             Sent = false;
+            Active = true;
+            EntryDate = System.DateTime.Now;
+            ChatGptPromptToneVoice = new System.Collections.Generic.List<ChatGptPromptToneVoice>();
             ChatGptPromptResult = new System.Collections.Generic.List<ChatGptPromptResult>();
-            ChatGptPromptLog = new System.Collections.Generic.List<ChatGptPromptLog>();
         }
     }
 

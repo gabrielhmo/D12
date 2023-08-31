@@ -29,16 +29,24 @@ namespace D12.ChatGPT.DataModel
         [Display(Name = "Date request")]
         public System.DateTime? DateRequest { get; set; }
 
-        [Column(@"Active", Order = 5, TypeName = "smalldatetime")]
+        [Column(@"Active", Order = 5, TypeName = "bit")]
         [Display(Name = "Active")]
-        public System.DateTime? Active { get; set; }
+        public bool? Active { get; set; }
 
         [Column(@"EntryDate", Order = 6, TypeName = "smalldatetime")]
         [Display(Name = "Entry date")]
         public System.DateTime? EntryDate { get; set; }
 
+        public virtual System.Collections.Generic.ICollection<ChatGptPromptLog> ChatGptPromptLog { get; set; }
+
 
         [ForeignKey("PromptId")] public virtual ChatGptPrompt ChatGptPrompt { get; set; }
+
+        public ChatGptPromptResult()
+        {
+            Active = false;
+            ChatGptPromptLog = new System.Collections.Generic.List<ChatGptPromptLog>();
+        }
     }
 
 }

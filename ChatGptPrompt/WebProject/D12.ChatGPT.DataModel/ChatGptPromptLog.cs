@@ -15,10 +15,10 @@ namespace D12.ChatGPT.DataModel
         [Display(Name = "Id")]
         public long Id { get; set; }
 
-        [Column(@"PromptId", Order = 2, TypeName = "bigint")]
+        [Column(@"PromptResultId", Order = 2, TypeName = "bigint")]
         [Required]
-        [Display(Name = "Prompt ID")]
-        public long PromptId { get; set; }
+        [Display(Name = "Prompt result ID")]
+        public long PromptResultId { get; set; }
 
         [Column(@"Object", Order = 3, TypeName = "varchar")]
         [Required]
@@ -72,7 +72,7 @@ namespace D12.ChatGPT.DataModel
         public System.DateTime EntryDate { get; set; }
 
 
-        [ForeignKey("PromptId")] public virtual ChatGptPrompt ChatGptPrompt { get; set; }
+        [ForeignKey("PromptResultId")] public virtual ChatGptPromptResult ChatGptPromptResult { get; set; }
 
         public ChatGptPromptLog()
         {

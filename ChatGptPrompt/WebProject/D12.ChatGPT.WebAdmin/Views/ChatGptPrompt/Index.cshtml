@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Chat GPT Context";
+    ViewBag.Title = "Chat GPT Prompt";
 }
 @section Styles{
     <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
@@ -22,42 +22,27 @@
             text-align: left;
         }
 
-        #segmentContainer {
+        #promptContainer {
             position: relative;
             width: 100%;
             height: 100%;
             overflow: auto;
         }
 
-        #segmentPreview {
-            padding: 10px;
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
+        .resultHtml div p {
+            color: #212020
         }
 
-        #tagsContainer {
-            overflow: hidden;
+        .resultHtml div h1, h2, h3, h4, h5 {
+            color: #212020;
         }
-
-            #tagsContainer .SegmentTag {
-                margin: 4px;
-                padding: 4px 6px;
-                font-size: 85%;
-                display: inline-block;
-            }
-
-                #tagsContainer .SegmentTag:hover {
-                    cursor: pointer;
-                }
 
         .objbox {
-            overflow-x: hidden !important;
+            overflow-x: auto !important;
             overflow-y: auto !important;
         }
 
-        #segmentList {
+        #promptList {
             width: 100%;
             height: 100%;
             background-color: lightcyan;
@@ -65,19 +50,14 @@
             overflow-y: auto !important;
         }
 
-        .pagination {
-            margin: 5px !important;
+        ul#seoList {
+            display: flex;
         }
 
-
-        #dhxGridPaging {
-            display: block;
-            height: 50px;
-        }
-
-        #RecetaIngModal .modal-body {
-            min-height: 600px;
-        }
+            ul#seoList li {
+                flex: 1;
+                text-align: center;
+            }
 
         .error {
             background-color: #e20000;
@@ -105,15 +85,18 @@
         }
     </style>
 }
-<div class="panel panel-primary">
+<div class="panel">
     <div id="MainContainer" class="panel-body pad-no">
     </div>
 </div>
 <!-- /.modal -->
-@Html.Partial("~/Views/ChatGptContext/ModalFormChatGptContext.cshtml")
+@Html.Partial("~/Views/ChatGptPrompt/ModalFormChatGptPrompt.cshtml")
+@Html.Partial("~/Views/ChatGptPrompt/ModallogPrompts.cshtml")
+@Html.Partial("~/Views/ChatGptPrompt/ModalSeoStatsPrompts.cshtml")
 @section Scripts {
+    <script src="~/lib/countable/Countable.min.js"></script>
     <script src="~/Plugins/Dhtmlx/dhtmlx.js"></script>
     <script src="~/Plugins/Dhtmlx/dhx_hOnline.js"></script>
     <script src="~/lib/select2/js/select2.min.js"></script>
-    <script src="~/Scripts/WebApp/chatGPTContext.js"></script>
+    <script src="~/Scripts/WebApp/chatGPTPrompt.js"></script>
 }

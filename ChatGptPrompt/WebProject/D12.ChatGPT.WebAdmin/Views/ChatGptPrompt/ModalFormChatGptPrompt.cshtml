@@ -1,7 +1,7 @@
 ﻿
-@model D12.ChatGPT.WebAdmin.ViewModels.ChatGptConextViewModel
+@model D12.ChatGPT.WebAdmin.ViewModels.ChatGptPromptViewModel
 
-<div id="ModalChatGptContext" class="modal fade" data-backdrop="static" data-keyboard="false">
+<div id="ModalChatGptPrompt" class="modal fade" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div id="modal-loading" style="display:none;">
@@ -14,9 +14,10 @@
                 <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body" style="height:550px;">
-                <form id="FormChatGptContext">
+                <form id="FormChatGptPrompt">
                     @Html.AntiForgeryToken()
                     @Html.HiddenFor(m => m.Id)
+                    @Html.HiddenFor(m => m.SeoCampaignId)
                     <input type="hidden" id="ToneVoiceRequest" name="ToneVoiceRequest" />
                     @*<input type="hidden" id="LayoutToneVoice" name="LayoutToneVoice" />*@
 
@@ -30,8 +31,8 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <label for="ChatRolId" class="control-label">Context Rol</label>
-                                @Html.DropDownList("ChatGptRolId", ViewBag.ChatGptRolList as SelectList, "Select", new { id = "ChatGptRolId", @class = "selectpicker form-control", data_container = "body", title = "Select", data_live_search = "true", data_width = "100%", data_val = "true", data_val_required = "Select Context Rol" })
+                                <label for="ChatRolId" class="control-label">Prompt Rol</label>
+                                @Html.DropDownList("ChatGptRolId", ViewBag.ChatGptRolList as SelectList, "Select", new { id = "ChatGptRolId", @class = "selectpicker form-control", data_container = "body", title = "Select", data_live_search = "true", data_width = "100%", data_val = "true", data_val_required = "Select Prompt Rol" })
                                 <div data-valmsg-for="ChatGPTRolId" data-valmsg-replace="true"></div>
                             </div>
                         </div>
@@ -105,15 +106,15 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                @Html.LabelFor(m => m.Context, new { @class = "control-label" })
-                                @Html.TextAreaFor(m => m.Context, new { @class = "form-control", @rows = "11" })
-                                <div data-valmsg-for="Context" data-valmsg-replace="true"></div>
+                                @Html.LabelFor(m => m.Prompt, new { @class = "control-label" })
+                                @Html.TextAreaFor(m => m.Prompt, new { @class = "form-control", @rows = "11" })
+                                <div data-valmsg-for="Prompt" data-valmsg-replace="true"></div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <button id="contextBuilder" type="button" class="btn btn-primary">Generate Context</button>
+                            <button id="promptBuilder" type="button" class="btn btn-primary">Generate Prompt</button>
                         </div>
                     </div>
                 </form>

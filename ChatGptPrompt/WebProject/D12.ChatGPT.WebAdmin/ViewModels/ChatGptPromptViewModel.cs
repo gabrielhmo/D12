@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace D12.ChatGPT.WebAdmin.ViewModels
 {
-    public class ChatGptConextViewModel
+    public class ChatGptPromptViewModel
     {
         [Key]
         [Display(Name = "Id")]
@@ -39,19 +39,19 @@ namespace D12.ChatGPT.WebAdmin.ViewModels
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Context")]
-        public string Context { get; set; }
+        [Display(Name = "Prompt")]
+        public string Prompt { get; set; }
 
-        [Display(Name = "Min length")]
+        [Display(Name = "Min Char length")]
         public int? MinLength { get; set; }
 
-        [Display(Name = "Max length")]
+        [Display(Name = "Max Char length")]
         public int? MaxLength { get; set; }
 
-        [Display(Name = "Min word")]
+        [Display(Name = "Min Word length")]
         public int? MinWord { get; set; }
 
-        [Display(Name = "Max word")]
+        [Display(Name = "Max Word length")]
         public int? MaxWord { get; set; }
 
         [Required]

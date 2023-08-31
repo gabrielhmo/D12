@@ -14,8 +14,6 @@ namespace D12.ChatGPT.DTO
         public bool Active { get; set; }
         public DateTime EntryDate { get; set; }
 
-        public ICollection<ClientBusinessOfferDTO> ClientBusinessOffer { get; set; }
-
         public ClientCompanyDTO()
         {
             Active = true;

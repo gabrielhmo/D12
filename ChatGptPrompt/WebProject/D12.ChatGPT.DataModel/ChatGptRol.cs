@@ -28,12 +28,12 @@ namespace D12.ChatGPT.DataModel
         [Display(Name = "Active")]
         public bool Active { get; set; }
 
-        public virtual System.Collections.Generic.ICollection<ChatGptContext> ChatGptContext { get; set; }
+        public virtual System.Collections.Generic.ICollection<ChatGptPrompt> ChatGptPrompt { get; set; }
 
         public ChatGptRol()
         {
             Active = true;
-            ChatGptContext = new System.Collections.Generic.List<ChatGptContext>();
+            ChatGptPrompt = new System.Collections.Generic.List<ChatGptPrompt>();
         }
     }
 

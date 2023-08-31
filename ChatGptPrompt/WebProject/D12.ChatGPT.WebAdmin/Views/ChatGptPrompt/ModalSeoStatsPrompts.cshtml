@@ -1,0 +1,72 @@
+﻿<div id="ModalSeoStats" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="modal-loading" style="display:none;">
+                <span class="modal-spinner" style="display: block;"><i class='fa fa-spinner fa-spin fa-5x fa-fw'></i></span>
+            </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Word density</h4>
+            </div>
+            <div class="modal-body" style="height:650px;">
+                <h3 class="text-center mar-no">Word density</h3>
+                <div class="bg-info mar-all pad-all">
+                    <blockquote id="promptQuote" class="bq-sm bq-open bq-close mar-no"></blockquote>
+                </div>
+                <div class="panel-body">
+                    <ul id="seoList" class="list-unstyled text-center bord-all pad-all mar-no row">
+                        <li>
+                            <span id="characterTotal" class="text-lg text-bold text-main"></span>
+                            <p class="text-muted mar-no">CHARACTERS</p>
+                        </li>
+                        <li>
+                            <span id="spacesTotal" class="text-lg text-bold text-main"></span>
+                            <p class="text-muted mar-no">SPACES</p>
+                        </li>
+                        <li>
+                            <span id="wordsTotal" class="text-lg text-semibold text-main"></span>
+                            <p class="text-muted mar-no">WORDS</p>
+                        </li>
+                        <li>
+                            <span id="sentencesTotal" class="text-lg text-semibold text-main">278</span>
+                            <p class="text-muted mar-no">SENTENCES</p>
+                        </li>
+                        <li>
+                            <span id="paragraphsTotal" class="text-lg text-semibold text-main"></span>
+                            <p class="text-muted mar-no">PARAGRAPHS</p>
+                        </li>
+                        <li>
+                            <span id="textTotal" class="text-lg text-semibold text-main"></span>
+                            <p class="text-muted mar-no">TOTAL</p>
+                        </li>
+                    </ul>
+                    <div class="table-responsive mar-top">
+                        <table id="tbSeoStats" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Word</th>
+                                    <th>Density</th>
+                                    <th>Repted</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-default btn-danger pull-right" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

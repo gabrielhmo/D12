@@ -30,14 +30,14 @@ namespace D12.ChatGPT.DataModel
         public string Name { get; set; }
 
         [Column(@"Industry", Order = 4, TypeName = "varchar")]
-        [MaxLength(80)]
-        [StringLength(80)]
+        [MaxLength(500)]
+        [StringLength(500)]
         [Display(Name = "Industry")]
         public string Industry { get; set; }
 
         [Column(@"Activity", Order = 5, TypeName = "varchar")]
-        [MaxLength(80)]
-        [StringLength(80)]
+        [MaxLength(500)]
+        [StringLength(500)]
         [Display(Name = "Activity")]
         public string Activity { get; set; }
 
@@ -61,8 +61,8 @@ namespace D12.ChatGPT.DataModel
         {
             Active = true;
             EntryDate = System.DateTime.Now;
-            ClientBusinessOffer = new System.Collections.Generic.List<ClientBusinessOffer>();
             SeoCampaign = new System.Collections.Generic.List<SeoCampaign>();
+            ClientBusinessOffer = new System.Collections.Generic.List<ClientBusinessOffer>();
         }
     }
 

@@ -105,19 +105,13 @@
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.21.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.4\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.3\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.4.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.4.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.4\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.TelemetryCorrelation, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.8\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
@@ -203,6 +197,9 @@
     </Reference>
     <Reference Include="NReco.PdfGenerator, Version=1.2.1.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
       <HintPath>..\packages\NReco.PdfGenerator.1.2.1\lib\net45\NReco.PdfGenerator.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenAI_API, Version=1.7.2.0, Culture=neutral, PublicKeyToken=1b0a4c0430762146, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenAI.1.7.2\lib\netstandard2.0\OpenAI_API.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -307,7 +304,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ChatGptContextController.cs" />
+    <Compile Include="Controllers\ChatGptPromptController.cs" />
     <Compile Include="Controllers\SeoCampaignController.cs" />
     <Compile Include="Controllers\ClientBusinessOfferController.cs" />
     <Compile Include="Controllers\ClientCompanyController.cs" />
@@ -345,7 +342,7 @@
     <Compile Include="ViewModels\BusinessTypeOfferViewModel.cs" />
     <Compile Include="ViewModels\ClientBusinessOfferViewModel.cs" />
     <Compile Include="ViewModels\ClientCompanyViewModel.cs" />
-    <Compile Include="ViewModels\ChatGptConextViewModel.cs" />
+    <Compile Include="ViewModels\ChatGptPromptViewModel.cs" />
     <Compile Include="ViewModels\SeoCampaignViewModel.cs" />
     <Compile Include="ViewModels\ClientViewModel.cs" />
   </ItemGroup>
@@ -495,6 +492,8 @@
     <Content Include="lib\codemirror\mode\htmlembedded\htmlembedded.min.js" />
     <Content Include="lib\codemirror\mode\xml\xml.min.js" />
     <Content Include="lib\codemirror\theme\monokai.min.css" />
+    <Content Include="lib\countable\Countable.js" />
+    <Content Include="lib\countable\Countable.min.js" />
     <Content Include="lib\datepicker\bootstrap-datepicker.es.min.js" />
     <Content Include="lib\datepicker\bootstrap-datepicker.min.js" />
     <Content Include="lib\datepicker\bootstrap-datepicker3.min.css" />
@@ -1164,8 +1163,6 @@
     <Content Include="Scripts\jquery.nanoscroller.js" />
     <Content Include="Scripts\jquery.nanoscroller.min.js" />
     <Content Include="Scripts\jquery.placeholder.min.js" />
-    <Content Include="Scripts\jquery.signalR-2.4.3.js" />
-    <Content Include="Scripts\jquery.signalR-2.4.3.min.js" />
     <Content Include="Scripts\jquery.twbsPagination.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -1267,7 +1264,8 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Scripts\WebApp\chatGPTContext.js" />
+    <Content Include="Scripts\WebApp\chatGPTPrompt - Copy.js" />
+    <Content Include="Scripts\WebApp\chatGPTPrompt.js" />
     <Content Include="Scripts\WebApp\seoCampaign.js" />
     <Content Include="Scripts\WebApp\clientCompany.js" />
     <Content Include="Scripts\WebApp\client.js" />
@@ -1324,8 +1322,10 @@
     <Content Include="Views\ClientBusinessOffer\ModalFormClientBusinessOffer.cshtml" />
     <Content Include="Views\SeoCampaign\Index.cshtml" />
     <Content Include="Views\SeoCampaign\ModalFormSeoCampaign.cshtml" />
-    <Content Include="Views\ChatGptContext\Index.cshtml" />
-    <Content Include="Views\ChatGptContext\ModalFormChatGptContext.cshtml" />
+    <Content Include="Views\ChatGptPrompt\Index.cshtml" />
+    <Content Include="Views\ChatGptPrompt\ModalFormChatGptPrompt.cshtml" />
+    <Content Include="Views\ChatGptPrompt\ModalSeoStatsPrompts.cshtml" />
+    <Content Include="Views\ChatGptPrompt\ModalLogPrompts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

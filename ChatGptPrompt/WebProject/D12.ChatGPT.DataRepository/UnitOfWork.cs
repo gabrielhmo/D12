@@ -20,9 +20,8 @@ namespace D12.ChatGPT.DataRepository
             ClientBusinessOffer = new ClientBusinessOfferRepository(dbContext);
             SeoCampaign = new SeoCampaignRepository(dbContext);
             SeoToneVoice = new SeoToneVoiceRepository(dbContext);
-            ChatGptContext = new ChatGPTContextRepository(dbContext);
-            ChatGptContextToneVoice = new ChatGPTContextToneVoiceRepository(dbContext);
-            ChatGPTPrompt = new ChatGPTPromptRepository(dbContext);
+            ChatGptPromptToneVoice = new ChatGPTPromptToneVoiceRepository(dbContext);
+            ChatGptPrompt = new ChatGPTPromptRepository(dbContext);
             ChatGPTRol = new ChatGPTRolRepository(dbContext);
             ControlType = new ControlTypeRepository(dbContext);
             Language = new LanguageRepository(dbContext);
@@ -47,10 +46,9 @@ namespace D12.ChatGPT.DataRepository
         public IBusinessTypeOfferRepository BusinessTypeOffer { get; set; }
         public IClientBusinessOfferRepository ClientBusinessOffer { get; set; }
         public ISeoCampaignRepository SeoCampaign { get; set; }
-        public IChatGPTContextRepository ChatGptContext { get; set; }
         public ISeoToneVoiceRepository SeoToneVoice { get; set; }
-        public IChatGPTContextToneVoiceRepository ChatGptContextToneVoice { get; set; }
-        public IChatGPTPromptRepository ChatGPTPrompt { get; set; }
+        public IChatGPTPromptToneVoiceRepository ChatGptPromptToneVoice { get; set; }
+        public IChatGPTPromptRepository ChatGptPrompt { get; set; }
         public IChatGPTRolRepository ChatGPTRol { get; set; }
         public IControlTypeRepository ControlType { get; set; }
         public ILanguageRepository Language { get; set; }
