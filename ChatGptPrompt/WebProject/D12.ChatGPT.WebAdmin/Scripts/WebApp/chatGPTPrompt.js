@@ -24,6 +24,7 @@ var $ModalSeoStats = $("#ModalSeoStats");
 //Modals Log - Prompts
 var $ModalPromptsLogs = $("#ModalLogs");
 
+var campaignId = 0;
 
 var campaign = {};
 
@@ -124,18 +125,18 @@ async function InitBoxChatGptPrompt() {
 
 		$('.selectpicker').selectpicker('refresh');
 
-		$('#filterCampaign').on('changed.bs.select', async function (e, clickedIndex, isSelected, previousValue) {
+		$('#filterCampaign').on('changed.bs.select', async function (e, clickedIndex, isSelected, previousValue)
+		{
+			campaignId = $(this).val();
 
-			if (isNumeric($(this).val())) {
-
-				localStorage.setItem('filterCampaignId', $(this).val());
+			if (isNumeric(campaignId)) {
+				localStorage.setItem('filterCampaignId', campaignId);
 				await getPromptsByCampaign(campaignId);
 			}
 			else {
 				localStorage.setItem('filterCampaignId', '');
 				dhxLayout.cells('a').setText('ChatGpt Prompts');
 			}
-
 		});
 	}
 
@@ -190,6 +191,9 @@ function InitDhxToolbarChatGptPrompt() {
 					getPromptsByCampaign(campaignId);
 				}
 				break;
+			case "viewLog":
+				openPromptLogs();
+				break;
 			case "sendChatGtp":
 				submitChatGPT();
 				break;
@@ -207,16 +211,12 @@ function GetDhxToolbarChatGptPrompt() {
 					{ type: "button", id: "delete", text: "Delete", img: "fas fa-trash", img_disabled: "fas fa-trash" }
 				]
 			},
-			{
-				type: "buttonSelect", id: "copyClipboard", text: "Copy", img: "fa fa-clipboard", img_disabled: "fa fa-file-o", renderSelect: false, openAll: true,
-				options: [
-					{ type: "button", id: "copyExcel", text: "Copy to Excel", img: "fa fa-file-excel-o", img_disabled: "fa fa-file-excel-o" },
-					{ type: "button", id: "copyCSV", text: " Copy to CSV", img: "fa fa-file-text-o", img_disabled: "fa fa-file-text-o" }
-				]
-			},
+			{ type: "separator", id: "sep1" },
 			{ type: "button", id: "reload", text: "Refresh", img: "fas fa-sync-alt", img_disabled: "fas fa-sync-alt" },
 			{ type: "separator", id: "sep2" },
 			{ type: "button", id: "sendChatGtp", text: "Submit to ChatGPT", img: "fas fa-angle-double-right", img_disabled: "fas fa-angle-double-right" },
+			{ type: "button", id: "viewLog", text: "View Log", img: "fas fa-exclamation-triangle", img_disabled: "fas fa-exclamation-triangle" },
+			{ type: "separator", id: "sep0" },
 			{ type: "text", id: "filterCampaign", text: addToolbarBootstrapSelect({ id: 'filterCampaign', container: 'body', title: 'Select Campaign', width: '250', search: true }) }
 		],
 		onload: function () {
@@ -265,8 +265,8 @@ function initModalFormChatGptPrompt() {
 		$("#ChatGptRolId").selectpicker('val', '');
 		$("#ControlTypeId").selectpicker('val', '');
 		$("#LanguageCode").selectpicker('val', '');
-		$("#ToneVoiceSelect").select2("val", "");
-		$('#ToneVoiceSelect').trigger('change');
+		$("#ToneVoiceSelect").val(null).trigger('change');
+		$("#MaxPromptResult").selectpicker('val', '');
 	});
 
 	//Enter key Naviation
@@ -284,13 +284,15 @@ async function submitFormChatGptPrompt() {
 
 		var tonevoices = $('#ToneVoiceSelect').select2('data');
 
-		if (tonevoices.length > 0) {
+		if (tonevoices.length == 0) {
+			$('#ToneVoiceRequest', $FormChatGptPrompt).val('');
+		}
+		else {
 
 			var result = tonevoices.map(a => a.id);
 
-			if (result.length > 0) {
+			if (result.length > 0)
 				$('#ToneVoiceRequest', $FormChatGptPrompt).val(result.join());
-			}
 		}
 
 		var formData = formToJsonString(document.getElementById($FormChatGptPrompt.attr('Id')));
@@ -306,6 +308,14 @@ async function submitFormChatGptPrompt() {
 		if (response.Result) {
 			if (response.Data !== undefined) {
 				$('#id').val(response.Data.id);
+
+
+				const newArr = campaign.prompts.filter(object => {
+					return object.id !== response.Data.id;
+				});
+
+				campaign.prompts = newArr;
+				campaign.prompts.push(response.Data);
 
 				updatePromptPanel(response.Data);
 			}
@@ -347,10 +357,15 @@ function loadChatGptPrompt(promptId) {
 			$('#MaxLength', $FormChatGptPrompt).val(prompt.maxLength);
 			$('#MinWord', $FormChatGptPrompt).val(prompt.minWord);
 			$('#MaxWord', $FormChatGptPrompt).val(prompt.maxWord);
+			$('#MaxPromptResult', $FormChatGptPrompt).selectpicker('val', prompt.maxPromptResult);
 
 			$('#Active', $FormChatGptPrompt).prop('checked', prompt.active);
 
-			if (prompt.toneVoices.length > 0) {
+			if (IsNull(prompt.toneVoices) || prompt.toneVoices.length == 0) {
+				$("#ToneVoiceSelect").val(null).trigger('change');
+				$('#ToneVoiceRequest', $FormChatGptPrompt).val('');
+			}
+			else {
 
 				var toneArray = prompt.toneVoices.map(a => a.toneVoiceId);
 				var toneVoiceIds = toneArray.join(',');
@@ -359,7 +374,6 @@ function loadChatGptPrompt(promptId) {
 
 				$('#ToneVoiceSelect', $FormChatGptPrompt).val(toneArray);
 				$('#ToneVoiceSelect').trigger('change');
-
 			}
 		}
 
@@ -456,6 +470,7 @@ async function getPromptsByCampaign(campaignId) {
 
 	dhxLayout.progressOn();
 
+	$('#PromptLogs tbody').empty();
 	var response = await ajaxCall(rootPath + urlBaseChatGptPrompt + 'GetPromptsByCampaing?campaignId=' + campaignId, null, false, Method.GET, Datatype.Json, ContentType.Json);
 
 	if (response.Result) {
@@ -466,6 +481,27 @@ async function getPromptsByCampaign(campaignId) {
 
 			if (campaign.id > 0) {
 				dhxLayout.cells('a').setText('ChatGpt Prompts: ' + campaign.businessOffer.name + ' - ' + campaign.company.name);
+
+				var rowIdx = 1;
+				if (campaign.chatGptPromptLog != null) {
+					for (var i = 0; i < campaign.chatGptPromptLog.length; i++) {
+
+						var entryDate = moment(campaign.chatGptPromptLog[i].entryDate);
+
+						$('#PromptLogs tbody').append(
+							`<tr id="${campaign.chatGptPromptLog[i].id}">
+							   <td class="row-index text-center">${rowIdx}</td>
+							   <td class="text-center">${campaign.chatGptPromptLog[i].code}</td>
+							   <td class="text-center">${campaign.chatGptPromptLog[i].type}</td>
+							   <td class="text-center">${campaign.chatGptPromptLog[i].param}</td>
+							   <td class="text-center">${campaign.chatGptPromptLog[i].message}</td>
+							   <td class="text-center">${entryDate.format('DD/MM/YYYY HH:MM')}</td>
+						 </tr>`);
+
+						rowIdx++;
+					}
+				}
+
 
 				getCampaignPrompt(campaign);
 			}
@@ -602,15 +638,15 @@ async function submitChatGPT(promptId) {
 					resultP = 0;
 				}
 				else {
-					//const responseError = parseErrorStringToJson(response.Errors[0].message);
-					//swal(Error, response.Errors[0].message, "warning");
+
+					const responseError = parseErrorStringToJson(response.Errors[0].message);
+					swal("Error Found", response.Errors[0].message, "error");
 
 					var campaignId = $('#filterCampaign').selectpicker('val');
 					if (!IsNullOrEmpty(campaignId)) {
 						$('#promptContainer').empty();
 						getPromptsByCampaign(campaignId);
 					}
-
 				}
 
 				//Set Progress On
@@ -763,7 +799,7 @@ function getPanelCollapsed() {
 				<!--Panel heading-->
 				<div class="panel-heading">
 					<div class="panel-control">
-						<button class="btn btn-default" data-panel="minmax" data-target="#panel-collapse-804c" data-toggle="collapse" aria-expanded="false"><i class="demo-psi-chevron-down"></i></button>
+						<button class="btn btn-default" data-panel="minmax" data-target="#panel-collapse-804c" data-toggle="collapse" aria-expanded="false"><i class="demo-psi-chevron-up"></i></button>
 					</div>
 					<h3 class="panel-title">ChatGPT Context Instructions</h3>
 				</div>
@@ -812,9 +848,8 @@ function getPanelLayout(promptInfo) {
 									<a href="#tabPrompt_${promptInfo.id}" aria-controls="tabPrompt_${promptInfo.id}" role="tab" data-toggle="tab" data-id="${promptInfo.id}" data-name="Prompt">Prompt</a>
 								</li>
 							</ul>
-							<button data-id="${promptInfo.id}" onclick="openPromptLogs(${promptInfo.id});" class="btn btn-default" data-panel="dismiss" title="View Logs"><i class="fa fa-file-alt"></i></button>
 							<button data-id="${promptInfo.id}" onclick="deleteChatGptPrompt(${promptInfo.id});" class="btn btn-default" data-panel="dismiss" title="Delete Prompt"><i class="fa fa-trash"></i></button>
-							<button data-id="${promptInfo.id}" onclick="submitChatGPT(${promptInfo.promptId});" class="btn btn-default"><i class="fa fa-sync" title="Refresh Prompt"></i></button>
+							<button data-id="${promptInfo.id}" onclick="submitChatGPT(${promptInfo.id});" class="btn btn-default"><i class="fa fa-sync" title="Refresh Prompt"></i></button>
 							<button data-id="${promptInfo.id}" onclick="OpenFormChatGptPrompt(${promptInfo.id});" class="btn btn-default" title="Edit Prompt"><i class="fa fa-edit"></i></button>
 						</div>
 						<h3 class="panel-title">${promptInfo.name}</h3>
@@ -937,7 +972,7 @@ function updatePromptPanel(prompt) {
 				campaign.prompts[promptIndex].tense = prompt.tense;
 				campaign.prompts[promptIndex].name = prompt.name;
 				campaign.prompts[promptIndex].prompt = prompt.prompt;
-				campaign.prompts[promptIndex].toneVoices = prompt.prompt.toneVoices;
+				campaign.prompts[promptIndex].toneVoices = prompt.toneVoices;
 			}
 
 			$('#carousel_' + prompt.id + ' p').remove();

@@ -15,71 +15,46 @@ namespace D12.ChatGPT.DataModel
         [Display(Name = "Id")]
         public long Id { get; set; }
 
-        [Column(@"PromptResultId", Order = 2, TypeName = "bigint")]
+        [Column(@"CampaignId", Order = 2, TypeName = "bigint")]
         [Required]
-        [Display(Name = "Prompt result ID")]
-        public long PromptResultId { get; set; }
+        [Display(Name = "Campaign ID")]
+        public long CampaignId { get; set; }
 
-        [Column(@"Object", Order = 3, TypeName = "varchar")]
+        [Column(@"Message", Order = 3, TypeName = "varchar")]
         [Required]
-        [MaxLength(100)]
-        [StringLength(100)]
-        [Display(Name = "Object")]
-        public string Object { get; set; }
+        [MaxLength(1000)]
+        [StringLength(1000)]
+        [Display(Name = "Message")]
+        public string Message { get; set; }
 
-        [Column(@"Created", Order = 4, TypeName = "smalldatetime")]
-        [Required]
-        [Display(Name = "Created")]
-        public System.DateTime Created { get; set; }
+        [Column(@"Type", Order = 4, TypeName = "varchar")]
+        [MaxLength(150)]
+        [StringLength(150)]
+        [Display(Name = "Type")]
+        public string Type { get; set; }
 
-        [Column(@"Model", Order = 5, TypeName = "varchar")]
-        [Required]
-        [MaxLength(100)]
-        [StringLength(100)]
-        [Display(Name = "Model")]
-        public string Model { get; set; }
+        [Column(@"Code", Order = 5, TypeName = "varchar")]
+        [MaxLength(150)]
+        [StringLength(150)]
+        [Display(Name = "Code")]
+        public string Code { get; set; }
 
-        [Column(@"Prompt_Tokens", Order = 6, TypeName = "int")]
-        [Required]
-        [Display(Name = "Prompt tokens")]
-        public int PromptTokens { get; set; }
+        [Column(@"Param", Order = 6, TypeName = "varchar")]
+        [MaxLength(150)]
+        [StringLength(150)]
+        [Display(Name = "Param")]
+        public string Param { get; set; }
 
-        [Column(@"Completion_Tokens", Order = 7, TypeName = "int")]
-        [Required]
-        [Display(Name = "Completion tokens")]
-        public int CompletionTokens { get; set; }
-
-        [Column(@"Total_Tokens", Order = 8, TypeName = "int")]
-        [Required]
-        [Display(Name = "Total tokens")]
-        public int TotalTokens { get; set; }
-
-        [Column(@"Finish_Reason", Order = 9, TypeName = "varchar")]
-        [Required]
-        [MaxLength(50)]
-        [StringLength(50)]
-        [Display(Name = "Finish reason")]
-        public string FinishReason { get; set; }
-
-        [Column(@"Index", Order = 10, TypeName = "int")]
-        [Required]
-        [Display(Name = "Index")]
-        public int Index { get; set; }
-
-        [Column(@"EntryDate", Order = 11, TypeName = "smalldatetime")]
+        [Column(@"EntryDate", Order = 7, TypeName = "smalldatetime")]
         [Required]
         [Display(Name = "Entry date")]
         public System.DateTime EntryDate { get; set; }
 
 
-        [ForeignKey("PromptResultId")] public virtual ChatGptPromptResult ChatGptPromptResult { get; set; }
+        [ForeignKey("CampaignId")] public virtual SeoCampaign SeoCampaign { get; set; }
 
         public ChatGptPromptLog()
         {
-            PromptTokens = 0;
-            CompletionTokens = 0;
-            TotalTokens = 0;
-            Index = 0;
             EntryDate = System.DateTime.Now;
         }
     }

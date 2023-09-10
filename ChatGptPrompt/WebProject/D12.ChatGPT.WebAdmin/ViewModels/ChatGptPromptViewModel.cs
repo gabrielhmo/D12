@@ -54,6 +54,10 @@ namespace D12.ChatGPT.WebAdmin.ViewModels
         [Display(Name = "Max Word length")]
         public int? MaxWord { get; set; }
 
+        [Display(Name = "Max prompt result")]
+        public int MaxPromptResult { get; set; }
+
+
         [Required]
         [Display(Name = "Active")]
         public bool Active { get; set; }

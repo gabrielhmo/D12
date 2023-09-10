@@ -14,9 +14,10 @@ namespace D12.ChatGPT.DataAccess
 
         public ChatGptPromptLogConfiguration(string schema)
         {
-            Property(x => x.Object).IsUnicode(false);
-            Property(x => x.Model).IsUnicode(false);
-            Property(x => x.FinishReason).IsUnicode(false);
+            Property(x => x.Message).IsUnicode(false);
+            Property(x => x.Type).IsOptional().IsUnicode(false);
+            Property(x => x.Code).IsOptional().IsUnicode(false);
+            Property(x => x.Param).IsOptional().IsUnicode(false);
 
         }
     }

@@ -24,6 +24,7 @@ namespace D12.ChatGPT.DTO
         public int? MaxLength { get; set; }
         public int? MinWord { get; set; }
         public int? MaxWord { get; set; }
+        public int MaxPromptResult { get; set; }
         public bool Sent { get; set; }
         public DateTime? SentDate { get; set; }
         public bool Active { get; set; }

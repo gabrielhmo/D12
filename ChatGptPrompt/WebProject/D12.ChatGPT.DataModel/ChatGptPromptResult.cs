@@ -37,15 +37,12 @@ namespace D12.ChatGPT.DataModel
         [Display(Name = "Entry date")]
         public System.DateTime? EntryDate { get; set; }
 
-        public virtual System.Collections.Generic.ICollection<ChatGptPromptLog> ChatGptPromptLog { get; set; }
-
 
         [ForeignKey("PromptId")] public virtual ChatGptPrompt ChatGptPrompt { get; set; }
 
         public ChatGptPromptResult()
         {
             Active = false;
-            ChatGptPromptLog = new System.Collections.Generic.List<ChatGptPromptLog>();
         }
     }
 

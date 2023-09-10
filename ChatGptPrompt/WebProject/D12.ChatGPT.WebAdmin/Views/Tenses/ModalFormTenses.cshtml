@@ -1,6 +1,7 @@
-﻿@model D12.ChatGPT.DataModel.AspNetRoles
+﻿
+@model D12.ChatGPT.WebAdmin.ViewModels.TensesViewModel
 
-<div id="ModalRol" class="modal fade" data-backdrop="static" data-keyboard="false">
+<div id="ModalTenses" class="modal fade" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div id="modal-loading" style="display:none;">
@@ -13,16 +14,24 @@
                 <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body" style="height:130px;">
-                <form id="FormRol">
+                <form id="FormTenses">
                     @Html.AntiForgeryToken()
                     @Html.HiddenFor(m => m.Id)
 
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             <div class="form-group">
-                                @Html.LabelFor(m => m.Name, new { @class = "control-label" })
-                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Name)
+                                @Html.LabelFor(m => m.Tense, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.Tense, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Tense)
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <div class="form-group" style="padding-top:30px;">
+                                    <span style="display:inline-block">@Html.CheckBoxFor(m => m.Active, true)</span>
+                                    @Html.LabelFor(m => m.Active, new { @class = "control-label" })
+                                </div>
                             </div>
                         </div>
                     </div>

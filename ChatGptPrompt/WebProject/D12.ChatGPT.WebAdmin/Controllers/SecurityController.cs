@@ -1,4 +1,5 @@
-﻿using D12.ChatGPT.DataAccess;
+﻿using AutoMapper;
+using D12.ChatGPT.DataAccess;
 using D12.ChatGPT.DataRepository;
 using D12.ChatGPT.DTO;
 using Microsoft.AspNet.Identity;
@@ -6,30 +7,37 @@ using System.Web.Mvc;
 
 namespace D12.ChatGPT.WebAdmin.Controllers
 {
-    [RouteArea("Ajustes")]
-    [RoutePrefix("Seguridad")]
+    [RouteArea("Settings")]
+    [RoutePrefix("Security")]
     [Route("{action=Index}")]
     [Authorize]
-    public class SeguridadController : Controller
+    public class SecurityController : Controller
     {
-        private const string SiteMapName = "Usuarios";
+        private const string SiteMapName = "Security";
 
         private UnitOfWork unitWork = new UnitOfWork(new HOnlineDbContext());
-
         private SiteMapRolPolicyDTO siteMapRolPolicyDTO = new SiteMapRolPolicyDTO();
         bool isReadOnly = true;
+        private IMapper imapper;
 
-        public SeguridadController()
+        public SecurityController()
         {
-            string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            siteMapRolPolicyDTO = unitWork.SiteMapPolicies.GetPolicyBySiteMapByUser(currentUserId, SiteMapName);
+            var currentUser = System.Web.HttpContext.Current.User;
+            siteMapRolPolicyDTO = unitWork.SiteMapPolicies.GetPolicyBySiteMapByUser(currentUser.Identity.GetUserId(), SiteMapName);
             //Set if user is ReadOnly
             isReadOnly = (siteMapRolPolicyDTO.Write == false);
+
+            if (currentUser.IsInRole("Administrador"))
+                isReadOnly = false;
+
+            imapper = MvcApplication.MapperConfiguration.CreateMapper();
+
+            isReadOnly = false;
         }
 
         [Authorize(Roles = "Administrador")]
-        // GET: Usuarios
-        public ActionResult Usuarios()
+        // GET: Security
+        public ActionResult Users()
         {
             ViewBag.IsReadOnly = isReadOnly;
             return View();
@@ -47,6 +55,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             ViewBag.IsReadOnly = isReadOnly;
             return View();
         }
+
 
     }
 }

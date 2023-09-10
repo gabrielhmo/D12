@@ -32,7 +32,7 @@ function GetPaginUrl(pager, pageNum) {
 }
 
 //URL - Rol
-var urlBaseRol = 'Ajustes/Roles/';
+var urlBaseRol = 'Security/Roles/';
 function UrlRol(newPage, newSearch, newPageSize) {
 
     pageNumberRol = newPage || pageNumberRol;
@@ -48,8 +48,8 @@ function UrlExportRol(format) {
 
 //DhxLayout
 function onReady() {
-    SetContainerAvailableHeight($MainContainer, $ContainerLayout, 140);
-    InitForms();
+    SetContainerAvailableHeight($MainContainer, $ContainerLayout, 125);
+    initModalFormRol();
 }
 function onResize() {
     SetContainerAvailableHeight($MainContainer, $ContainerLayout, 165);
@@ -149,20 +149,20 @@ function GetDhxToolbarRol() {
         iconset: "awesome",
         items: [
             {
-                type: "buttonSelect", id: "new", text: "Nuevo", img: "far fa-file", img_disabled: "far fa-file", renderSelect: true, openAll: false,
+                type: "buttonSelect", id: "new", text: "New", img: "far fa-file", img_disabled: "far fa-file", renderSelect: true, openAll: false,
                 options: [
-                    { type: "button", id: "delete", text: "Eliminar", img: "fas fa-trash", img_disabled: "fas fa-trash" }
+                    { type: "button", id: "delete", text: "Delete", img: "fas fa-trash", img_disabled: "fas fa-trash" }
                 ]
             },
             {
-                type: "buttonSelect", id: "copyClipboard", text: "Copiar", img: "fa fa-clipboard", img_disabled: "fa fa-file-o", renderSelect: false, openAll: true,
+                type: "buttonSelect", id: "copyClipboard", text: "Copy", img: "fa fa-clipboard", img_disabled: "fa fa-file-o", renderSelect: false, openAll: true,
                 options: [
-                    { type: "button", id: "copyExcel", text: "Copiar a Excel", img: "fa fa-file-excel-o", img_disabled: "fa fa-file-excel-o" },
+                    { type: "button", id: "copyExcel", text: "Copy to Excel", img: "fa fa-file-excel-o", img_disabled: "fa fa-file-excel-o" },
                     { type: "button", id: "copyCSV", text: " Copy to CSV", img: "fa fa-file-text-o", img_disabled: "fa fa-file-text-o" }
                 ]
             },
             { type: "separator", id: "sep2" },
-            { type: "button", id: "reload", text: "Refrescar", img: "fas fa-sync-alt", img_disabled: "fas fa-sync-alt" },
+            { type: "button", id: "reload", text: "Refresh", img: "fas fa-sync-alt", img_disabled: "fas fa-sync-alt" },
             { type: "text", id: "strSearch", text: SearchComponent('Rol', false) }
         ],
         onload: function () {
@@ -204,7 +204,7 @@ function InitDxhGridRol() {
         return "Editar información";
     };
 
-    if (isReadOnly) 
+    if (isReadOnly)
         dhxGridRol.setColumnHidden(1, true);
 
     //onRowSelect
@@ -252,7 +252,7 @@ function InitDxhGridRol() {
             dhxGridRol.setCheckedRows(0, 0);
     });
 
-    $('#PageSizeRol').on('change', function () {
+    $('#PageSizeRol').change(function () {
 
         var sizeGrid = $(this).find(":selected").val();
         ReInitPaging(paginationRol, 'Rol');
@@ -268,8 +268,8 @@ function GetDhxGridConfRol() {
         head: [
             { id: 'chk', width: 43, type: 'ch', align: 'center', sort: 'na', value: '<div class="checkbox"><input type="checkbox" id="RolChk"/><label for="RolChk"></label></div>', hidden: 'false' },
             { id: 'Id', width: 0, type: 'ro', align: 'left', sort: 'na', value: 'Id', hidden: 'true' },
-            { id: 'Name', width: '*', type: 'ron', align: 'left', sort: 'str', value: 'Name', hidden: 'false' },
-            { id: 'Dummy', width: 50, type: 'ro', align: 'left', sort: 'na', value: '', hidden: 'false' }
+            { id: 'Name', width: 500, type: 'ron', align: 'left', sort: 'str', value: 'Name', hidden: 'false' },
+            { id: 'Dummy', width: '*', type: 'ro', align: 'left', sort: 'na', value: '', hidden: 'false' }
         ],
         rows: ''
     };
@@ -293,170 +293,104 @@ function OpenFormRol(rId) {
         $('#modal-loading').fadeOut();
 }
 //Modal Buttons - Rol
-function InitForms() {
+function initModalFormRol() {
 
     //Button Save-Rol
     $('.modal-dialog > .modal-content > .modal-footer button.btnSave', $ModalFormRol).on('click', function (event) {
-        $($FormRol).submit();
+        submitFormRol();
     });
 
     $(' > .modal-dialog > .modal-content > .modal-footer button.btnNew', $ModalFormRol).on('click', function (event) {
         hideFormAlert($AlertFormRol);
-        ClearForm($FormRol);
+        clearForm($FormRol);
     });
 
     //Modal-Rol
     $ModalFormRol.on('hidden.bs.modal', function () {
-        ClearForm($FormRol);
+        clearForm($FormRol);
     });
 
     //Enter key Naviation
     enterFormNavigation($FormRol);
-
-    //Init forms
-    InitRolForm();
 }
-
 //Form - Rol
-function InitRolForm() {
+async function submitFormRol() {
 
     //Form validate
-    var formValidator = $FormRol.validate();
+    if (isFormProcessing)
+        return;
 
-    $FormRol.submit(function (e) {
+    if ($FormRol.valid()) {
 
-        e.preventDefault();
+        var formData = formToJsonString(document.getElementById($FormRol.attr('Id')));
 
-        if (isFormProcessing)
-            return;
+        // Start loading
+        $('#modal-loading').fadeIn();
 
-        if (formValidator.valid()) {
+        disableAll($FormRol, true);
+        isFormProcessing = true;
 
-            var formData = FormToJsonString(document.getElementById($FormRol.attr('Id')));
+        var response = await ajaxCall(rootPath + urlBaseRol + 'id', formData, false, Method.POST, Datatype.Json, ContentType.Json);
 
-            // Start loading
-            $('#modal-loading').fadeIn();
+        if (response.Result) {
+            if (response.Data !== undefined) {
+                $('#id').val(response.Data.id);
 
-            DisableAll($FormRol, true);
-            isFormProcessing = true;
+                var active = response.Data.active === true ? "<i class=\"fas fa-check Checked\">" : "<i class=\"fas fa-check unChecked\">";
+                var entrydate = moment(response.Data.entryDate).format('MM/DD/YY HH:mm');
 
-            AjaxCall(rootPath + urlBaseRol + 'id', formData, false, Method.POST, Datatype.Json, ContentType.Json)
-                .then(function (response) {
+                if (response.Action === "ADD") {
+                    dhxGridRol.addRow(response.Data.id,
+                        [0,
+                            response.Data.id,
+                            response.Data.name,
+                            response.Data.email,
+                            active,
+                            entrydate,
+                            ''],
+                        0);
+                }
+                else {
 
-                    DisableAll($FormRol, false);
-                    isFormProcessing = false;
+                    dhxGridRol.cells(response.Data.id, dhxGridRol.getColIndexById("chk")).setValue(0);
+                    dhxGridRol.cells(response.Data.id, dhxGridRol.getColIndexById("Id")).setValue(response.Data.id);
+                    dhxGridRol.cells(response.Data.id, dhxGridRol.getColIndexById("Name")).setValue(response.Data.name);
+                    dhxGridRol.cells(response.Data.id, dhxGridRol.getColIndexById("Dummy")).setValue('');
+                }
 
-                    $('#modal-loading').fadeOut();
-
-                    if (response.result) {
-
-                        if (response.data !== undefined) {
-                            $('#id').val(response.data.id);
-
-                            var active = response.data.active === true ? "<i class=\"fas fa-check Checked\">" : "<i class=\"fas fa-check unChecked\">";
-
-                            if (response.action === "ADD") {
-                                dhxGridRol.addRow(response.data.id,
-                                    [0,
-                                        response.data.id,
-                                        response.data.name,
-                                        ''],
-                                    0);
-                            }
-                            else {
-
-                                dhxGridRol.cells(response.data.id, dhxGridRol.getColIndexById("chk")).setValue(0);
-                                dhxGridRol.cells(response.data.id, dhxGridRol.getColIndexById("Id")).setValue(response.data.id);
-                                dhxGridRol.cells(response.data.id, dhxGridRol.getColIndexById("Name")).setValue(response.data.name);
-                                dhxGridRol.cells(response.data.id, dhxGridRol.getColIndexById("Dummy")).setValue('');
-                            }
-
-                            dhxGridRol.selectRowById(response.data.id, false, true, false);
-                        }
-
-                        ShowFormAlert(Status.Success, response.title, response.message, $AlertFormRol, response.errors);
-                    }
-                    else {
-                        ShowFormAlert(Status.Error, response.title, response.message, $AlertFormRol, response.errors);
-                    }
-
-                }).catch(function (errorResponse) {
-                    DisableAll($FormRol, false);
-                    isFormProcessing = false;
-                    $('#modal-loading').fadeOut();
-
-                    if (errorResponse.Status === 401) {
-                        errorResponse.Message = "Wrong username or password";
-                    }
-                    else {
-                        ShowFormAlert(Status.Error, errorResponse.Title, errorResponse.Message, $AlertFormRol, errorResponse.errors);
-                    }
-                });
+                dhxGridRol.selectRowById(response.Data.id, false, true, false);
+            }
         }
-    });
+
+        showFormAlert(response.MessageType, response.Title, response.Message, $AlertFormRol, response.Errors);
+
+        disableAll($FormRol, false);
+        isFormProcessing = false;
+        $('#modal-loading').fadeOut();
+
+    }
 }
 //Edit - Rol
-function loadRol(id) {
+function loadRol(rId) {
 
-    if (id === undefined)
-        ClearForm($FormRol);
+    clearForm($FormRol);
 
     if (!loadInfo) {
 
         $('#modal-loading').fadeIn();
 
-        loadInfo = true;
+        var id = dhxGridRol.cells(rId, dhxGridRol.getColIndexById("Id")).getValue();
+        var name = dhxGridRol.cells(rId, dhxGridRol.getColIndexById("Name")).getValue();
 
-        var parameter = { id: id };
+        $('#Id', $FormRol).val(id);
+        $('#Name', $FormRol).val(name);
 
-
-        AjaxCall(rootPath + urlBaseRol + 'id', parameter, false, Method.GET, Datatype.Json, ContentType.Json)
-            .then(function (response) {
-
-                isFormProcessing = false;
-                DisableAll($FormRol, false);
-
-                $('#modal-loading').fadeOut();
-
-                if (response.result) {
-
-                    loadInfo = false;
-
-                    if (response.Errors !== undefined) {
-                        var message = '';
-                        for (var i = 0; i < response.Errors.length; i++) {
-                            message += response.Errors[i].messageTitle + '\r\n' +
-                                response.Errors[i].message + '\r\n\r\n';
-                        }
-                        sweetAlert('Error', message, 'error');
-                    }
-                    else {
-
-                        JsonToFormBinding(response.data, $FormRol);
-                        $('#modal-loading').fadeOut();
-                    }
-                }
-                else {
-                    ShowFormAlert(Status.Error, errorResponse.title, '', $AlertFormRol, errorResponse.errors);
-                }
-
-            }).catch(function (errorResponse) {
-                DisableAll($FormRol, false);
-                isFormProcessing = false;
-                $('#modal-loading').fadeOut();
-
-                if (errorResponse.Status === 401) {
-                    errorResponse.Message = "Wrong username or password";
-                }
-                else {
-                    ShowFormAlert(Status.Error, errorResponse.title, errorResponse.message, $AlertFormRol, errorResponse.errors);
-                }
-            });
-
+        $('#modal-loading').fadeOut();
     }
 }
 //Delete - Rol
-function deleteRol() {
+async function deleteRol() {
+
     var RolId = dhxGridRol.getSelectedRowId();
 
     var rIds = [];
@@ -467,58 +401,56 @@ function deleteRol() {
     });
 
     if (rIds.length === 0) {
-        swal("Acción requerida", "Para continuar debe marcar los registros que desea eliminar", "info");
+        swal("Action Required", "To continue, you must check at least one row.", "info");
     }
     else {
         swal({
-            title: '¿Eliminar registros?',
-            text: "Por favor, confirme esta acción.",
+            title: 'Delete records?',
+            text: "Please, confirm!",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Delete!'
-        }).then((result) => {
+        }).then(async (result) => {
 
             if (result.value) {
 
                 var urlDelete = rootPath + urlBaseRol + "Delete?rnd=" + createRandomString(10);
                 var parameter = JSON.stringify({ ids: rIds });
 
-                AjaxCall(urlDelete, parameter, false, Method.POST, Datatype.Json, ContentType.Json)
-                    .then(function (response) {
 
-                        if (response.errors.length > 0) {
-                            var message = '';
-                            for (let i = 0; i < response.errors.length; i++) {
-                                message += response.errors[i].messageTitle + '\r\n' +
-                                    response.errors[i].message + '\r\n\r\n';
-                            }
-                            sweetAlert('Error', message, 'error');
-                        }
-                        else {
+                var response = await ajaxCall(urlDelete, parameter, false, Method.POST, Datatype.Json, ContentType.Json)
 
-                            for (var i = 0; i < response.data.deleted.length; i++) {
-                                dhxGridRol.deleteRow(response.data.deleted[i]);
-                            }
+                if (response.Result) {
+                    var errorMessage = '';
 
-                            Swal.fire(
-                                response.title,
-                                response.message,
-                                response.action
-                            );
-                        }
-                    }).catch(function (errorResponse) {
+                    for (var i = 0; i < response.Data.deleted.length; i++) {
+                        dhxGridRol.deleteRow(response.Data.deleted[i]);
+                    }
 
-                        if (errorResponse.Status === 401) {
-                            errorResponse.Message = "Wrong username or password";
+                    if (response.Errors.length > 0) {
+
+                        errorMessage = '\r\n';
+
+                        for (let i = 0; i < response.Errors.length; i++) {
+                            errorMessage += response.Errors[i].messageTitle + '\r\n' +
+                                response.Errors[i].message + '\r\n\r\n';
                         }
-                        else {
-                            ShowMessage(Status.Error, errorResponse.Title, errorResponse.Message, false, 'toast-bottom-center');
-                        }
-                    });
+                        sweetAlert('Error', message, 'error');
+                    }
+
+
+                    Swal.fire(
+                        response.Title,
+                        response.Message + ' ' + errorMessage,
+                        response.Action
+                    );
+                }
+                else {
+                    ShowMessage(response.MessageType, response.Title, response.Message, true, 'toast-bottom-center');
+                }
             }
-
         });
     }
 }

@@ -138,7 +138,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             return new JsonNetResult { Data = jsonData };
         }
         [HttpPost]
-        public JsonNetResult Id(ClientDTO ClientRequest)
+        public JsonNetResult Id(ClientDTO clientRequest)
         {
             JsonData jsonData = new JsonData();
             Client ClientInfo = new Client();
@@ -159,19 +159,19 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                 }
                 else
                 {
-                    if (ClientRequest.Id == 0)
+                    if (clientRequest.Id == 0)
                     {
-                        ClientInfo = imapper.Map<Client>(ClientRequest);
+                        ClientInfo = imapper.Map<Client>(clientRequest);
                         unitWork.Client.Add(ClientInfo);
                         jsonData.Action = "ADD";
                     }
                     else
                     {
-                        ClientInfo = unitWork.Client.Get(ClientRequest.Id);
+                        ClientInfo = unitWork.Client.Get(clientRequest.Id);
 
-                        ClientInfo.Name = ClientRequest.Name;
-                        ClientInfo.Email = ClientRequest.Email;
-                        ClientInfo.Active = ClientRequest.Active;
+                        ClientInfo.Name = clientRequest.Name;
+                        ClientInfo.Email = clientRequest.Email;
+                        ClientInfo.Active = clientRequest.Active;
 
                         jsonData.Action = "UPDATE";
                     }

@@ -15,14 +15,14 @@ using Microsoft.AspNet.Identity;
 
 namespace D12.ChatGPT.WebAdmin.Controllers
 {
-    [RouteArea("Ajustes")]
+    [RouteArea("Security")]
     [RoutePrefix("SiteMap")]
     [Route("{action=Index}")]
     [Authorize(Roles = "Administrador")]
     [Authorize]
     public class SiteMapController : Controller
     {
-        private const string SiteMapName = "Panel de Control";
+        private const string SiteMapName = "SiteMap";
 
         private UnitOfWork unitWork = new UnitOfWork(new HOnlineDbContext());
 

@@ -6,10 +6,12 @@ using D12.ChatGPT.DTO;
 using D12.ChatGPT.WebAdmin.Models;
 using HermosilloOnlineLib;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using OpenAI_API;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -76,7 +78,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             {
                 try
                 {
-                    var seoCampaignInfo = unitWork.SeoCampaign.Get(filter: x => x.Id == campaignId, "ClientCompany, ClientBusinessOffer, ChatGPTPrompt");
+                    var seoCampaignInfo = unitWork.SeoCampaign.Get(filter: x => x.Id == campaignId, "ClientCompany,ClientBusinessOffer,ChatGPTPrompt,ChatGptPromptLog");
 
                     if (seoCampaignInfo != null)
                     {
@@ -182,6 +184,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                         ChatGptPromptInfo.MaxLength = ChatGptPromptRequest.MaxLength;
                         ChatGptPromptInfo.MinWord = ChatGptPromptRequest.MinWord;
                         ChatGptPromptInfo.MaxWord = ChatGptPromptRequest.MaxWord;
+                        ChatGptPromptInfo.MaxPromptResult = ChatGptPromptRequest.MaxPromptResult;
                         ChatGptPromptInfo.Active = ChatGptPromptRequest.Active;
 
                         if (ChatGptPromptInfo.ChatGptPromptToneVoice.Count > 0)
@@ -218,8 +221,15 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                     {
                         unitWork.Complete();
 
-                        ChatGptPromptInfo = unitWork.ChatGptPrompt.Get(filter: x => x.Id == ChatGptPromptInfo.Id, "SeoCampaign,ChatGptRol,ControlType,Language,Tenses,ChatGptPromptToneVoice");
+                        ChatGptPromptInfo = unitWork.ChatGptPrompt.Get(filter: x => x.Id == ChatGptPromptInfo.Id, "SeoCampaign,ChatGptRol,ControlType,Language,Tenses");
                         var ChatGptPromptDTO = imapper.Map<ChatGptPromptDTO>(ChatGptPromptInfo);
+
+                        if (ChatGptPromptDTO != null)
+                        {
+                            List<ChatGptPromptToneVoice> toneVoices = unitWork.ChatGptPromptToneVoice.GetAll(filter: x => x.PromptId == ChatGptPromptInfo.Id, null, "SeoToneVoice").ToList();
+
+                            ChatGptPromptDTO.ToneVoices = imapper.Map<List<ChatGptPromptToneVoiceDTO>>(toneVoices);
+                        }
                         jsonData.Data = ChatGptPromptDTO;
                     }
                 }
@@ -384,23 +394,39 @@ namespace D12.ChatGPT.WebAdmin.Controllers
         }
        
         [HttpGet]
-        public async Task<JsonNetResult> UseChatGpt(long campaignId)
+        public async Task<JsonNetResult> UseChatGpt(long campaignId, long? promptId = null)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             JsonData jsonData = new JsonData();
-            //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
-            var openai = new OpenAIAPI("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");
+
+            string apiKey = ConfigurationManager.AppSettings["ChatGPTAPI"];
+
+            var openai = new OpenAIAPI(apiKey);
+            long currentPrompt = 0;
+            List<ChatGptPrompt> prompts = new List<ChatGptPrompt>();
 
             try
             {
-                var prompts = unitWork.ChatGptPrompt.GetAll(filter: x=>x.SeoCampaignId == campaignId && x.Active == true).ToList();
+
+                if (promptId != null)
+                {
+                    prompts = unitWork.ChatGptPrompt.GetAll(filter: x => x.SeoCampaignId == campaignId && x.Id == promptId && x.Active == true).ToList();
+                }
+                else
+                {
+                    prompts = unitWork.ChatGptPrompt.GetAll(filter: x => x.SeoCampaignId == campaignId && x.Active == true).ToList();
+                }
+
+
                 var promptResult = new List<ChatGptPromptResult>();
                 var chat = openai.Chat.CreateConversation();
                 var iteration = 0;
 
                 foreach (var prompt in prompts)
                 {
-                    if (prompt.ChatGptPromptResult.Count < 3 && iteration == 0)
+                    currentPrompt = prompt.Id;
+
+                    if (prompt.MaxPromptResult >= prompt.ChatGptPromptResult.Count && iteration == 0)
                     {
                         if ((GptRol)prompt.ChatGptRolId == GptRol.System)
                             chat.AppendSystemMessage(prompt.Prompt);
@@ -438,7 +464,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
 
                 unitWork.Complete();
 
-                var ChatGptPromptDTO = imapper.Map<ChatGptPromptDTO>(prompts);
+                var ChatGptPromptDTO = imapper.Map<List<ChatGptPrompt>>(prompts);
 
                 jsonData.Data = ChatGptPromptDTO;
                 jsonData.Result = true;
@@ -447,10 +473,29 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             }
             catch (Exception ex)
             {
-                var exception = ExceptionDescription.excepDesc(ex);
-
+                var exception = new ExceptionInfo();
                 exception.MessageTitle = "Error";
-                exception.Message = ex.Message;
+
+                if (!string.IsNullOrEmpty(ex.Message))
+                {
+                    ErrorResponse errorResponse = ExtractJsonFromString(ex.Message);
+
+                    if (errorResponse != null)
+                    {
+                        var chatlog = new ChatGptPromptLog();
+                        chatlog.CampaignId = campaignId;
+                        chatlog.Message = errorResponse.error.message;
+                        chatlog.Type = errorResponse.error.type;
+                        chatlog.Param = errorResponse.error.param;
+                        chatlog.Code = errorResponse.error.code;
+
+                        unitWork.ChatGPTPromptLog.Add(chatlog);
+                        unitWork.Complete();
+                        
+                        exception.Message = chatlog.Message;
+
+                    }
+                }
 
                 jsonData.Result = false;
                 jsonData.MessageType = ResultType.Error;
@@ -538,6 +583,33 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             short[] shortList = listString.Select(short.Parse).ToArray();
 
             return shortList;
+        }
+
+        public ErrorResponse ExtractJsonFromString(string input)
+        {
+            try
+            {
+                int startIndex = input.IndexOf('{');
+                int endIndex = input.LastIndexOf('}');
+                if (startIndex != -1 && endIndex != -1)
+                {
+                    string jsonString = input.Substring(startIndex, endIndex - startIndex + 1);
+
+                    // Deserialize the JSON string into the ErrorResponse object
+                    return JsonConvert.DeserializeObject<ErrorResponse>(jsonString);
+                }
+                else
+                {
+                    // Handle the case when the JSON object is not found in the input string
+                    return null;
+                }
+            }
+            catch (JsonException ex)
+            {
+                // Handle any JSON deserialization errors
+                Console.WriteLine("JSON deserialization error: " + ex.Message);
+                return null;
+            }
         }
 
         protected override void Dispose(bool disposing)

@@ -69,21 +69,26 @@ namespace D12.ChatGPT.DataModel
         [Display(Name = "Max word")]
         public int? MaxWord { get; set; }
 
-        [Column(@"Sent", Order = 13, TypeName = "bit")]
+        [Column(@"MaxPromptResult", Order = 13, TypeName = "int")]
+        [Required]
+        [Display(Name = "Max prompt result")]
+        public int MaxPromptResult { get; set; }
+
+        [Column(@"Sent", Order = 14, TypeName = "bit")]
         [Required]
         [Display(Name = "Sent")]
         public bool Sent { get; set; }
 
-        [Column(@"SentDate", Order = 14, TypeName = "smalldatetime")]
+        [Column(@"SentDate", Order = 15, TypeName = "smalldatetime")]
         [Display(Name = "Sent date")]
         public System.DateTime? SentDate { get; set; }
 
-        [Column(@"Active", Order = 15, TypeName = "bit")]
+        [Column(@"Active", Order = 16, TypeName = "bit")]
         [Required]
         [Display(Name = "Active")]
         public bool Active { get; set; }
 
-        [Column(@"EntryDate", Order = 16, TypeName = "smalldatetime")]
+        [Column(@"EntryDate", Order = 17, TypeName = "smalldatetime")]
         [Required]
         [Display(Name = "Entry date")]
         public System.DateTime EntryDate { get; set; }
@@ -106,11 +111,12 @@ namespace D12.ChatGPT.DataModel
         {
             ChatGptRolId = 2;
             LanguageCode = "ENG";
+            MaxPromptResult = 1;
             Sent = false;
             Active = true;
             EntryDate = System.DateTime.Now;
-            ChatGptPromptToneVoice = new System.Collections.Generic.List<ChatGptPromptToneVoice>();
             ChatGptPromptResult = new System.Collections.Generic.List<ChatGptPromptResult>();
+            ChatGptPromptToneVoice = new System.Collections.Generic.List<ChatGptPromptToneVoice>();
         }
     }
 

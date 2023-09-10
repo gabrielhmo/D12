@@ -1,2 +1,17 @@
 D12 - Alejandro Estrada
 alejandro.estrada.corepm@gmail.com
+
+
+1 - Agregar idioma en el cual se debe entregar el prompt y los contenidos.
+2 - Agregar en los subcontenidos : 
+una mini descripción textual de una imagen sugerida por AI que sería pertinente
+el título de dicha imagen (cumpliendo con recomendaciones SEO)
+la descripción alternativa (ALT) de dicha imagen (cumpliendo con recomendaciones SEO)
+3 - Agregar campos en cada tabla que indique la fecha de creación del contenido  asociado
+
+Reglas de Negocio
+Un Cliente puede tener una o más empresas
+Una Empresa puede ofrercer uno o más productos y/o servicios
+Un Productco o Servicio puede tener una o más campañas de promoción
+Cada campaña puede generar prompts para los diferentes controles
+

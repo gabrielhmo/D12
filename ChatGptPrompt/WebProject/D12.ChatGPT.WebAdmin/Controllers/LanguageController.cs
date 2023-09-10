@@ -1,77 +1,66 @@
-﻿using HermosilloOnlineLib;
+﻿using AutoMapper;
 using D12.ChatGPT.DataAccess;
 using D12.ChatGPT.DataModel;
 using D12.ChatGPT.DataRepository;
 using D12.ChatGPT.DTO;
 using D12.ChatGPT.WebAdmin.Models;
+using HermosilloOnlineLib;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Infrastructure;
-using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using AutoMapper;
 using System.Data.Entity.Validation;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace D12.ChatGPT.WebAdmin.Controllers
 {
-    [RouteArea("Security")]
-    [RoutePrefix("Roles")]
+    [Authorize]
+    [RouteArea("PromptOptions")]
+    [RoutePrefix("Language")]
     [Route("{action=Index}")]
     [Authorize(Roles = "Administrador")]
-    public class RolesController : Controller
+    public class LanguageController : Controller
     {
-        private const string SiteMapName = "Roles";
+        private const string SiteMapName = "Language";
 
         private UnitOfWork unitWork = new UnitOfWork(new HOnlineDbContext());
-
         private SiteMapRolPolicyDTO siteMapRolPolicyDTO = new SiteMapRolPolicyDTO();
         bool isReadOnly = true;
+        private IMapper imapper;
 
-        public RolesController()
+        public LanguageController()
         {
-            string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            siteMapRolPolicyDTO = unitWork.SiteMapPolicies.GetPolicyBySiteMapByUser(currentUserId, SiteMapName);
+            var currentUser = System.Web.HttpContext.Current.User;
+            siteMapRolPolicyDTO = unitWork.SiteMapPolicies.GetPolicyBySiteMapByUser(currentUser.Identity.GetUserId(), SiteMapName);
             //Set if user is ReadOnly
             isReadOnly = (siteMapRolPolicyDTO.Write == false);
+
+            if (currentUser.IsInRole("Administrator"))
+                isReadOnly = false;
+
+            imapper = MvcApplication.MapperConfiguration.CreateMapper();
+
+            isReadOnly = false;
         }
 
-
-        // GET: Roles
-        [HttpGet]
-        public JsonNetResult RolList()
+        // GET: Language
+        public ActionResult Index()
         {
-            JsonData jsonData = new JsonData();
-            List<ExceptionInfo> exInfo = new List<ExceptionInfo>();
-            DhxGridData dhxGridData = new DhxGridData();
-
-            var rolesList = unitWork.Rol.GetAll();
-
-            foreach (AspNetRoles UsersItem in rolesList)
-            {
-                string iconAddNew = string.Empty;
-
-                DhxRows newRow = new DhxRows
-                {
-                    Id = UsersItem.Id.ToString()
-                };
-
-                newRow.Data.Add("");
-                newRow.Data.Add(UsersItem.Id.ToString());
-                newRow.Data.Add(UsersItem.Name.ToString());
-                newRow.Data.Add("");
-                dhxGridData.rows.Add(newRow);
-            }
-
-            return new JsonNetResult { Data = dhxGridData };
+            return View();
         }
 
         [HttpGet]
         public JsonNetResult All(QueryParameters dataRequest, int? col, string dir, string search)
         {
+
             //Init Sort & Filter
-            var sorts = new EntityFrameworkPaginate.Sorts<RolDTO>();
-            var filter = new EntityFrameworkPaginate.Filters<RolDTO>();
+            var sorts = new EntityFrameworkPaginate.Sorts<Language>();
+            var filter = new EntityFrameworkPaginate.Filters<Language>();
 
             //Init response objects
             JsonData jsonData = new JsonData();
@@ -81,34 +70,32 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             //Set default sort
             bool isDesc = (dir == "asc");
             var priority = 1;
-            sorts.Add(true, x => x.Name, isDesc, priority);
-
-            //Set filter string if exists
-            filter.Add(!string.IsNullOrWhiteSpace(search),
-            x => (x.Name.ToLower())
-            .Contains(search.ToLower()));
+            sorts.Add(true, x => x.Label, isDesc, priority);
 
             //Get Departamentos list
-            var rolList = unitWork.Rol.GetRolDTO(dataRequest.PageNumber, dataRequest.PageSize, sorts, filter);
+            var LanguageList = unitWork.Language.GetPaginated(dataRequest.PageNumber, dataRequest.PageSize, sorts, filter);
 
             //Prepare DhxlGrid data
-            foreach (RolDTO rolItem in rolList.Results)
+            foreach (Language LanguageItem in LanguageList.Results)
             {
                 DhxRows newRow = new DhxRows
                 {
-                    Id = rolItem.Id.ToString()
+                    Id = LanguageItem.Code.ToString()
                 };
 
+                string active = (LanguageItem.Active) ? "<i class=\"fas fa-check Checked\">" : "<i class=\"fas fa-check unChecked\">";
+
                 newRow.Data.Add("");
-                newRow.Data.Add(rolItem.Id.ToString());
-                newRow.Data.Add(rolItem.Name.ToString());
+                newRow.Data.Add(LanguageItem.Code);
+                newRow.Data.Add(LanguageItem.Label);
+                newRow.Data.Add(active);
 
                 newRow.Data.Add("");
                 dhxGridData.rows.Add(newRow);
             }
 
             //Set pagination
-            if (rolList.RecordCount == 0)
+            if (LanguageList.RecordCount == 0)
             {
                 dataRequest.PageNumber = 0;
                 dataRequest.PageNumber = 0;
@@ -116,9 +103,9 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             }
             else
             {
-                dataRequest.TotalRecords = rolList.RecordCount;
-                dataRequest.PageSize = rolList.PageSize;
-                dataRequest.TotalPages = rolList.PageCount;
+                dataRequest.TotalRecords = LanguageList.RecordCount;
+                dataRequest.PageSize = LanguageList.PageSize;
+                dataRequest.TotalPages = LanguageList.PageCount;
             }
 
             //Set response object
@@ -129,16 +116,18 @@ namespace D12.ChatGPT.WebAdmin.Controllers
         }
 
         [HttpGet]
-        public JsonNetResult Id(string id)
+        public JsonNetResult Id(string code)
         {
             JsonData jsonData = new JsonData();
 
             try
             {
-                RolDTO rolInfo = unitWork.Rol.LoadRolDTO(id);
+                Language LanguageInfo = unitWork.Language.Get(code);
+
+                var LanguageDTO = imapper.Map<LanguageDTO>(LanguageInfo);
 
                 //Get users list of DhxDataGrid in Json Format
-                jsonData.Data = rolInfo;
+                jsonData.Data = LanguageDTO;
             }
             catch (System.Exception ex)
             {
@@ -148,10 +137,11 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             return new JsonNetResult { Data = jsonData };
         }
         [HttpPost]
-        public JsonNetResult Id(AspNetRoles rolRequest)
+        public JsonNetResult Id(LanguageDTO LanguageRequest)
         {
             JsonData jsonData = new JsonData();
-            AspNetRoles rol = new AspNetRoles();
+            Language LanguageInfo = new Language();
+            bool hasValidationError = false;
 
             try
             {
@@ -168,25 +158,31 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(rolRequest.Id))
+                    if (string.IsNullOrEmpty(LanguageRequest.Code))
                     {
-                        rolRequest.Id = Guid.NewGuid().ToString();
-                        unitWork.Rol.Add(rolRequest);
+                        LanguageInfo = imapper.Map<Language>(LanguageRequest);
+                        unitWork.Language.Add(LanguageInfo);
                         jsonData.Action = "ADD";
                     }
                     else
                     {
+                        LanguageInfo = unitWork.Language.Get(LanguageRequest.Code);
+
+                        LanguageInfo.Code = LanguageRequest.Code.ToUpper();
+                        LanguageInfo.Label = LanguageRequest.Label;
+                        LanguageInfo.Active = LanguageRequest.Active;
+
                         jsonData.Action = "UPDATE";
-                        rol = unitWork.Rol.Get(rolRequest.Id);
-                        rol.Name = rolRequest.Name;
                     }
 
 
-                    ICollection<ValidationResult> validResult = unitWork.Rol.ValidationClass(rolRequest);
+                    ICollection<ValidationResult> validResult = unitWork.Language.ValidationClass(LanguageInfo);
 
                     //If validation data found errors return error
                     if (validResult.Count > 0)
                     {
+                        hasValidationError = true;
+
                         foreach (ValidationResult item in validResult)
                         {
                             jsonData.Errors.Add(new ExceptionInfo
@@ -194,7 +190,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                                 Result = false,
                                 ErrorType = ErrorType.NONE,
                                 Status = Status.Error,
-                                MessageTitle = "Error de validación",
+                                MessageTitle = "Validation error",
                                 Message = item.ErrorMessage
                             });
                         }
@@ -204,9 +200,10 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                     {
                         unitWork.Complete();
 
-                        var rolDTO = unitWork.Rol.LoadRolDTO(rolRequest.Id);
+                        LanguageInfo = unitWork.Language.Get(filter: x => x.Code == LanguageInfo.Code);
+                        var LanguageDTO = imapper.Map<LanguageDTO>(LanguageInfo);
 
-                        jsonData.Data = rolDTO;
+                        jsonData.Data = LanguageDTO;
                     }
                 }
             }
@@ -222,9 +219,31 @@ namespace D12.ChatGPT.WebAdmin.Controllers
 
                         if (excInfo.Contains("Violation of UNIQUE KEY constraint"))
                         {
-                            exception.MessageTitle = "Error - Duplicate Information";
-                            exception.Message = "There already exists a Role with the same Name. Please verify the information.";
+                            hasValidationError = true;
+                            exception.MessageTitle = "Duplicate information: ";
+
+                            if (ex.InnerException.InnerException.Message.Contains("_Code"))
+                                exception.Message = "Code";
+
+                            if (ex.InnerException.InnerException.Message.Contains("_Label"))
+                                exception.Message = "Label";
                         }
+                    }
+                }
+
+                jsonData.Errors.Add(exception);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                hasValidationError = true;
+
+                var exception = new ExceptionInfo();
+
+                foreach (var dbEntityValidation in ex.EntityValidationErrors)
+                {
+                    foreach (var error in dbEntityValidation.ValidationErrors)
+                    {
+                        exception.Message += string.Format("{0}\r\n", error.ErrorMessage);
                     }
                 }
 
@@ -240,26 +259,34 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                 jsonData.Errors.Add(exception);
             }
 
-            if (jsonData.Errors.Count > 0)
+            if (jsonData.Errors.Count > 0 || jsonData.ValidationError.Count > 0)
             {
                 jsonData.Result = false;
-                jsonData.Title = "Error: No data saved";
-                jsonData.Message =
-                    "The information could not be saved. You can try again, if the problem persists, inform the technical area.";
+                jsonData.MessageType = ResultType.Error;
+
+                if (hasValidationError)
+                {
+                    jsonData.Title = "";
+                    jsonData.Message = "Please check the following validation errors:";
+                }
+                else
+                {
+                    jsonData.Title = "Error. ";
+                    jsonData.Message = "The information could not be saved. You can try again, if the problem persists, inform the technical area.";
+                }
             }
             else
             {
                 jsonData.Result = true;
                 jsonData.MessageType = ResultType.Success;
                 jsonData.Title = "Done..!";
-                jsonData.Message = "The information was saved successfully.";;
+                jsonData.Message = "The information was saved successfully."; ;
             }
 
             return new JsonNetResult { Data = jsonData };
         }
-
         [HttpPost]
-        public JsonNetResult Delete(string[] ids)
+        public JsonNetResult Delete(string[] codes)
         {
             JsonData jsonData = new JsonData();
 
@@ -281,20 +308,20 @@ namespace D12.ChatGPT.WebAdmin.Controllers
 
                 try
                 {
-                    List<string> deletedIds = new List<string>();
-                    for (int i = 0; i < ids.Length; i++)
+                    List<string> deletedCodes = new List<string>();
+                    for (int i = 0; i < codes.Length; i++)
                     {
-                        var rol = unitWork.Rol.Get(ids[i]);
+                        var LanguageInfo = unitWork.Language.Get(codes[i]);
 
-                        if (rol != null)
+                        if (LanguageInfo != null)
                         {
-                            unitWork.Rol.Remove(rol);
-                            deletedIds.Add(rol.Id.ToString());
+                            unitWork.Language.Remove(LanguageInfo);
+                            deletedCodes.Add(LanguageInfo.Code.ToString());
                         }
                     }
 
                     unitWork.Complete();
-                    jsonData.Data = new { deleted = deletedIds };
+                    jsonData.Data = new { deleted = deletedCodes };
                 }
                 catch (DbUpdateException ex)
                 {
@@ -305,19 +332,34 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                 {
                     var exception = ExceptionDescription.excepDesc(ex);
                     jsonData.Errors.Add(exception);
+
                 }
 
                 if (jsonData.Errors.Count > 0 || undeleted.Count > 0)
                 {
+                    string errorMessage = "";
+                    string undeleteMessage = string.Join(", ", undeleted);
+
+                    foreach (var execInfo in jsonData.Errors)
+                    {
+                        errorMessage += execInfo.Message + "<br />";
+                    }
+
+                    if (string.IsNullOrEmpty(undeleteMessage))
+                        errorMessage += "<br />" + "No data were deleted";
+                    else
+                        errorMessage += "<br />" + undeleteMessage;
+
                     jsonData.Result = false;
-                    jsonData.Title = "Some Roles were not removed";
-                    jsonData.Message =
-                         "The following Roles were not eliminated since there are Users linked to them. <br/><strong>" + string.Join(", ", undeleted) + "</strong>";
-                    jsonData.Action = "warning";
+                    jsonData.MessageType = ResultType.Error;
+                    jsonData.Title = "An error occurred";
+                    jsonData.Message = errorMessage;
+                    jsonData.Action = "Error";
                 }
                 else
                 {
                     jsonData.Result = true;
+                    jsonData.MessageType = ResultType.Success;
                     jsonData.Title = "Done..!";
                     jsonData.Message = "The information was successfully removed.";
                     jsonData.Action = "success";
@@ -336,6 +378,5 @@ namespace D12.ChatGPT.WebAdmin.Controllers
 
             base.Dispose(disposing);
         }
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using D12.ChatGPT.DataModel;
+using System;
 using System.Collections.Generic;
 namespace D12.ChatGPT.DTO
 {
@@ -18,13 +19,11 @@ namespace D12.ChatGPT.DTO
         public ClientCompanyDTO Company { get; set; }
         public ClientBusinessOfferDTO BusinessOffer { get; set; }
         public List<ChatGptPromptDTO> Prompts { get; set; }
-
+        public List<ChatGptPromptLogDTO> ChatGptPromptLog { get; set; }
         public SeoCampaignFullDTO()
         {
             Active = true;
             EntryDate = DateTime.Now;
-
-
         }
     }
 }

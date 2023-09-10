@@ -67,6 +67,7 @@ namespace D12.ChatGPT.DataModel
         public System.DateTime EntryDate { get; set; }
 
         public virtual System.Collections.Generic.ICollection<ChatGptPrompt> ChatGptPrompt { get; set; }
+        public virtual System.Collections.Generic.ICollection<ChatGptPromptLog> ChatGptPromptLog { get; set; }
 
 
         [ForeignKey("BusinessOfferId")] public virtual ClientBusinessOffer ClientBusinessOffer { get; set; }
@@ -78,6 +79,7 @@ namespace D12.ChatGPT.DataModel
             Active = true;
             EntryDate = System.DateTime.Now;
             ChatGptPrompt = new System.Collections.Generic.List<ChatGptPrompt>();
+            ChatGptPromptLog = new System.Collections.Generic.List<ChatGptPromptLog>();
         }
     }
 

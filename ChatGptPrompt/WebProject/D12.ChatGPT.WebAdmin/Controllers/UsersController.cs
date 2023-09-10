@@ -1,4 +1,5 @@
-﻿using D12.ChatGPT.DataAccess;
+﻿using AutoMapper;
+using D12.ChatGPT.DataAccess;
 using D12.ChatGPT.DataModel;
 using D12.ChatGPT.DataRepository;
 using D12.ChatGPT.DTO;
@@ -17,13 +18,14 @@ using System.Web.Mvc;
 
 namespace D12.ChatGPT.WebAdmin.Controllers
 {
-    [RouteArea("Ajustes")]
-    [RoutePrefix("Usuarios")]
+    [RouteArea("Security")]
+    [RoutePrefix("Users")]
     [Route("{action=Index}")]
     [Authorize(Roles = "Administrador")]
-    public class UsuariosController : Controller
+    public class UsersController : Controller
     {
-        private const string SiteMapName = "Usuarios";
+        private const string SiteMapName = "Users";
+
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
         {
@@ -39,13 +41,21 @@ namespace D12.ChatGPT.WebAdmin.Controllers
         private UnitOfWork unitWork = new UnitOfWork(new HOnlineDbContext());
         private SiteMapRolPolicyDTO siteMapRolPolicyDTO= new SiteMapRolPolicyDTO();
         bool isReadOnly = true;
+        private IMapper imapper;
 
-        public UsuariosController()
+        public UsersController()
         {
-            string currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            siteMapRolPolicyDTO = unitWork.SiteMapPolicies.GetPolicyBySiteMapByUser(currentUserId, SiteMapName);
+            var currentUser = System.Web.HttpContext.Current.User;
+            siteMapRolPolicyDTO = unitWork.SiteMapPolicies.GetPolicyBySiteMapByUser(currentUser.Identity.GetUserId(), SiteMapName);
             //Set if user is ReadOnly
             isReadOnly = (siteMapRolPolicyDTO.Write == false);
+
+            if (currentUser.IsInRole("Administrator"))
+                isReadOnly = false;
+
+            imapper = MvcApplication.MapperConfiguration.CreateMapper();
+
+            isReadOnly = false;
         }
 
         // GET: Users
@@ -426,6 +436,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             if (jsonData.Errors.Count > 0)
             {
                 jsonData.Result = false;
+                jsonData.MessageType = ResultType.Error;
                 jsonData.Title = "Error: No data saved";
                 jsonData.Message =
                     "The information could not be saved. You can try again, if the problem persists, inform the technical area.";
@@ -433,6 +444,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             else
             {
                 jsonData.Result = true;
+                jsonData.MessageType = ResultType.Success;
                 jsonData.Title = "Done..!";
                 jsonData.Message = "The information was saved successfully.";;
             }
@@ -496,6 +508,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             if (jsonData.Errors.Count > 0)
             {
                 jsonData.Result = false;
+                jsonData.MessageType = ResultType.Error;
                 jsonData.Title = "Error: Failed to save role info";
                 jsonData.Message = "An error occurred while trying to save the data";
                 jsonData.Action = "error";
@@ -503,6 +516,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             else
             {
                 jsonData.Result = true;
+                jsonData.MessageType = ResultType.Success;
                 jsonData.Title = "Done..!";
                 jsonData.Message = "The information was saved successfully.";;
                 jsonData.Action = "success";
@@ -569,6 +583,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                 else
                 {
                     jsonData.Result = true;
+                    jsonData.MessageType = ResultType.Success;
                     jsonData.Title = "Done..!";
                     jsonData.Message = "The information was saved successfully.";;
                     jsonData.Action = "success";

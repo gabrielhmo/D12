@@ -6,14 +6,14 @@ var $ContainerLayout = $('#MainContainer');
 //DhxLayoutCell - SiteMap
 var dhxTreeViewSiteMap;
 var siteMapItemForm
-var jsonTree = rootPath + "Ajustes/SiteMap/InitTree";
+var jsonTree = rootPath + "Security/SiteMap/InitTree";
 
 //DhxLayoutCell - Rol
 var dhxToolbarRol;
 var dxhGridRol;
 
 //URL - Rol
-var urlBaseRol = 'Ajustes/SiteMap/';
+var urlBaseRol = 'Security/SiteMap/';
 function UrlRol() {
     return rootPath + urlBaseRol + "Permisos";
 }
@@ -215,7 +215,7 @@ function InitDxhGridRol() {
                     response.errors[i].message + '\r\n\r\n';
             }
 
-            ShowMessage(Status.Error, errorResponse.Title, message, false, 'toast-bottom-center');
+            ShowMessage(response.MessageType, errorResponse.Title, message, false, 'toast-bottom-center');
         }
 
         showFormAlert(response.MessageType, response.Title, response.Message, '', response.Errors);

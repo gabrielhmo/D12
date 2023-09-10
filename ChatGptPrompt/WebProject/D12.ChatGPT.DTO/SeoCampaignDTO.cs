@@ -1,4 +1,5 @@
-﻿using System;
+﻿using D12.ChatGPT.DataModel;
+using System;
 using System.Collections.Generic;
 namespace D12.ChatGPT.DTO
 {
@@ -16,6 +17,8 @@ namespace D12.ChatGPT.DTO
         public string Keywords { get; set; }
         public bool Active { get; set; }
         public DateTime EntryDate { get; set; }
+        public ICollection<ChatGptPrompt> ChatGptPrompt { get; set; }
+        public ICollection<ChatGptPromptLog> ChatGptPromptLog { get; set; }
 
         public SeoCampaignDTO()
         {

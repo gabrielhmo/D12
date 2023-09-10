@@ -305,19 +305,21 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChatGptPromptController.cs" />
+    <Compile Include="Controllers\ChatGPTRolController.cs" />
+    <Compile Include="Controllers\TensesController.cs" />
+    <Compile Include="Controllers\LanguageController.cs" />
+    <Compile Include="Controllers\ControlTypeController.cs" />
     <Compile Include="Controllers\SeoCampaignController.cs" />
     <Compile Include="Controllers\ClientBusinessOfferController.cs" />
     <Compile Include="Controllers\ClientCompanyController.cs" />
     <Compile Include="Controllers\BusinessTypeOfferController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
-    <Compile Include="Controllers\ConfiguracionController.cs" />
-    <Compile Include="Controllers\InicioController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
-    <Compile Include="Controllers\SeguridadController.cs" />
+    <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\SiteMapController.cs" />
-    <Compile Include="Controllers\SoporteController.cs" />
-    <Compile Include="Controllers\UsuariosController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Extensions\IdentityExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -327,6 +329,8 @@
     <Compile Include="Helpers\SearchLogicalOperator.cs" />
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\DhxTreeDataProcessor.cs" />
+    <Compile Include="Models\ErrorDetail.cs" />
+    <Compile Include="Models\ErrorResponse.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\JsonData.cs" />
     <Compile Include="Models\JsonNetResult.cs" />
@@ -340,9 +344,13 @@
     <Compile Include="Resources\OperationResult.Designer.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BusinessTypeOfferViewModel.cs" />
+    <Compile Include="ViewModels\LanguageViewModel.cs" />
+    <Compile Include="ViewModels\ControlTypeViewModel.cs" />
+    <Compile Include="ViewModels\TensesViewModel.cs" />
     <Compile Include="ViewModels\ClientBusinessOfferViewModel.cs" />
     <Compile Include="ViewModels\ClientCompanyViewModel.cs" />
     <Compile Include="ViewModels\ChatGptPromptViewModel.cs" />
+    <Compile Include="ViewModels\ChatGptRolViewModel.cs" />
     <Compile Include="ViewModels\SeoCampaignViewModel.cs" />
     <Compile Include="ViewModels\ClientViewModel.cs" />
   </ItemGroup>
@@ -1264,8 +1272,11 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Scripts\WebApp\chatGPTPrompt - Copy.js" />
     <Content Include="Scripts\WebApp\chatGPTPrompt.js" />
+    <Content Include="Scripts\WebApp\chatGptRol.js" />
+    <Content Include="Scripts\WebApp\tenses.js" />
+    <Content Include="Scripts\WebApp\language.js" />
+    <Content Include="Scripts\WebApp\controlType.js" />
     <Content Include="Scripts\WebApp\seoCampaign.js" />
     <Content Include="Scripts\WebApp\clientCompany.js" />
     <Content Include="Scripts\WebApp\client.js" />
@@ -1282,13 +1293,13 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Inicio\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Modals\ModalFormRol.cshtml" />
     <Content Include="Views\Modals\ModalFormSiteMap.cshtml" />
     <Content Include="Views\Modals\ModalFormUser.cshtml" />
-    <Content Include="Views\Seguridad\Roles.cshtml" />
-    <Content Include="Views\Seguridad\SiteMap.cshtml" />
-    <Content Include="Views\Seguridad\Usuarios.cshtml" />
+    <Content Include="Views\Security\Roles.cshtml" />
+    <Content Include="Views\Security\SiteMap.cshtml" />
+    <Content Include="Views\Security\Users.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapMenuLeft.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
@@ -1296,11 +1307,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Soporte\Index.cshtml" />
-    <Content Include="Views\Configuracion\Index.cshtml" />
-    <Content Include="Views\Configuracion\ModalFormDBSettings.cshtml" />
-    <Content Include="Views\Configuracion\ModalFormSMTPSettings.cshtml" />
-    <Content Include="Views\Configuracion\ModalFormTemplatesSettings.cshtml" />
     <Content Include="Scripts\moment.min.js.map" />
     <Content Include="Scripts\moment-with-locales.min.js.map" />
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -1326,6 +1332,14 @@
     <Content Include="Views\ChatGptPrompt\ModalFormChatGptPrompt.cshtml" />
     <Content Include="Views\ChatGptPrompt\ModalSeoStatsPrompts.cshtml" />
     <Content Include="Views\ChatGptPrompt\ModalLogPrompts.cshtml" />
+    <Content Include="Views\ChatGPTRol\Index.cshtml" />
+    <Content Include="Views\ChatGPTRol\ModalFormChatGPTRol.cshtml" />
+    <Content Include="Views\ControlType\Index.cshtml" />
+    <Content Include="Views\ControlType\ModalFormControlType.cshtml" />
+    <Content Include="Views\Language\Index.cshtml" />
+    <Content Include="Views\Language\ModalFormLanguage.cshtml" />
+    <Content Include="Views\Tenses\Index.cshtml" />
+    <Content Include="Views\Tenses\ModalFormTenses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

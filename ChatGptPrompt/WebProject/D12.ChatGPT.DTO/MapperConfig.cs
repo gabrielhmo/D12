@@ -26,7 +26,8 @@ namespace D12.ChatGPT.DTO
 
                 cfg.CreateMap<SeoCampaign, SeoCampaignDTO>()
                      .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.ClientCompany.Name))
-                     .ForMember(dest => dest.BusinessOffer, opt => opt.MapFrom(src => src.ClientBusinessOffer.Name));
+                     .ForMember(dest => dest.BusinessOffer, opt => opt.MapFrom(src => src.ClientBusinessOffer.Name))
+                     .ForMember(dest => dest.ChatGptPromptLog, opt => opt.MapFrom(src => src.ChatGptPromptLog));
 
                 cfg.CreateMap<SeoCampaign, SeoCampaignFullDTO>()
                      .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.ClientCompany))

@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "Tenses";
+}
+@section Styles{
+    <link href="~/Plugins/Dhtmlx/Skins/material/dhtmlx.css" rel="stylesheet" />
+    <link href="~/Plugins/Dhtmlx/Custom/material_custom.css" rel="stylesheet" />
+    <style type="text/css">
+
+        /*#MaterialesContainer {
+            height: 600px;
+        }*/
+
+        .pagination {
+            margin: 5px !important;
+        }
+
+
+        #dhxGridPaging {
+            display: block;
+            height: 50px;
+        }
+
+        #RecetaIngModal .modal-body {
+            min-height: 600px;
+        }
+
+        .error {
+            background-color: #e20000;
+            color: #fff;
+        }
+
+        /* Large desktops and laptops */
+        @@media (min-width: 1200px) {
+        }
+
+        /* Landscape tablets and medium desktops */
+        @@media (min-width: 992px) and (max-width: 1199px) {
+        }
+
+        /* Portrait tablets and small desktops */
+        @@media (min-width: 768px) and (max-width: 991px) {
+        }
+
+        /* Landscape phones and portrait tablets */
+        @@media (max-width: 767px) {
+        }
+
+        /* Portrait phones and smaller */
+        @@media (max-width: 480px) {
+        }
+    </style>
+}
+<div class="panel panel-primary">
+    <div id="MainContainer" class="panel-body pad-no">
+    </div>
+</div>
+<!-- /.modal -->
+@Html.Partial("~/Views/Tenses/ModalFormTenses.cshtml")
+@section Scripts {
+    <script src="~/Plugins/Dhtmlx/dhtmlx.js"></script>
+    <script src="~/Plugins/Dhtmlx/dhx_hOnline.js"></script>
+    <script src="~/Scripts/WebApp/tenses.js"></script>
+}

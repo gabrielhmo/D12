@@ -12,7 +12,8 @@ var $ModalFormUser = $("#ModalUser");
 var $FormUser = $("#FormUser");
 var $AlertFormUser = $('#AlertFormUser');
 
-//DhxLayoutCell - Usuarios
+
+//DhxLayoutCell - User
 var dhxToolbarUser;
 var dxhGridUser;
 var dhxStatusBarUser;
@@ -21,22 +22,17 @@ var pageNumberUser = 1;
 var pageSizeUser = 100;
 var strSearchUser = '';
 
-//DhxLayoutCell - Rol
-var dhxToolbarRol;
-var dxhGridRol;
 
 //Paging URL by dhxGrid
 function GetPaginUrl(pager, pageNum) {
     switch (pager) {
         case 'User':
             return UrlUser(pageNum);
-        case 'Rol':
-            return UrlUser(pageNum);
     }
 }
 
-//URL - Usuarios
-var urlBaseUser = 'Ajustes/Usuarios/';
+//URL - User
+var urlBaseUser = 'Security/Users/';
 function UrlUser(newPage, newSearch, newPageSize) {
 
     pageNumberUser = newPage || pageNumberUser;
@@ -46,20 +42,21 @@ function UrlUser(newPage, newSearch, newPageSize) {
     return rootPath + urlBaseUser + "All?PageNumber=" + pageNumberUser + "&PageSize=" + pageSizeUser + "&search=" + strSearchUser;
 }
 function UrlExportUser(format) {
-    url = rootPath + urlBaseUser + "ExportData?PageNumber=" + pageNumberUser + "&PageSize=" + pageSizeUser + "&strSearch=" + strSearchUser + "&format=" + format + "&area=ser";
+    url = rootPath + urlBaseUser + "ExportData?PageNumber=" + pageNumberUser + "&PageSize=" + pageSizeUser + "&strSearch=" + strSearchUser + "&format=" + format + "&area=User";
     window.location.replace(url);
 }
 
 //URL - Rol
-var urlBaseRol = 'Ajustes/Roles/';
+var urlBaseRol = 'Security/Roles/';
 function UrlRol() {
     return rootPath + urlBaseRol + "RolList";
 }
 
+
 //DhxLayout
 function onReady() {
-    SetContainerAvailableHeight($MainContainer, $ContainerLayout, 140);
-    InitForms();
+    SetContainerAvailableHeight($MainContainer, $ContainerLayout, 125);
+    initModalFormUser();
 }
 function onResize() {
     SetContainerAvailableHeight($MainContainer, $ContainerLayout, 165);
@@ -94,12 +91,12 @@ function initLayout() {
     //Set Progress On
     dhxLayout.progressOn();
 
+
     //Load DhxLayout
     InitBoxUser();
     InitBoxRol();
 }
 
-//Grid box
 function InitBoxUser() {
     InitDhxToolbarUser();
     InitDxhGridUser();
@@ -184,8 +181,7 @@ function InitDhxToolbarRol() {
 }
 
 //DhxToolbar Config
-function GetDhxToolbarUser()
-{
+function GetDhxToolbarUser() {
     dhxToolbarUser = dhxLayout.cells('a').attachToolbar({
         iconset: "awesome",
         items: [
@@ -221,8 +217,7 @@ function GetDhxToolbarUser()
         }
     });
 }
-function GetDhxToolbarRol()
-{
+function GetDhxToolbarRol() {
     dhxToolbarRol = dhxLayout.cells('b').attachToolbar({
         iconset: "awesome",
         items: [
@@ -300,11 +295,11 @@ function InitDxhGridUser() {
     if (!isReadOnly)
         $('#UserChk').on('change', function () {
 
-        if (this.checked)
-            dxhGridUser.setCheckedRows(0, 1);
-        else
-            dxhGridUser.setCheckedRows(0, 0);
-    });
+            if (this.checked)
+                dxhGridUser.setCheckedRows(0, 1);
+            else
+                dxhGridUser.setCheckedRows(0, 0);
+        });
 
     $('#PageSizeUser').on('change', function () {
 
@@ -365,7 +360,7 @@ function InitDxhGridRol() {
             var urlUpdateRoles = rootPath + urlBaseUser + "UpdateRole?rnd=" + createRandomString(10);
             var parameter = JSON.stringify(userRole);
 
-            AjaxCall(urlUpdateRoles, parameter, false, Method.POST, Datatype.Json, ContentType.Json)
+            ajaxCall(urlUpdateRoles, parameter, false, Method.POST, Datatype.Json, ContentType.Json)
                 .then(function (response) {
 
                     if (response.result) {
@@ -378,7 +373,7 @@ function InitDxhGridRol() {
                                 response.errors[i].message + '\r\n\r\n';
                         }
 
-                        ShowMessage(Status.Error, errorResponse.Title, message, false, 'toast-bottom-center');
+                        ShowMessage(response.MessageType, errorResponse.Title, message, false, 'toast-bottom-center');
                     }
 
                 }).catch(function (errorResponse) {
@@ -387,7 +382,7 @@ function InitDxhGridRol() {
                         errorResponse.Message = "Wrong username or password";
                     }
                     else {
-                        ShowMessage(Status.Error, errorResponse.Title, errorResponse.Message, false, 'toast-bottom-center');
+                        ShowMessage(response.MessageType, errorResponse.Title, errorResponse.Message, false, 'toast-bottom-center');
                     }
                 });
         }
@@ -467,218 +462,138 @@ function OpenFormUser(rId) {
         loadUser(rId);
     else
         $('#modal-loading').fadeOut();
-
-    if(isReadOnly)
-        DisableAll($FormUser, true);
-
 }
 //Modal Buttons - User
-function InitForms() {
+function initModalFormUser() {
 
     //Button Save-User
     $('.modal-dialog > .modal-content > .modal-footer button.btnSave', $ModalFormUser).on('click', function (event) {
-        $($FormUser).submit();
+        submitFormUser();
     });
 
     $(' > .modal-dialog > .modal-content > .modal-footer button.btnNew', $ModalFormUser).on('click', function (event) {
         hideFormAlert($AlertFormUser);
-        ClearForm($FormUser);
+        clearForm($FormUser);
     });
 
     //Modal-User
     $ModalFormUser.on('hidden.bs.modal', function () {
-        ClearForm($FormUser);
+        clearForm($FormUser);
     });
 
     //Enter key Naviation
     enterFormNavigation($FormUser);
-
-    //Init forms
-    InitUserForm();
-
-    if ($('#Active').length > 0) {
-        $('#Active').on('change', function () {
-            $('#Active').val(this.checked);
-        });
-    }
-    if ($('#ReadOnly').length > 0) {
-        $('#ReadOnly').on('change', function () {
-            $('#ReadOnly').val(this.checked);
-        });
-    }
-
-    if (isReadOnly) {
-        $('.modal-dialog > .modal-content > .modal-footer button.btnSave', $ModalFormUser).hide();
-        $(' > .modal-dialog > .modal-content > .modal-footer button.btnNew', $ModalFormUser).hide();
-    }
 }
-
 //Form - User
-function InitUserForm() {
-        //Form validate
-        var formValidator = $FormUser.validate();
-        $FormUser.submit(function (e) {
+async function submitFormUser() {
 
-            e.preventDefault();
+    //Form validate
+    if (isFormProcessing)
+        return;
 
-            if (isFormProcessing)
-                return;
+    if ($FormUser.valid()) {
 
-            if (formValidator.valid()) {
+        var formData = formToJsonString(document.getElementById($FormUser.attr('Id')));
 
-                var formData = FormToJsonString(document.getElementById($FormUser.attr('Id')));
+        // Start loading
+        $('#modal-loading').fadeIn();
 
-                // Start loading
-                $('#modal-loading').fadeIn();
+        disableAll($FormUser, true);
+        isFormProcessing = true;
 
-                DisableAll($FormUser, true);
-                isFormProcessing = true;
+        var response = await ajaxCall(rootPath + urlBaseUser + 'id', formData, false, Method.POST, Datatype.Json, ContentType.Json);
 
-                AjaxCall($FormUser.attr('action'), formData, false, Method.POST, Datatype.Json, ContentType.Json)
-                    .then(function (response) {
+        if (response.Result) {
+            if (response.Data !== undefined) {
+                $('#id').val(response.Data.id);
 
-                        DisableAll($FormUser, false);
-                        isFormProcessing = false;
+                var active = response.Data.active === true ? "<i class=\"fas fa-check Checked\">" : "<i class=\"fas fa-check unChecked\">";
+                var readOnly = response.Data.readOnly === true ? "<i class=\"fas fa-check Checked\">" : "<i class=\"fas fa-check unChecked\">";
+                var deleted = response.Data.deleted === true ? "<i class=\"fas fa-check Checked\">" : "<i class=\"fas fa-check unChecked\">";
+                var entrydate = moment(response.Data.entryDate).format('DD/MM/YY HH:mm');
 
-                        $('#modal-loading').fadeOut();
+                if (response.Action === "ADD") {
+                    dxhGridUser.addRow(response.Data.id,
+                        [0,
+                            response.Data.id,
+                            response.Data.firstName,
+                            response.Data.lastName,
+                            response.Data.jobTitle,
+                            response.Data.phoneNumber,
+                            response.Data.email,
+                            response.Data.userName,
+                            active,
+                            readOnly,
+                            deleted,
+                            entrydate,
+                            ''],
+                        0);
+                }
+                else {
 
-                        if (response.result) {
+                    dxhGridUser.cells(response.Data.id, dxhGridUser.getColIndexById("chk")).setValue(0);
+                    dxhGridUser.cells(response.Data.id, dxhGridUser.getColIndexById("Id")).setValue(response.Data.id);
+                    dxhGridUser.cells(response.Data.id, dxhGridUser.getColIndexById("FirstName")).setValue(response.Data.firstName);
+                    dxhGridUser.cells(response.Data.id, dxhGridUser.getColIndexById("LastName")).setValue(response.Data.lastName);
+                    dxhGridUser.cells(response.Data.id, dxhGridUser.getColIndexById("JobTitle")).setValue(response.Data.jobTitle);
+                    dxhGridUser.cells(response.Data.id, dxhGridUser.getColIndexById("PhoneNumber")).setValue(response.Data.phoneNumber);
+                    dxhGridUser.cells(response.Data.id, dxhGridUser.getColIndexById("Email")).setValue(response.Data.email);
+                    dxhGridUser.cells(response.Data.id, dxhGridUser.getColIndexById("Username")).setValue(response.Data.userName);
+                    dxhGridUser.cells(response.Data.id, dxhGridUser.getColIndexById("Active")).setValue(active);
+                    dxhGridUser.cells(response.Data.id, dxhGridUser.getColIndexById("ReadOnly")).setValue(readOnly);
+                    dxhGridUser.cells(response.Data.id, dxhGridUser.getColIndexById("Deleted")).setValue(deleted);
+                    dxhGridUser.cells(response.Data.id, dxhGridUser.getColIndexById("EntryDate")).setValue(entrydate);
+                    dxhGridUser.cells(response.Data.id, dxhGridUser.getColIndexById("Dummy")).setValue('');
+                }
 
-                            if (response.data !== undefined) {
-                                $('#id').val(response.data.id);
-
-                                var active = response.data.active === true ? "<i class=\"fas fa-check Checked\">" : "<i class=\"fas fa-check unChecked\">";
-                                var readOnly = response.data.readOnly === true ? "<i class=\"fas fa-check Checked\">" : "<i class=\"fas fa-check unChecked\">";
-                                var deleted = response.data.deleted === true ? "<i class=\"fas fa-check Checked\">" : "<i class=\"fas fa-check unChecked\">";
-                                var entrydate = moment(response.data.entryDate).format('DD/MM/YY HH:mm');
-
-                                if (response.action === "ADD") {
-                                    dxhGridUser.addRow(response.data.id,
-                                        [0,
-                                            response.data.id,
-                                            response.data.firstName,
-                                            response.data.lastName,
-                                            response.data.jobTitle,
-                                            response.data.phoneNumber,
-                                            response.data.email,
-                                            response.data.userName,
-                                            active,
-                                            readOnly,
-                                            deleted,
-                                            entrydate,
-                                            ''],
-                                        0);
-                                }
-                                else {
-
-                                    dxhGridUser.cells(response.data.id, dxhGridUser.getColIndexById("chk")).setValue(0);
-                                    dxhGridUser.cells(response.data.id, dxhGridUser.getColIndexById("Id")).setValue(response.data.id);
-                                    dxhGridUser.cells(response.data.id, dxhGridUser.getColIndexById("FirstName")).setValue(response.data.firstName);
-                                    dxhGridUser.cells(response.data.id, dxhGridUser.getColIndexById("LastName")).setValue(response.data.lastName);
-                                    dxhGridUser.cells(response.data.id, dxhGridUser.getColIndexById("JobTitle")).setValue(response.data.jobTitle);
-                                    dxhGridUser.cells(response.data.id, dxhGridUser.getColIndexById("PhoneNumber")).setValue(response.data.phoneNumber);
-                                    dxhGridUser.cells(response.data.id, dxhGridUser.getColIndexById("Email")).setValue(response.data.email);
-                                    dxhGridUser.cells(response.data.id, dxhGridUser.getColIndexById("Username")).setValue(response.data.userName);
-                                    dxhGridUser.cells(response.data.id, dxhGridUser.getColIndexById("Active")).setValue(active);
-                                    dxhGridUser.cells(response.data.id, dxhGridUser.getColIndexById("ReadOnly")).setValue(readOnly);
-                                    dxhGridUser.cells(response.data.id, dxhGridUser.getColIndexById("Deleted")).setValue(deleted);
-                                    dxhGridUser.cells(response.data.id, dxhGridUser.getColIndexById("EntryDate")).setValue(entrydate);
-                                    dxhGridUser.cells(response.data.id, dxhGridUser.getColIndexById("Dummy")).setValue('');
-                                }
-
-                                dxhGridUser.selectRowById(response.data.id, false, true, false);
-                                dxhGridUser.setUserData(response.data.id, "roles", response.data.roles);
-                                LoadUserRoles(response.data.id, response.data.roles);
-                            }
-
-                            ShowFormAlert(Status.Success, response.title, response.message, $AlertFormUser, response.errors);
-                        }
-                        else {
-                            ShowFormAlert(Status.Error, response.title, response.message, $AlertFormUser, response.errors);
-                        }
-
-                    }).catch(function (errorResponse) {
-                        DisableAll($FormUser, false);
-                        isFormProcessing = false;
-                        $('#modal-loading').fadeOut();
-
-                        if (errorResponse.Status === 401) {
-                            errorResponse.Message = "Wrong username or password";
-                        }
-                        else {
-                            ShowFormAlert(Status.Error, errorResponse.Title, errorResponse.Message, $AlertFormUser, errorResponse.errors);
-                        }
-                    });
+                dxhGridUser.selectRowById(response.Data.id, false, true, false);
             }
-        });
+        }
+
+        showFormAlert(response.MessageType, response.Title, response.Message, $AlertFormUser, response.Errors);
+
+        disableAll($FormUser, false);
+        isFormProcessing = false;
+        $('#modal-loading').fadeOut();
+
+    }
 }
 //Edit - User
-function loadUser(id) {
+function loadUser(rId) {
 
-    if (id === undefined)
-        ClearForm($FormUser);
+    clearForm($FormUser);
 
     if (!loadInfo) {
 
         $('#modal-loading').fadeIn();
 
-        loadInfo = true;
+        var id = dxhGridUser.cells(rId, dxhGridUser.getColIndexById("Id")).getValue();
+        var firstName = dxhGridUser.cells(rId, dxhGridUser.getColIndexById("FirstName")).getValue();
+        var lastName = dxhGridUser.cells(rId, dxhGridUser.getColIndexById("LastName")).getValue();
+        var jobTitle = dxhGridUser.cells(rId, dxhGridUser.getColIndexById("JobTitle")).getValue();
+        var phoneNumber = dxhGridUser.cells(rId, dxhGridUser.getColIndexById("PhoneNumber")).getValue();
+        var email = dxhGridUser.cells(rId, dxhGridUser.getColIndexById("Email")).getValue();
+        var username = dxhGridUser.cells(rId, dxhGridUser.getColIndexById("Username")).getValue();
+        var active = dxhGridUser.cells(rId, dxhGridUser.getColIndexById("Active")).getValue();
 
-        var parameter = { id: id };
+        $('#Id', $FormUser).val(id);
+        $('#FirstName', $FormUser).val(firstName);
+        $('#LastName', $FormUser).val(lastName);
+        $('#JobTitle', $FormUser).val(jobTitle);
+        $('#PhoneNumber', $FormUser).val(phoneNumber);
+        $('#Email', $FormUser).val(email);
+        $('#UserName', $FormUser).val(username);
 
+        if (active.includes('fas fa-check Checked'))
+            $('#Active', $FormUser).prop('checked', true);
 
-        AjaxCall(rootPath + 'Ajustes/Usuarios/id', parameter, false, Method.GET, Datatype.Json, ContentType.Json)
-            .then(function (response) {
-
-                isFormProcessing = false;
-                DisableAll($FormUser, false);
-
-                $('#modal-loading').fadeOut();
-
-                if (response.result) {
-
-                    loadInfo = false;
-
-                    if (response.Errors !== undefined) {
-                        var message = '';
-                        for (var i = 0; i < response.Errors.length; i++) {
-                            message += response.Errors[i].messageTitle + '\r\n' +
-                                response.Errors[i].message + '\r\n\r\n';
-                        }
-                        sweetAlert('Error', message, 'error');
-                    }
-                    else {
-                        
-                        JsonToFormBinding(response.data, $FormUser);
-
-                        if (isReadOnly)
-                            DisableAll($FormUser, true);
-
-                        $('#modal-loading').fadeOut();
-                    }
-                }
-                else {
-                    ShowFormAlert(Status.Error, errorResponse.title, '', $AlertFormUser, errorResponse.errors);
-                }
-
-            }).catch(function (errorResponse) {
-                DisableAll($FormUser, false);
-                isFormProcessing = false;
-                $('#modal-loading').fadeOut();
-
-                if (errorResponse.Status === 401) {
-                    errorResponse.Message = "Wrong username or password";
-                }
-                else {
-                    ShowFormAlert(Status.Error, errorResponse.title, errorResponse.message, $AlertFormUser, errorResponse.errors);
-                }
-            });
-
+        $('#modal-loading').fadeOut();
     }
 }
 //Delete - User
-function deleteUser() {
-    var departamentoId = dxhGridUser.getSelectedRowId();
+async function deleteUser() {
+
+    var UserId = dxhGridUser.getSelectedRowId();
 
     var rIds = [];
 
@@ -688,64 +603,62 @@ function deleteUser() {
     });
 
     if (rIds.length === 0) {
-        swal("Acción requerida", "Para continuar debe marcar los registros que desea eliminar", "info");
+        swal("Action Required", "To continue, you must check at least one row.", "info");
     }
     else {
         swal({
-            title: '¿Eliminar registros?',
-            text: "Por favor, confirme esta acción.",
+            title: 'Delete records?',
+            text: "Please, confirm!",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Delete!'
-        }).then((result) => {
+        }).then(async (result) => {
 
             if (result.value) {
 
                 var urlDelete = rootPath + urlBaseUser + "Delete?rnd=" + createRandomString(10);
                 var parameter = JSON.stringify({ ids: rIds });
 
-                AjaxCall(urlDelete, parameter, false, Method.POST, Datatype.Json, ContentType.Json)
-                    .then(function (response) {
 
-                        if (response.errors.length > 0) {
-                            var message = '';
-                            for (let i = 0; i < response.errors.length; i++) {
-                                message += response.errors[i].messageTitle + '\r\n' +
-                                    response.errors[i].message + '\r\n\r\n';
-                            }
-                            sweetAlert('Error', message, 'error');
-                        }
-                        else {
+                var response = await ajaxCall(urlDelete, parameter, false, Method.POST, Datatype.Json, ContentType.Json)
 
-                            for (var i = 0; i < response.data.deleted.length; i++) {
-                                dxhGridUser.deleteRow(response.data.deleted[i]);
-                            }
+                if (response.Result) {
+                    var errorMessage = '';
 
-                            Swal.fire(
-                                json.title,
-                                json.message,
-                                json.action
-                            );
-                        }
-                    }).catch(function (errorResponse) {
+                    for (var i = 0; i < response.Data.deleted.length; i++) {
+                        dxhGridUser.deleteRow(response.Data.deleted[i]);
+                    }
 
-                        if (errorResponse.Status === 401) {
-                            errorResponse.Message = "Wrong username or password";
+                    if (response.Errors.length > 0) {
+
+                        errorMessage = '\r\n';
+
+                        for (let i = 0; i < response.Errors.length; i++) {
+                            errorMessage += response.Errors[i].messageTitle + '\r\n' +
+                                response.Errors[i].message + '\r\n\r\n';
                         }
-                        else {
-                            ShowMessage(Status.Error, errorResponse.Title, errorResponse.Message, false, 'toast-bottom-center');
-                        }
-                    });
+                        sweetAlert('Error', message, 'error');
+                    }
+
+
+                    Swal.fire(
+                        response.Title,
+                        response.Message + ' ' + errorMessage,
+                        response.Action
+                    );
+                }
+                else {
+                    ShowMessage(response.MessageType, response.Title, response.Message, true, 'toast-bottom-center');
+                }
             }
-
         });
     }
 }
+
 //Load Roles of Selected User 
-function LoadUserRoles(userId)
-{
+function LoadUserRoles(userId) {
     if (IsNull(userId))
         userId = dxhGridUser.getSelectedRowId();
 
@@ -778,12 +691,11 @@ function UpdateUserRoles(userId, rolId) {
         }
     }
 
-    if (ind < 0)
-    {
+    if (ind < 0) {
         UserRoles.push({ id: rolId, name: rolName });
     }
-    else{
-        UserRoles.splice(ind,1);
+    else {
+        UserRoles.splice(ind, 1);
     }
 
     dxhGridUser.setUserData(userId, "roles", UserRoles);
