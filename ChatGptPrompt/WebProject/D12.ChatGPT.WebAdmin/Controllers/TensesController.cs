@@ -23,7 +23,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
     [RouteArea("PromptOptions")]
     [RoutePrefix("Tense")]
     [Route("{action=Index}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrator")]
     public class TensesController : Controller
     {
         private const string SiteMapName = "Tenses";

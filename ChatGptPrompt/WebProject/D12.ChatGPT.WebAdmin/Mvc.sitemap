@@ -3,27 +3,27 @@
 
 	<mvcSiteMapNode title="Home" controller="Home" action="Index" icon="fas fa-home">
 		
-		<mvcSiteMapNode title="Clients" controller="Clients" action="Index" icon="fas fa-cog" roles="Administrador">
-			<mvcSiteMapNode title="Client" area="Clients" controller="Client" action="Index" icon="fas fa-cog" roles="Administrador"/>
-			<mvcSiteMapNode title="Companies" area="Clients" controller="ClientCompany" action="Index" icon="fas fa-cog" roles="Administrador"/>
+		<mvcSiteMapNode title="Clients" controller="Clients" action="Index" icon="fas fa-cog" roles="Administrator">
+			<mvcSiteMapNode title="Client" area="Clients" controller="Client" action="Index" icon="fas fa-cog" roles="Administrator"/>
+			<mvcSiteMapNode title="Companies" area="Clients" controller="ClientCompany" action="Index" icon="fas fa-cog" roles="Administrator"/>
 		</mvcSiteMapNode>
 
-		<mvcSiteMapNode title="SEO Content" controller="SEOContent" action="Index" icon="fas fa-cog" roles="Administrador">
-			<mvcSiteMapNode title="Campaigns" area="SEOContent" controller="SeoCampaign" action="Index" icon="fas fa-cog" roles="Administrador"/>
-			<mvcSiteMapNode title="ChatGpt Prompt" area="SEOContent" controller="ChatGptPrompt" action="Index" icon="fas fa-cog" roles="Administrador"/>
-			<mvcSiteMapNode title="Prompt Options" controller="PromptOptions" action="Index" icon="fas fa-cog" roles="Administrador">
-				<mvcSiteMapNode title="ChatGPT Rols" area="PromptOptions" controller="ChatGPTRol" action="Index" icon="fas fa-cog" roles="Administrador"/>
-				<mvcSiteMapNode title="Control Type" area="PromptOptions" controller="ControlType" action="Index" icon="fas fa-cog" roles="Administrador"/>
-				<mvcSiteMapNode title="Language" area="PromptOptions" controller="Language" action="Index" icon="fas fa-cog" roles="Administrador"/>
-				<mvcSiteMapNode title="Tenses" area="PromptOptions" controller="Tenses" action="Index" icon="fas fa-cog" roles="Administrador"/>
+		<mvcSiteMapNode title="SEO Content" controller="SEOContent" action="Index" icon="fas fa-cog" roles="Administrator">
+			<mvcSiteMapNode title="Campaigns" area="SEOContent" controller="SeoCampaign" action="Index" icon="fas fa-cog" roles="Administrator"/>
+			<mvcSiteMapNode title="ChatGpt Prompt" area="SEOContent" controller="ChatGptPrompt" action="Index" icon="fas fa-cog" roles="Administrator"/>
+			<mvcSiteMapNode title="Prompt Options" controller="PromptOptions" action="Index" icon="fas fa-cog" roles="Administrator">
+				<mvcSiteMapNode title="ChatGPT Rols" area="PromptOptions" controller="ChatGPTRol" action="Index" icon="fas fa-cog" roles="Administrator"/>
+				<mvcSiteMapNode title="Control Type" area="PromptOptions" controller="ControlType" action="Index" icon="fas fa-cog" roles="Administrator"/>
+				<mvcSiteMapNode title="Language" area="PromptOptions" controller="Language" action="Index" icon="fas fa-cog" roles="Administrator"/>
+				<mvcSiteMapNode title="Tenses" area="PromptOptions" controller="Tenses" action="Index" icon="fas fa-cog" roles="Administrator"/>
 			</mvcSiteMapNode>
 		</mvcSiteMapNode>
 
-		<mvcSiteMapNode title="Settings" controller="Settings" action="Index" icon="fas fa-cogs" roles="Administrador">
-			<mvcSiteMapNode title="Security" area="Settings" controller="Security" action="Index" icon="fas fa-shield-alt" roles="Administrador">
-				<mvcSiteMapNode title="Users" area="Settings" controller="Security" action="Users" icon="fas fa-users" roles="Administrador"/>
-				<mvcSiteMapNode title="Roles" area="Settings" controller="Security" action="Roles" icon="fas fa-user-cog" roles="Administrador"/>
-				<mvcSiteMapNode title="SiteMap" area="Settings" controller="Security" action="SiteMap" icon="fas fa-user-lock" roles="Administrador"/>
+		<mvcSiteMapNode title="Settings" controller="Settings" action="Index" icon="fas fa-cogs" roles="Administrator">
+			<mvcSiteMapNode title="Security" area="Settings" controller="Security" action="Index" icon="fas fa-shield-alt" roles="Administrator">
+				<mvcSiteMapNode title="Users" area="Settings" controller="Security" action="Users" icon="fas fa-users" roles="Administrator"/>
+				<mvcSiteMapNode title="Roles" area="Settings" controller="Security" action="Roles" icon="fas fa-user-cog" roles="Administrator"/>
+				<mvcSiteMapNode title="SiteMap" area="Settings" controller="Security" action="SiteMap" icon="fas fa-user-lock" roles="Administrator"/>
 			</mvcSiteMapNode>
 		</mvcSiteMapNode>
 	</mvcSiteMapNode>

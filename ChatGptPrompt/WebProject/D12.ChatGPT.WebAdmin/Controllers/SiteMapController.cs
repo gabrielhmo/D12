@@ -18,7 +18,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
     [RouteArea("Security")]
     [RoutePrefix("SiteMap")]
     [Route("{action=Index}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrator")]
     [Authorize]
     public class SiteMapController : Controller
     {
@@ -36,7 +36,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             //Set if user is ReadOnly
             isReadOnly = (siteMapRolPolicyDTO.Write == false);
 
-            if (currentUser.IsInRole("Administrador"))
+            if (currentUser.IsInRole("Administrator"))
                 isReadOnly = false;
         }
 

@@ -22,7 +22,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
     [RouteArea("SEOContent")]
     [RoutePrefix("Campaigns")]
     [Route("{action=Index}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrator")]
     public class SeoCampaignController : Controller
     {
         private const string SiteMapName = "Campaigns";

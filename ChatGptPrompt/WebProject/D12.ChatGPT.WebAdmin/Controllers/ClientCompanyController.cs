@@ -20,7 +20,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
     [RouteArea("Clients")]
     [RoutePrefix("Companies")]
     [Route("{action=Index}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrator")]
     public class ClientCompanyController : Controller
     {
         private const string SiteMapName = "Companies";

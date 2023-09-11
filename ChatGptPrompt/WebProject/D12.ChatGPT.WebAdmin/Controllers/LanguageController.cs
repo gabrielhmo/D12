@@ -23,7 +23,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
     [RouteArea("PromptOptions")]
     [RoutePrefix("Language")]
     [Route("{action=Index}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrator")]
     public class LanguageController : Controller
     {
         private const string SiteMapName = "Language";

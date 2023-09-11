@@ -27,7 +27,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             //Set if user is ReadOnly
             isReadOnly = (siteMapRolPolicyDTO.Write == false);
 
-            if (currentUser.IsInRole("Administrador"))
+            if (currentUser.IsInRole("Administrator"))
                 isReadOnly = false;
 
             imapper = MvcApplication.MapperConfiguration.CreateMapper();
@@ -35,21 +35,21 @@ namespace D12.ChatGPT.WebAdmin.Controllers
             isReadOnly = false;
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrator")]
         // GET: Security
         public ActionResult Users()
         {
             ViewBag.IsReadOnly = isReadOnly;
             return View();
         }
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrator")]
 
         public ActionResult Roles()
         {
             ViewBag.IsReadOnly = isReadOnly;
             return View();
         }
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrator")]
         public ActionResult SiteMap()
         {
             ViewBag.IsReadOnly = isReadOnly;

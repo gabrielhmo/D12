@@ -21,7 +21,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
     [RouteArea("Security")]
     [RoutePrefix("Users")]
     [Route("{action=Index}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrator")]
     public class UsersController : Controller
     {
         private const string SiteMapName = "Users";
@@ -204,7 +204,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                 UsersDTO userInfo = unitWork.User.LoadUserDTO(id);
 
                 if (userInfo != null)
-                    userInfo.IsAdmin = UserManager.IsInRole(userInfo.Id, "Administrador");
+                    userInfo.IsAdmin = UserManager.IsInRole(userInfo.Id, "Administrator");
 
                 //Get users list of DhxDataGrid in Json Format
                 jsonData.Data = userInfo;
@@ -325,7 +325,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                                 UserManager.AddToRole(user.Id, "User");
 
                                 if (admin)
-                                    UserManager.AddToRole(user.Id, "Administrador");
+                                    UserManager.AddToRole(user.Id, "Administrator");
 
                             }
                             else
@@ -353,7 +353,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                         {
                             jsonData.Action = "UPDATE";
 
-                            isUserAdmin = UserManager.IsInRole(newUserInfo.Id, "Administrador");
+                            isUserAdmin = UserManager.IsInRole(newUserInfo.Id, "Administrator");
 
                             if (!string.IsNullOrWhiteSpace(Password))
                             {
@@ -362,10 +362,10 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                             }
 
                             //if (admin && isUserAdmin == false)
-                            //    UserManager.AddToRole(newUserInfo.EmpleadoId, "Administrador");
+                            //    UserManager.AddToRole(newUserInfo.EmpleadoId, "Administrator");
 
                             //if (!admin && isUserAdmin)
-                            //    UserManager.RemoveFromRole(newUserInfo.EmpleadoId, "Administrador");
+                            //    UserManager.RemoveFromRole(newUserInfo.EmpleadoId, "Administrator");
 
                             unitWork.Complete();
                         }

@@ -26,7 +26,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
     [RouteArea("SEOContent")]
     [RoutePrefix("ChatGptPrompt")]
     [Route("{action=Index}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrator")]
     public class ChatGptPromptController : Controller
     {
         public enum GptRol { System = 1, Assistant = 2, User = 3 }

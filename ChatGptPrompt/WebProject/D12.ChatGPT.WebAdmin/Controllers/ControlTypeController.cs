@@ -23,7 +23,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
     [RouteArea("PromptOptions")]
     [RoutePrefix("ControlType")]
     [Route("{action=Index}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrator")]
     public class ControlTypeController : Controller
     {
         private const string SiteMapName = "ControlType";
