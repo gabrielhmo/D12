@@ -76,7 +76,7 @@ function initLayout() {
             bottom: 0
         },
         cells: [
-            { id: 'a', text: 'Usuarios', header: true, fix_size: [false, true] },
+            { id: 'a', text: 'Users', header: true, fix_size: [false, true] },
             { id: 'b', text: 'Roles', header: true, fix_size: [true, true] },
         ]
     });

@@ -143,8 +143,8 @@ namespace D12.ChatGPT.WebAdmin.Controllers
                 {
                     jsonData.Result = false;
                     jsonData.MessageType = ResultType.None;
-                    jsonData.Title = "Datos incorrectos";
-                    jsonData.Message = "Verifique usuario y contraseña e intente de nuevo.";
+                    jsonData.Title = "Incorrect username or password";
+                    jsonData.Message = "Verify username and password and try again.";
                     jsonData.ReturnUrl = returnUrl;
                     jsonData.StatusCode = 401;
                 }
@@ -178,7 +178,7 @@ namespace D12.ChatGPT.WebAdmin.Controllers
 
             //unitWork.Complete();
 
-            return RedirectToAction("Index", "Inicio");
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]
